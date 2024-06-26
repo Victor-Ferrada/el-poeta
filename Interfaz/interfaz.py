@@ -1,6 +1,13 @@
+###ignorar esto por ahora
+
+
+
+
+"""
+
+
 import tkinter as tk
 from tkinter import messagebox
-from Funciones.funciones import autenticar_usuario, menu_jefe_bodega, menu_bodeguero
 
 class App:
     def __init__(self, root):
@@ -97,3 +104,4 @@ if __name__ == "__main__":
     root = tk.Tk()
     app = App(root)
     root.mainloop()
+"""
