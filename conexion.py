@@ -12,4 +12,4 @@ def conectar_db():
         return conexion
     except mysql.connector.Error as e:
         print(f"Error al conectar a la base de datos: {e}")
-        return None #ola
+        return None #ola asasdasd hola
