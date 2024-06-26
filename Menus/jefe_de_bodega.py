@@ -8,7 +8,7 @@ from gestion_bodegas import gestionar_bodegas
 from Funciones.crear_producto import crear_producto 
 from Funciones.mover_productos import mover_productos
 from gestion_autores import gestionar_autores
-from Funciones.gestionar_editoriales import gestionar_editoriales
+from gestion_editoria import gestionar_editoriales
 from Funciones.visualizar_todas_las_bodegas import visualizar_bodegas
 from Funciones.generar_informe_de_inventario import generar_informe_inventario
 from Funciones.generar_informe_de_historial_de_movimientos import generar_informe_movimientos
