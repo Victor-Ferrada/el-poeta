@@ -28,7 +28,7 @@ def autenticar_usuario(usuario, contrasena):
         print(f"Error al autenticar usuario: {e}")
         return None
 
-# Función para gestionar bodegas
+# Función para gestionar bodegas 
 def gestionar_bodegas():
     try:
         print("\nGestionar Bodegas")
@@ -46,7 +46,7 @@ def gestionar_bodegas():
         print(f"{e}, regresando al menú anterior.")
 
 
-# Función para crear una bodega
+# Función para crear una bodega 
 def crear_bodega():
     try:
         conexion = conectar_db()
@@ -66,7 +66,7 @@ def crear_bodega():
     except Exception as e:
         print(f"Error al crear bodega: {e}")
 
-# Función para eliminar una bodega
+# Función para eliminar una bodega  
 def eliminar_bodega():
     conexion = conectar_db()
     cursor = conexion.cursor()
@@ -82,7 +82,7 @@ def eliminar_bodega():
         conexion.commit()
         print("Bodega eliminada exitosamente.")
 
-# Función para crear productos
+# Función para crear productos 
 def crear_producto():
     conexion = conectar_db()
     cursor = conexion.cursor()
@@ -135,7 +135,7 @@ def crear_producto():
     conexion.commit()
     print("Producto creado exitosamente.")
 
-# Función para mover productos
+# Función para mover productos 
 def mover_productos():
     conexion = conectar_db()
     cursor = conexion.cursor()
@@ -159,7 +159,7 @@ def mover_productos():
     print("Movimiento realizado exitosamente.")
 
 
-# Función para gestionar autores
+# Función para gestionar autores 
 def gestionar_autores():
     print("\nGestionar Autores")
     print("1. Agregar Autor")
