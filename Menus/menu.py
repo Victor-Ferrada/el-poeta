@@ -1,4 +1,5 @@
-from funciones import iniciar_sesion
+# Importa las funciones necesarias para el inicio de sesión
+from iniciar_sesion import iniciar_sesion
 
 def mostrar_menu():
     print("\n--- Menú Principal ---")

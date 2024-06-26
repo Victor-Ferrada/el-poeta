@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import messagebox
-from funciones import autenticar_usuario, menu_jefe_bodega, menu_bodeguero
+from Funciones.funciones import autenticar_usuario, menu_jefe_bodega, menu_bodeguero
 
 class App:
     def __init__(self, root):
