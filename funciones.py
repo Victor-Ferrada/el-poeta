@@ -158,7 +158,6 @@ def mover_productos():
     conexion.commit()
     print("Movimiento realizado exitosamente.")
 
-
 # Función para gestionar autores 
 def gestionar_autores():
     print("\nGestionar Autores")
@@ -398,24 +397,3 @@ if __name__ == "__main__":
     iniciar_sesion()
 
 
-"""
-a
-a
-a
-a
-a
-a
-a
-a
-a
-a
-aaa
-a
-a
-a
-a
-a
-aaaaaaaaaa
-a
-a
-"""
