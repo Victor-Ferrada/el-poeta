@@ -7,6 +7,7 @@ from Funciones.cls import cls
 from bodeguero import menu_bodeguero
 from jefe_de_bodega import menu_jefe_bodega
 from Funciones.iniciar_sesion import autenticar_usuario
+from Funciones.getpass_asterisk import ocultarpass
 
 
 # Iniciar sesión
@@ -14,7 +15,7 @@ def iniciar_sesion():
     while True:
         print("\n--- Iniciar Sesión ---")
         usuario = input("Usuario: ")
-        contrasena = getpass("Contraseña: ")
+        contrasena = ocultarpass("Contraseña: ")
 
         perfil = autenticar_usuario(usuario, contrasena)
 

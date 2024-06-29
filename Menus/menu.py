@@ -1,4 +1,5 @@
 from iniciar_sesion import iniciar_sesion
+from Funciones.cls import cls
 
 def mostrar_terminos_y_condiciones():
     # Impresión de los términos y condiciones
@@ -30,26 +31,15 @@ def mostrar_terminos_y_condiciones():
     print("   - Los usuarios serán notificados de los cambios mediante notificación directa o publicación en el sitio web de la biblioteca.")
     aceptado = input("\n¿Acepta los términos y condiciones? (s/n): ").lower()
     if aceptado == "s":
+        cls()
         return True
     else:
         return False
-
-def iniciar_sesion():
-    # Función simulada para iniciar sesión
-    print("\nInicio de Sesión")
-    # Aquí iría tu lógica real de inicio de sesión, por ejemplo:
-    usuario = input("Ingrese su usuario: ")
-    contrasena = input("Ingrese su contraseña: ")
-    # Lógica de autenticación
-    # Simplemente simulamos una autenticación exitosa para este ejemplo
-    print(f"Bienvenido, {usuario}!")
 
 def main():
     while True:
         if mostrar_terminos_y_condiciones():
             iniciar_sesion()
-            # Aquí se implementaría la lógica para el resto de la aplicación según el perfil del usuario
-            # Por ejemplo, mostrar menús diferentes para jefe de bodega y bodeguero.
             break
         else:
             print("Debe aceptar los términos y condiciones para continuar.")
