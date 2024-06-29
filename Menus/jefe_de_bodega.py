@@ -28,20 +28,28 @@ def menu_jefe_bodega():
         print("9. Cerrar Sesión")
         opcion = input("Seleccione una opción: ")
         if opcion == "1":
+            cls()
             gestionar_bodegas()
         elif opcion == "2":
+            cls()
             crear_producto()
         elif opcion == "3":
+            cls()
             mover_productos()
         elif opcion == "4":
+            cls()
             gestionar_autores()
         elif opcion == "5":
+            cls()
             gestionar_editoriales()
         elif opcion == "6":
+            cls()
             visualizar_bodegas()
         elif opcion == "7":
+            cls()
             generar_informe_inventario()
         elif opcion == "8":
+            cls()
             generar_informe_movimientos()
         elif opcion == "9":
             print("Cerrando sesión...")

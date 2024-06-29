@@ -8,7 +8,6 @@ def conectar_db():
             password="12345",
             database="elpoeta"
         )
-        print("Conexión establecida.")
         return conexion
     except mysql.connector.Error as e:
         print(f"Error al conectar a la base de datos: {e}")
