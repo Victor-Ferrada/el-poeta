@@ -55,9 +55,6 @@ def generar_informe_inventario():
     cls()
 
 
-generar_informe_inventario()
-
-
 
 
 
