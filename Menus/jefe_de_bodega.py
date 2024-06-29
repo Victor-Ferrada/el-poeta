@@ -16,6 +16,7 @@ from Funciones.generar_informe_de_historial_de_movimientos import generar_inform
 # Menú del jefe de bodega
 def menu_jefe_bodega():
     while True:
+
         print("\n--- Menú Jefe de Bodega ---")
         print("1. Gestionar Bodegas")
         print("2. Crear Productos")
