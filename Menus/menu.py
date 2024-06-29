@@ -5,6 +5,7 @@ from Funciones.terminos_condiciones import mostrar_terminos_y_condiciones
 
 def main():
     while True:
+        cls()
         if mostrar_terminos_y_condiciones():
             iniciar_sesion()
             break
