@@ -2,9 +2,7 @@ import sys
 import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import mysql.connector
-from Conexion_DB.conexion import conectar_db
-
-
+import re
 
 class Bodegas():
     def __init__(self):
@@ -14,39 +12,52 @@ class Bodegas():
              password='inacap2023',
              database='elpoeta')
          self.cursor = self.conexion.cursor()
+
     # Función para crear una bodega 
-    def crear_bodega():
+    def crear_bodega(self):
+        sucursal = input("Ingrese la sucursal: ")
+        fono_bod = input("Ingrese el teléfono de la bodega: ")
+        responsable = input("Ingrese el responsable: ")
+        cod_post_bod = input("Ingrese el código postal de la bodega: ")
+        
+        #aca para hacer el codigo de la bodega 
+        consonantes = re.findall(r'[^aeiounNAEIOU\s]', sucursal)
+        i_consonantes = ''.join(consonantes[:3]).upper()
+        cont=1
+        while True:
+            cod_bod=f"{i_consonantes}{0}{cont}"
+            self.cursor.execute("select * from bodegas where codbod=%s",(cod_bod,))
+            resultado=self.cursor.fetchone()
+            if not resultado:
+                break
+            cont+=1
         try:
-            conexion = conectar_db()
-            cursor = conexion.cursor()
-            cod_bod = input("Ingrese el código de la bodega: ")
-            sucursal = input("Ingrese la sucursal: ")
-            fono_bod = input("Ingrese el teléfono de la bodega: ")
-            responsable = input("Ingrese el responsable: ")
-            cod_post_bod = input("Ingrese el código postal de la bodega: ")
-            cursor.execute("INSERT INTO BODEGAS (CODBOD, SUCURSAL, FONOBOD, RESPONSABLE, CODPOSTBOD) VALUES (%s, %s, %s, %s, %s)",
+            self.cursor.execute("INSERT INTO BODEGAS (CODBOD, SUCURSAL, FONOBOD, RESPONSABLE, CODPOSTBOD) VALUES (%s, %s, %s, %s, %s)",
                             (cod_bod, sucursal, fono_bod, responsable, cod_post_bod))
-            conexion.commit()
+            self.conexion.commit()
             print("Bodega creada exitosamente.")
             input("Precione cualquier tecla para continuar...")
-            cursor.close()
-            conexion.close()
         except Exception as e:
             print(f"Error al crear bodega: {e}")
+            self.conexion.rollback()
+        return cod_bod
 
     # Función para eliminar una bodega  
-    def eliminar_bodega():
-        conexion = conectar_db()
-        cursor = conexion.cursor()
-
+    def eliminar_bodega(self):
         cod_bod = input("Ingrese el código de la bodega a eliminar: ")
-        cursor.execute("SELECT * FROM INVENTARIO WHERE CODBOD = %s", (cod_bod,))
-        inventario = cursor.fetchone()
+        self.cursor.execute("SELECT * FROM INVENTARIO WHERE CODBOD = %s", (cod_bod,))
+        inventario = self.cursor.fetchone()
 
         if inventario:
             print("No se puede eliminar una bodega que contenga productos.")
         else:
-            cursor.execute("DELETE FROM BODEGAS WHERE CODBOD = %s", (cod_bod,))
-            conexion.commit()
+            self.cursor.execute("DELETE FROM BODEGAS WHERE CODBOD = %s", (cod_bod,))
+            self.conexion.commit()
             print("Bodega eliminada exitosamente.")
-Bodegas.crear_bodega()
+    
+    def cerrarBD(self):
+        self.cursor.close()
+        self.conexion.close()
+
+bodegas=Bodegas()
+bodegas.crear_bodega()
