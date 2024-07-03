@@ -55,6 +55,8 @@ class Bodegas():
 
     # Función para eliminar una bodega  
     def eliminar_bodega(self):
+        Bodegas().mostrar_bodegas()
+        print("\n\n")
         cod_bod = input("Ingrese el código de la bodega a eliminar: ")
         self.cursor.execute("SELECT * FROM INVENTARIO WHERE CODBOD = %s", (cod_bod,))
         inventario = self.cursor.fetchone()
@@ -71,4 +73,4 @@ class Bodegas():
         self.conexion.close()
 
 bodegas=Bodegas()
-bodegas.mostrar_bodegas()
+bodegas.eliminar_bodega()
