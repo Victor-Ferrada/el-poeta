@@ -15,4 +15,3 @@ def visualizar_bodegas():
     print("\nListado de Bodegas:")
     for bodega in bodegas:
         print(f"Código: {bodega[0]}, Sucursal: {bodega[1]}")
-    input("\nPresione Enter para continuar...")
