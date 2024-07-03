@@ -2,6 +2,7 @@ import sys
 import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import mysql.connector
+from tabulate import tabulate
 import re
 
 class Bodegas():
@@ -42,6 +43,16 @@ class Bodegas():
             self.conexion.rollback()
         return cod_bod
 
+    # Función para visualizar bodegas
+    def mostrar_bodegas(self):
+        sql='select * from bodegas'
+        try:
+            self.cursor.execute(sql)
+            lista=self.cursor.fetchall()  
+            print(tabulate(lista,headers=['Cod. Bod.','Sucursal','Teléfono','Jefe','Cod. Postal'],tablefmt='github'))    
+        except Exception as err:
+            print(err)
+
     # Función para eliminar una bodega  
     def eliminar_bodega(self):
         cod_bod = input("Ingrese el código de la bodega a eliminar: ")
@@ -60,4 +71,4 @@ class Bodegas():
         self.conexion.close()
 
 bodegas=Bodegas()
-bodegas.crear_bodega()
+bodegas.mostrar_bodegas()
