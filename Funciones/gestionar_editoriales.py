@@ -35,7 +35,7 @@ class Editoriales():
         try:
             self.cursor.execute(sql)
             lista=self.cursor.fetchall()  
-            print(tabulate(lista,headers=['Rut Edit.','Nombre','Teléfono','Cod. Postal','Representante Legal'],tablefmt='github')) 
+            print(tabulate(lista,headers=['Rut Edit.','Nombre','Teléfono','Cod. Postal','Representante Legal'],tablefmt='fancy_grid')) 
             print("\n")
         except Exception as e:
             print(f"Error al mostrar editoriales: {e}")
