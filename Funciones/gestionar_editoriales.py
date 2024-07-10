@@ -18,7 +18,7 @@ class Editoriales():
     def agregar_editorial(self):
         nombredit = input("Ingrese el nombre de la editorial: ").upper()
         rutedit = input("Ingrese el RUT de la editorial: ").upper()
-        fonoedit = input("Ingrese el teléfono de la editorial: ")
+        fonoedit = input("Ingrese el teléfono de la editorial: ")        #indicar tipo int
         codpostedit = input("Ingrese el código postal de la editorial: ")
         represlegaldi = input("Ingrese el representante legal de la editorial: ").upper()
         try:
