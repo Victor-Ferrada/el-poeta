@@ -51,7 +51,7 @@ class Bodegas():
         try:
             self.cursor.execute(sql)
             lista=self.cursor.fetchall()  
-            print(tabulate(lista,headers=['Cod. Bod.','Sucursal','Teléfono','Jefe','Cod. Postal'],tablefmt='github')) 
+            print(tabulate(lista,headers=['Cod. Bod.','Sucursal','Teléfono','Jefe','Cod. Postal'],tablefmt='fancy_grid')) 
         except Exception as e:
             print(f"Error al mostrar bodega: {e}\n")
             self.conexion.rollback()
