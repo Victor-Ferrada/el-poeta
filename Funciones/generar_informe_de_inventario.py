@@ -3,7 +3,7 @@ import os
 from tabulate import tabulate
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from Conexion_DB.conexion import conectar_db
-from Funciones.visualizar_todas_las_bodegas import visualizar_bodegas
+from Funciones.gestion_bodega import mostrar_bodegas
 from Funciones.cls import cls
 
 # Función para generar informe de inventario
@@ -11,7 +11,7 @@ def generar_informe_inventario():
     conexion = conectar_db()
     cursor = conexion.cursor()
 
-    visualizar_bodegas()
+    mostrar_bodegas()
 
     bodega_seleccionada = input("Ingrese el código de la bodega para generar el informe: ")
     cls()
