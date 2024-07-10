@@ -18,7 +18,7 @@ class Bodegas():
     # Función para crear una bodega 
     def crear_bodega(self):
         sucursal = input("Ingrese la sucursal: ")
-        fono_bod = input("Ingrese el teléfono de la bodega: ")
+        fono_bod = input("Ingrese el teléfono de la bodega: ")            #indicar tipo int
         responsable = input("Ingrese el responsable: ")
         cod_post_bod = input("Ingrese el código postal de la bodega: ")
         
