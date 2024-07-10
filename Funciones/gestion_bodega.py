@@ -41,7 +41,7 @@ class Bodegas():
             input("Presione cualquier tecla para continuar...")
             system('cls')
         except Exception as e:
-            print(f"Error al crear bodega: {e}")
+            print(f"Error al crear bodega: {e}\n")
             self.conexion.rollback()
         return cod_bod
 
@@ -52,35 +52,39 @@ class Bodegas():
             self.cursor.execute(sql)
             lista=self.cursor.fetchall()  
             print(tabulate(lista,headers=['Cod. Bod.','Sucursal','Teléfono','Jefe','Cod. Postal'],tablefmt='github')) 
-            print("\n")
         except Exception as e:
-            print(f"Error al mostrar bodega: {e}")
+            print(f"Error al mostrar bodega: {e}\n")
             self.conexion.rollback()
 
     # Función para eliminar una bodega  
     def eliminar_bodega(self):
         system('cls')
         Bodegas().mostrar_bodegas()
-        cod_bod = input("Ingrese el código de la bodega a eliminar: ").upper()
-        self.cursor.execute("SELECT * FROM INVENTARIO WHERE BODEGA = %s", (cod_bod,))
+        print("\n")
+        codbod = input("Ingrese el código de bodega a eliminar: ").upper()
+        self.cursor.execute("SELECT * FROM INVENTARIO WHERE BODEGA = %s", (codbod,))
         inventario = self.cursor.fetchone()
-        self.cursor.execute("SELECT * FROM BODEGAS WHERE CODBOD = %s", (cod_bod,))
+        self.cursor.execute("SELECT * FROM BODEGAS WHERE CODBOD = %s", (codbod,))
         bodegas = self.cursor.fetchone()
-
+        while not bodegas:
+            codbod = input(f"Bodega {codbod} no existe. Ingrese el código de bodega nuevamente (o 's' para finalizar): ").upper()
+            if codbod=='S':
+                print("\nOperación cancelada.\n")
+                return
+            self.cursor.execute("SELECT * FROM BODEGAS WHERE CODBOD = %s", (codbod,))
+            bodegas = self.cursor.fetchone()
         if inventario:
-            print("No se puede eliminar una bodega que contenga productos.")
-        elif bodegas:
+            print("\nNo se puede eliminar una bodega que contenga productos.\n")
+        else:
             try:
-                self.cursor.execute("DELETE FROM BODEGAS WHERE CODBOD = %s", (cod_bod,))
+                self.cursor.execute("DELETE FROM BODEGAS WHERE CODBOD = %s", (codbod,))
                 self.conexion.commit()
+                print("\n")
                 Bodegas().mostrar_bodegas()
-                print("Bodega eliminada exitosamente.")
+                print("\nBodega eliminada exitosamente.\n")
             except Exception as e:
                 print(f"Error al eliminar bodega: {e}")
                 self.conexion.rollback()
-        else:
-            print(f"Bodega {cod_bod} no existe.")
-            self.conexion.rollback()
     
     def cerrarBD(self):
         self.cursor.close()
