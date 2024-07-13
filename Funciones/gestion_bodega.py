@@ -92,6 +92,9 @@ class Bodegas():
             bodegas = self.cursor.fetchone()
         if inventario:
             print("\nNo se puede eliminar una bodega que contenga productos.\n")
+        if bodegas['RESPONSABLE'] != self.usuario_actual:
+            print("\nNo tiene permisos para eliminar esta bodega.\n")
+            return
         else:
             try:
                 self.cursor.execute("DELETE FROM BODEGAS WHERE CODBOD = %s", (codbod,))
