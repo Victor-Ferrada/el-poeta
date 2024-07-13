@@ -19,11 +19,11 @@ class Bodegas():
 
     # Función para crear una bodega 
     def crear_bodega(self):
-        sucursal = input("Ingrese la sucursal: ")
+        sucursal = input("Ingrese la sucursal: ").strip()
         while sucursal=='':
                 sucursal = input("El nombre de la sucursal no puede estar vacío. Ingrese nuevamente: ").strip().upper()
         fono_bod = validar_entero("Ingrese el teléfono de la bodega: ",'teléfono')
-        responsable = input("Ingrese el responsable: ")
+        responsable = input("Ingrese el responsable: ").strip()
         cod_post_bod = validar_entero("Ingrese el código postal de la bodega: ",'código postal')
         
         #aca para hacer el codigo de la bodega 
@@ -109,4 +109,4 @@ class Bodegas():
 
 bodegas=Bodegas()
 
-bodegas.eliminar_bodega()
+bodegas.crear_bodega()
