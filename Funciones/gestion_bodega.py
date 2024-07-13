@@ -24,12 +24,6 @@ class Bodegas():
                 sucursal = input("El nombre de la sucursal no puede estar vacío. Ingrese nuevamente: ").strip().upper()
         fono_bod = validar_entero("Ingrese el teléfono de la bodega: ",'teléfono')
         responsable = input("Ingrese el responsable: ").strip()
-        cod_post_bod = validar_entero("Ingrese el código postal de la bodega: ",'código postal')
-        
-        #aca para hacer el codigo de la bodega 
-        consonantes = re.findall(r'[^aeiounNAEIOU\s]', sucursal)
-        i_consonantes = ''.join(consonantes[:3]).upper()
-        cont=1
         self.cursor.execute("SELECT * FROM JEFEBODEGA WHERE RUNJEF = %s", (responsable,))
         jefe = self.cursor.fetchone()
         while not jefe:
@@ -39,6 +33,13 @@ class Bodegas():
                 return
             self.cursor.execute("SELECT * FROM JEFEBODEGA WHERE RUNJEF = %s", (responsable,))
             jefe = self.cursor.fetchone()
+        cod_post_bod = validar_entero("Ingrese el código postal de la bodega: ",'código postal')
+        
+        #aca para hacer el codigo de la bodega 
+        consonantes = re.findall(r'[^aeiounNAEIOU\s]', sucursal)
+        i_consonantes = ''.join(consonantes[:3]).upper()
+        cont=1
+        
         while True:
             cod_bod=f"{i_consonantes}{0}{cont}"
             self.cursor.execute("select * from bodegas where codbod=%s",(cod_bod,))
@@ -76,30 +77,34 @@ class Bodegas():
         system('cls')
         Bodegas().mostrar_bodegas()
         print("\n")
-        codbod = input("Ingrese el código de bodega a eliminar: ").upper()
-        self.cursor.execute("SELECT * FROM INVENTARIO WHERE BODEGA = %s", (codbod,))
-        inventario = self.cursor.fetchone()
-        self.cursor.execute("SELECT * FROM BODEGAS WHERE CODBOD = %s", (codbod,))
-        bodegas = self.cursor.fetchone()
-        while not bodegas:
-            while codbod=='':
-                codbod = input("Entrada vacía. Ingrese un código de bodega a eliminar: ").strip().upper()
-            codbod = input(f"Bodega {codbod} no existe. Ingrese el código de bodega nuevamente (o 's' para finalizar): ").upper()
+        while True:
+            codbod = input("Ingrese el código de bodega a eliminar (o 's' para salir): ").upper()
             if codbod=='S':
-                print("\nOperación cancelada.\n")
-                return
+                    system('cls')
+                    print("\nVolviendo atrás...\n")
+                    return
             self.cursor.execute("SELECT * FROM BODEGAS WHERE CODBOD = %s", (codbod,))
             bodegas = self.cursor.fetchone()
-        if inventario:
-            print("\nNo se puede eliminar una bodega que contenga productos.\n")
-        if bodegas['RESPONSABLE'] != self.usuario_actual:
-            print("\nNo tiene permisos para eliminar esta bodega.\n")
-            return
-        else:
+            if not bodegas:
+                if codbod=='':
+                    system('cls')
+                    Bodegas().mostrar_bodegas()
+                    print("\nEntrada vacía. Reintente.\n")
+                    continue
+                else:
+                    system('cls')
+                    Bodegas().mostrar_bodegas()
+                    print(f"\nBodega {codbod} no existe. Reintente.\n")
+                    continue
+            self.cursor.execute("SELECT * FROM INVENTARIO WHERE BODEGA = %s", (codbod,))
+            inventario = self.cursor.fetchone()
+            if inventario:
+                print("\nNo se puede eliminar una bodega que contenga productos.\n")
+                return
             try:
                 self.cursor.execute("DELETE FROM BODEGAS WHERE CODBOD = %s", (codbod,))
                 self.conexion.commit()
-                print("\n")
+                system('cls')
                 Bodegas().mostrar_bodegas()
                 print("\nBodega eliminada exitosamente.\n")
             except Exception as e:
@@ -112,4 +117,4 @@ class Bodegas():
 
 bodegas=Bodegas()
 
-bodegas.crear_bodega()
+bodegas.eliminar_bodega()
