@@ -5,6 +5,8 @@ import mysql.connector
 from tabulate import tabulate
 import re
 from os import system
+from iniciar_sesion import *
+from otras_funciones import validar_entero
 
 class Bodegas():
     def __init__(self):
@@ -18,14 +20,25 @@ class Bodegas():
     # Función para crear una bodega 
     def crear_bodega(self):
         sucursal = input("Ingrese la sucursal: ")
-        fono_bod = input("Ingrese el teléfono de la bodega: ")            #indicar tipo int
+        while sucursal=='':
+                sucursal = input("El nombre de la sucursal no puede estar vacío. Ingrese nuevamente: ").strip().upper()
+        fono_bod = validar_entero("Ingrese el teléfono de la bodega: ",'teléfono')
         responsable = input("Ingrese el responsable: ")
-        cod_post_bod = input("Ingrese el código postal de la bodega: ")
+        cod_post_bod = validar_entero("Ingrese el código postal de la bodega: ",'código postal')
         
         #aca para hacer el codigo de la bodega 
         consonantes = re.findall(r'[^aeiounNAEIOU\s]', sucursal)
         i_consonantes = ''.join(consonantes[:3]).upper()
         cont=1
+        self.cursor.execute("SELECT * FROM JEFEBODEGA WHERE RUNJEF = %s", (responsable,))
+        jefe = self.cursor.fetchone()
+        while not jefe:
+            responsable = input(f"Usuario {responsable} no existe. Ingrese un usuario válido (o 's' para finalizar): ").upper()
+            if responsable=='S':
+                print("\nOperación cancelada.\n")
+                return
+            self.cursor.execute("SELECT * FROM JEFEBODEGA WHERE RUNJEF = %s", (responsable,))
+            jefe = self.cursor.fetchone()
         while True:
             cod_bod=f"{i_consonantes}{0}{cont}"
             self.cursor.execute("select * from bodegas where codbod=%s",(cod_bod,))
@@ -50,8 +63,10 @@ class Bodegas():
         sql='select * from bodegas'
         try:
             self.cursor.execute(sql)
-            lista=self.cursor.fetchall()  
-            print(tabulate(lista,headers=['Cod. Bod.','Sucursal','Teléfono','Jefe','Cod. Postal'],tablefmt='fancy_grid')) 
+            lista=self.cursor.fetchall()
+            lista_procesada = [[(campo if campo else "S/I") for campo in fila] for fila in lista]    
+            print(tabulate(lista_procesada,headers=['Cod. Bod.','Sucursal','Teléfono','Jefe','Cod. Postal'],tablefmt='fancy_grid')) 
+            print("\n")
         except Exception as e:
             print(f"Error al mostrar bodega: {e}\n")
             self.conexion.rollback()
@@ -67,6 +82,8 @@ class Bodegas():
         self.cursor.execute("SELECT * FROM BODEGAS WHERE CODBOD = %s", (codbod,))
         bodegas = self.cursor.fetchone()
         while not bodegas:
+            while codbod=='':
+                codbod = input("Entrada vacía. Ingrese un código de bodega a eliminar: ").strip().upper()
             codbod = input(f"Bodega {codbod} no existe. Ingrese el código de bodega nuevamente (o 's' para finalizar): ").upper()
             if codbod=='S':
                 print("\nOperación cancelada.\n")
