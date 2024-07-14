@@ -13,8 +13,9 @@ def gestionar_bodegas():
         try:
             print('-'*10+'Gestión de Bodegas'+'-'*10+'\n')
             print("1. Crear Bodega")
-            print("2. Eliminar Bodega")
-            print("3. Salir")
+            print("2. Visualizar Bodegas")
+            print("3. Eliminar Bodega")
+            print("4. Salir")
             opcion = input("\nSeleccione una opción: ")
 
             if opcion == "1":
@@ -22,12 +23,18 @@ def gestionar_bodegas():
                 bodegas.crear_bodega()
             elif opcion == "2":
                 system('cls')
-                bodegas.eliminar_bodega()
+                bodegas.mostrar_bodegas()
+                input('Presione cualquier tecla para volver atrás...')
+                system('cls')
             elif opcion == "3":
+                system('cls')
+                bodegas.eliminar_bodega('123')
+            elif opcion == "4":
                 system('cls')
                 print("Volviendo al menú principal...")
                 return
             else:
+                system('cls')
                 raise ValueError("Opción no válida.")
         except ValueError as e:
             print(f"{e}, regresando al menú anterior.")

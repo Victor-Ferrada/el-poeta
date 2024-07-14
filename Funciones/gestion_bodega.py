@@ -93,7 +93,7 @@ class Bodegas():
             self.conexion.rollback()
 
     # Función para eliminar una bodega  
-    def eliminar_bodega(self):
+    def eliminar_bodega(self,usuario):
         print('-'*10+'Eliminar Bodegas'+'-'*10+'\n')
         Bodegas().mostrar_bodegas()
         while True:
@@ -102,25 +102,35 @@ class Bodegas():
                     system('cls')
                     print("\nVolviendo al menú de bodegas...\n")
                     return
-            self.cursor.execute("SELECT * FROM BODEGAS WHERE CODBOD = %s", (codbod,))
-            bodegas = self.cursor.fetchone()
-            if not bodegas:
-                if codbod=='':
+            if codbod=='':
                     system('cls')
                     print('-'*10+'Eliminar Bodegas'+'-'*10+'\n')
                     Bodegas().mostrar_bodegas()
                     print("Entrada vacía. Reintente.\n")
                     continue
-                else:
-                    system('cls')
-                    print('-'*10+'Eliminar Bodegas'+'-'*10+'\n')
-                    Bodegas().mostrar_bodegas()
-                    print(f"Bodega {codbod} no existe. Reintente.\n")
-                    continue
+            self.cursor.execute("SELECT * FROM BODEGAS WHERE CODBOD = %s", (codbod,))
+            bodega = self.cursor.fetchone()
+            if not bodega:
+                system('cls')
+                print('-'*10+'Eliminar Bodegas'+'-'*10+'\n')
+                Bodegas().mostrar_bodegas()
+                print(f"Bodega {codbod} no existe. Reintente.\n")
+                continue
+            self.cursor.execute("SELECT RESPONSABLE FROM BODEGAS WHERE CODBOD = %s", (codbod,))
+            jefe = self.cursor.fetchone()[0]
+            if usuario!=jefe:
+                system('cls')
+                print(f'Usuario {usuario} no autorizado para eliminar bodega {codbod}. Por favor contacte al Jefe de Bodega correspondiente ({jefe}).\n')
+                input('Presione cualquier tecla para volver atrás...')
+                system('cls')
+                return
             self.cursor.execute("SELECT * FROM INVENTARIO WHERE BODEGA = %s", (codbod,))
             inventario = self.cursor.fetchone()
             if inventario:
-                print("\nNo se puede eliminar una bodega que contenga productos.\n")
+                system('cls')
+                print(f"\nNo se puede eliminar la bodega {codbod} porque contiene productos actualmente.\n")
+                input('Presione cualquier tecla para volver atrás...')
+                system('cls')
                 return
             else:
                 try:
