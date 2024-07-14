@@ -78,7 +78,8 @@ class Editoriales():
             self.cursor.execute("SELECT * FROM EDITORIALES WHERE RUTEDIT = %s", (rutedit,))
             editoriales = self.cursor.fetchone()
         if productos:
-            print("\nNo se puede eliminar una editorial que tenga productos asociados.\n")
+            print(f"\nNo se puede eliminar editorial {rutedit} porque tiene productos asociados.\n")
+            return
         else:
             try:
                 self.cursor.execute("DELETE FROM EDITORIALES WHERE RUTEDIT = %s", (rutedit,))
@@ -91,5 +92,5 @@ class Editoriales():
                 self.conexion.rollback()
 
 editoriales=Editoriales()
-editoriales.eliminar_editorial()
 editoriales.mostrar_editoriales()
+editoriales.agregar_editorial()
