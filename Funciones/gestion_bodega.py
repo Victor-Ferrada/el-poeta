@@ -64,6 +64,7 @@ class Bodegas():
                     self.cursor.execute("INSERT INTO BODEGAS (CODBOD, SUCURSAL, FONOBOD, RESPONSABLE, CODPOSTBOD) VALUES (%s, %s, %s, %s, %s)",
                                     (cod_bod, sucursal, fono_bod, responsable, cod_post_bod))
                     self.conexion.commit()
+                    system('cls')
                     print("\nBodega creada exitosamente.")
                     input("\nPresione cualquier tecla para volver al menú de bodegas...")
                     system('cls')

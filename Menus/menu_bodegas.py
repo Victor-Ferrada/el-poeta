@@ -28,7 +28,7 @@ def gestionar_bodegas():
                 system('cls')
             elif opcion == "3":
                 system('cls')
-                bodegas.eliminar_bodega('123')
+                bodegas.eliminar_bodega('125')
             elif opcion == "4":
                 system('cls')
                 print("Volviendo al menú principal...")

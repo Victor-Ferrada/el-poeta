@@ -12,8 +12,9 @@ def gestionar_editoriales():
         try:
             print('-'*10+'Gestión de Editoriales'+'-'*10+'\n')
             print("1. Agregar Editorial")
-            print("2. Eliminar Editorial")
-            print("3. Salir")
+            print("2. Mostrar Editoriales")
+            print("3. Eliminar Editorial")
+            print("4. Salir")
             opcion = input("\nSeleccione una opción: ")
 
             if opcion == "1":
@@ -21,8 +22,13 @@ def gestionar_editoriales():
                 editoriales.agregar_editorial()
             elif opcion == "2":
                 system('cls')
-                editoriales.eliminar_editorial()
+                editoriales.mostrar_editoriales()
+                input('Presione cualquier tecla para volver atrás...')
+                system('cls')
             elif opcion == "3":
+                system('cls')
+                editoriales.eliminar_editorial('125')  
+            elif opcion == "4":
                 system('cls')
                 print("Volviendo al menú principal...")
                 return

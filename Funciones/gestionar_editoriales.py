@@ -55,6 +55,7 @@ class Editoriales():
                     self.cursor.execute("INSERT INTO EDITORIALES (RUTEDIT, NOMEDIT, FONOEDI, CODPOSTEDI, REPRELEGEDI) VALUES (%s, %s, %s, %s, %s)"
                                         ,(rutedit, nombredit, fonoedit, codpostedit, represlegaldi))
                     self.conexion.commit()
+                    system('cls')
                     print("\nEditorial creada exitosamente.")
                     input("\nPresione cualquier tecla para volver al menú de editoriales...")
                     system('cls')
@@ -84,31 +85,39 @@ class Editoriales():
             self.conexion.rollback()
 
     # Función para eliminar una editorial
-    def eliminar_editorial(self):
+    def eliminar_editorial(self,usuario):
         print('-'*10+'Eliminar Editoriales'+'-'*10+'\n')
         Editoriales().mostrar_editoriales()
         while True:
             rutedit = input("Ingrese el RUT de la editorial a eliminar (o 's' para salir): ").upper()
-            self.cursor.execute("SELECT * FROM EDITORIALES WHERE rutedit = %s", (rutedit,))
-            editoriales = self.cursor.fetchone()
             if rutedit=='S':
                 system('cls')
                 print("\nVolviendo al menú de editoriales...\n")
                 return
-            
-            if not editoriales:
-                if rutedit=='':
+            if rutedit=='':
                     system('cls')
                     print('-'*10+'Eliminar Editoriales'+'-'*10+'\n')
                     Editoriales().mostrar_editoriales()
                     print("Entrada vacía. Reintente.\n")
                     continue
-                else:
-                    system('cls')
-                    print('-'*10+'Eliminar Editoriales'+'-'*10+'\n')
-                    Editoriales().mostrar_editoriales()
-                    print(f"Editorial {rutedit} no existe. Reintente.\n")
-                    continue
+            self.cursor.execute("SELECT * FROM EDITORIALES WHERE rutedit = %s", (rutedit,))
+            editorial = self.cursor.fetchone()
+            if not editorial:
+                system('cls')
+                print('-'*10+'Eliminar Editoriales'+'-'*10+'\n')
+                Editoriales().mostrar_editoriales()
+                print(f"Editorial {rutedit} no existe. Reintente.\n")
+                continue
+            self.cursor.execute("SELECT RUNJEF FROM JEFEBODEGA")
+            jefes=self.cursor.fetchall()
+            jefes=[jefe[0] for jefe in jefes]
+            if usuario not in jefes:
+                system('cls')
+                print(jefes)
+                print(f'Usuario {usuario} no autorizado para eliminar editorial {rutedit}. Por favor contacte al Jefe de Bodega.\n')
+                input('Presione cualquier tecla para volver atrás...')
+                system('cls')
+                return
             self.cursor.execute("SELECT * FROM PRODUCTOS WHERE EDITORIAL = %s", (rutedit,))
             productos = self.cursor.fetchone()
             if productos:
