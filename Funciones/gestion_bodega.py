@@ -28,11 +28,14 @@ class Bodegas():
             self.cursor.execute("SELECT * FROM JEFEBODEGA WHERE RUNJEF = %s", (responsable,))
             jefe = self.cursor.fetchone()
             while not jefe:
-                responsable = input(f"Usuario {responsable} no existe. Ingrese un usuario válido (o 's' para finalizar): ").upper()
-                if responsable=='S':
+                if responsable=='':
+                    responsable=input("Entrada vacía. Ingrese un usuario válido (o 's' para finalizar): ").upper()
+                elif responsable=='S':
                     system('cls')
                     print("\nOperación cancelada. Volviendo al menú de bodegas...\n")
                     return
+                else:
+                    responsable = input(f"Usuario {responsable} no existe. Ingrese un usuario válido (o 's' para finalizar): ").upper()
                 self.cursor.execute("SELECT * FROM JEFEBODEGA WHERE RUNJEF = %s", (responsable,))
                 jefe = self.cursor.fetchone()
             cod_post_bod = validar_entero("Ingrese el código postal de la bodega: ",'código postal')
@@ -68,10 +71,10 @@ class Bodegas():
                 except Exception as e:
                     print(f"Error al crear bodega: {e}\n")
                     self.conexion.rollback()
-                return cod_bod
+                    return
             else:
                 system('cls')
-                input("\nOperación cancelada. Presione cualquier tecla para volver atrás...\n")
+                input("\nOperación cancelada. Presione cualquier tecla para volver atrás...")
                 system('cls')
                 return
 
@@ -93,7 +96,6 @@ class Bodegas():
     def eliminar_bodega(self):
         print('-'*10+'Eliminar Bodegas'+'-'*10+'\n')
         Bodegas().mostrar_bodegas()
-        print("\n")
         while True:
             codbod = input("Ingrese el código de bodega a eliminar (o 's' para salir): ").upper()
             if codbod=='S':
@@ -120,17 +122,18 @@ class Bodegas():
             if inventario:
                 print("\nNo se puede eliminar una bodega que contenga productos.\n")
                 return
-            try:
-                self.cursor.execute("DELETE FROM BODEGAS WHERE CODBOD = %s", (codbod,))
-                self.conexion.commit()
-                system('cls')
-                Bodegas().mostrar_bodegas()
-                input("Bodega eliminada exitosamente. Presione cualquier tecla para volver al menú de bodegas...")
-                system('cls')
-                return
-            except Exception as e:
-                print(f"Error al eliminar bodega: {e}")
-                self.conexion.rollback()
+            else:
+                try:
+                    self.cursor.execute("DELETE FROM BODEGAS WHERE CODBOD = %s", (codbod,))
+                    self.conexion.commit()
+                    system('cls')
+                    Bodegas().mostrar_bodegas()
+                    input("Bodega eliminada exitosamente. Presione cualquier tecla para volver al menú de bodegas...")
+                    system('cls')
+                    return
+                except Exception as e:
+                    print(f"Error al eliminar bodega: {e}")
+                    self.conexion.rollback()
     
     def cerrarBD(self):
         self.cursor.close()

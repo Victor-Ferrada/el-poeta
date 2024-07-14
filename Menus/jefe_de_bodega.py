@@ -4,11 +4,11 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from Funciones.cls import cls
 
-from menu_bodegas import gestionar_bodegas
+from Menus.menu_bodegas import gestionar_bodegas
 from Funciones.crear_producto import crear_producto 
 from Funciones.mover_productos import mover_productos
 from gestion_autores import gestionar_autores
-from gestion_editoria import gestionar_editoriales
+from Menus.menu_editoriales import gestionar_editoriales
 from Funciones.visualizar_todas_las_bodegas import visualizar_bodegas
 from Funciones.generar_informe_de_inventario import generar_informe_inventario
 from Funciones.generar_informe_de_historial_de_movimientos import generar_informe_movimientos
