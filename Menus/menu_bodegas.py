@@ -8,7 +8,7 @@ from Funciones.gestion_bodega import Bodegas
 bodegas=Bodegas()
 
 # Función para gestionar bodegas 
-def gestionar_bodegas():
+def menu_bodegas():
     while True:
         try:
             print('-'*10+'Gestión de Bodegas'+'-'*10+'\n')
@@ -35,4 +35,4 @@ def gestionar_bodegas():
             print(f"Error inesperado: {e}")
             return
 
-gestionar_bodegas()
+menu_bodegas()
