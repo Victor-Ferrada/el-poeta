@@ -15,7 +15,7 @@ def gestionar_bodegas():
             print("1. Crear Bodega")
             print("2. Visualizar Bodegas")
             print("3. Eliminar Bodega")
-            print("4. Salir")
+            print("4. Volver")
             opcion = input("\nSeleccione una opción: ")
 
             if opcion == "1":
@@ -35,11 +35,9 @@ def gestionar_bodegas():
                 return
             else:
                 system('cls')
-                raise ValueError("Opción no válida.")
+                raise ValueError("Opción inválida.")
         except ValueError as e:
-            print(f"{e}, regresando al menú anterior.")
+            print(f"{e} Ingrese una opción de la lista:")
         except Exception as e:
             print(f"Error inesperado: {e}")
             return
-
-gestionar_bodegas()

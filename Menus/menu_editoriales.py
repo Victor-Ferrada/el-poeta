@@ -14,7 +14,7 @@ def gestionar_editoriales():
             print("1. Agregar Editorial")
             print("2. Mostrar Editoriales")
             print("3. Eliminar Editorial")
-            print("4. Salir")
+            print("4. Volver")
             opcion = input("\nSeleccione una opción: ")
 
             if opcion == "1":
@@ -33,11 +33,11 @@ def gestionar_editoriales():
                 print("Volviendo al menú principal...")
                 return
             else:
-                raise ValueError("Opción no válida.")
+                system('cls')
+                raise ValueError("Opción inválida.")
         except ValueError as e:
-            print(f"{e}, regresando al menú anterior.")
+            print(f"{e} Ingrese una opción de la lista:")
         except Exception as e:
             print(f"Error inesperado: {e}")
             return
 
-gestionar_editoriales()

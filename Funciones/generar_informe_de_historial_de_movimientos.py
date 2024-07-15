@@ -3,14 +3,15 @@ import os
 from tabulate import tabulate
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from Conexion_DB.conexion import conectar_db
-from Funciones.gestion_bodega import mostrar_bodegas
+from Funciones.gestion_bodega import Bodegas
+bd=Bodegas()
 
 # Función para generar informe de historial de movimientos
 def generar_informe_movimientos():
     conexion = conectar_db()
     cursor = conexion.cursor()
 
-    mostrar_bodegas()
+    bd.mostrar_bodegas()
 
     bodega_seleccionada = input("Ingrese el código de la bodega para generar el informe: ")
 
