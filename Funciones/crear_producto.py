@@ -17,19 +17,6 @@ class Productos():
              database='elpoeta')
          self.cursor = self.conexion.cursor()
 
-
-    def seleccionar_editorial(self):
-            
-            editoriales = self.cargar_editoriales()   
-
-            print("Seleccione la editorial del producto:")
-            for i, editorial in enumerate(editoriales, start=1):
-                print(f"{i}. {editorial[1]} \t(RUT: {editorial[0]})")          
-
-            opcion_editorial = int(input("Ingrese el número correspondiente a la editorial: "))
-            if opcion_editorial < 1 or opcion_editorial > len(editoriales):
-                print("Opción no válida.")
-                return        
             
     def agregar_producto(self):
         
