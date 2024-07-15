@@ -7,7 +7,7 @@ sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '
 from Funciones.gestionar_editoriales import Editoriales
 editoriales=Editoriales()
 # Función para gestionar editoriales
-def gestionar_editoriales():
+def gestionar_editoriales(usuario):
     while True:
         try:
             print('-'*10+'Gestión de Editoriales'+'-'*10+'\n')
@@ -27,7 +27,7 @@ def gestionar_editoriales():
                 system('cls')
             elif opcion == "3":
                 system('cls')
-                editoriales.eliminar_editorial('11111111-2')  
+                editoriales.eliminar_editorial(usuario)  
             elif opcion == "4":
                 system('cls')
                 print("Volviendo al menú principal...")

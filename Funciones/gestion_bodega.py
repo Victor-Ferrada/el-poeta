@@ -17,14 +17,14 @@ class Bodegas():
          self.cursor = self.conexion.cursor()
 
     # Función para crear una bodega 
-    def crear_bodega(self):
+    def crear_bodega(self,usuario):
         while True:
             print('-'*10+'Creación de Bodegas'+'-'*10+'\n')
             sucursal = input("Ingrese la sucursal: ").strip().upper()
             while sucursal=='':
                     sucursal = input("El nombre de la sucursal no puede estar vacío. Ingrese nuevamente: ").strip().upper()
             fono_bod = validar_entero("Ingrese el teléfono de la bodega: ",'teléfono')
-            responsable = input("Ingrese el responsable: ").strip().upper()
+            responsable = usuario
             self.cursor.execute("SELECT * FROM JEFEBODEGA WHERE RUNJEF = %s", (responsable,))
             jefe = self.cursor.fetchone()
             while not jefe:

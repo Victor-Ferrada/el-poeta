@@ -8,7 +8,7 @@ from Funciones.gestion_bodega import Bodegas
 bd=Bodegas()
 from Funciones.crear_producto import crear_producto 
 from Funciones.mover_productos import mover_productos
-from gestion_autores import gestionar_autores
+from Menus.gestion_autores import gestionar_autores
 from Menus.menu_editoriales import gestionar_editoriales
 from Funciones.generar_informe_de_inventario import generar_informe_inventario
 from Funciones.generar_informe_de_historial_de_movimientos import generar_informe_movimientos
@@ -31,7 +31,7 @@ def menu_jefe_bodega():
             opcion = input("\nSeleccione una opción: ")
             if opcion == "1":
                 system('cls')
-                gestionar_bodegas()
+                gestionar_bodegas('123')
             elif opcion == "2":
                 system('cls')
                 crear_producto()
@@ -43,7 +43,7 @@ def menu_jefe_bodega():
                 gestionar_autores()
             elif opcion == "5":
                 system('cls')
-                gestionar_editoriales()
+                gestionar_editoriales('123')
             elif opcion == "6":
                 system('cls')
                 bd.mostrar_bodegas()
