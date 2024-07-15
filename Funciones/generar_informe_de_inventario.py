@@ -12,10 +12,28 @@ def generar_informe_inventario():
     conexion = conectar_db()
     cursor = conexion.cursor()
 
-    bd.mostrar_bodegas()
+    while True:
+        bd.mostrar_bodegas()
 
-    bodega_seleccionada = input("Ingrese el código de la bodega para generar el informe: ")
-    cls()
+        bodega_seleccionada = input("Ingrese el código de la bodega para generar el informe (o 's' para salir): ")
+        if bodega_seleccionada.lower() == 's':
+            print("Saliendo del programa...")
+            return  # Salir del programa si se ingresa 's'
+
+        cls()
+        
+        # Ejecutar consulta para verificar si la bodega seleccionada existe
+        cursor.execute("SELECT COUNT(*) FROM Bodegas WHERE codBod = %s", (bodega_seleccionada,))
+        bodega_existente = cursor.fetchone()[0]
+
+        if bodega_existente > 0:
+            break  # Salir del bucle si la bodega existe
+        else:
+            print(f"La bodega con código {bodega_seleccionada} no existe.")
+            input("Presione Enter para continuar...")
+            cls()
+
+    # Ejecutar las consultas y generar el informe solo si la bodega existe
     cursor.execute("SELECT SUM(stock) AS inventario_total FROM Movimientos WHERE bodega = %s", (bodega_seleccionada,))
     total_productos = cursor.fetchone()[0]
 
@@ -58,12 +76,4 @@ def generar_informe_inventario():
 
 
 
-
-
-
-
-
-
-
-
-
+generar_informe_inventario()
