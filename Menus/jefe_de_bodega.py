@@ -21,41 +21,37 @@ def menu_jefe_bodega():
             print("\n--- Menú Jefe de Bodega ---\n")
             print("1. Gestionar Bodegas")
             print("2. Crear Productos")
-            print("3. Mover Productos")
-            print("4. Gestionar Autores")
-            print("5. Gestionar Editoriales")
-            print("6. Visualizar todas las Bodegas")
-            print("7. Generar Informe de Inventario")
-            print("8. Generar Informe de Historial de Movimientos")
-            print("9. Cerrar Sesión")
+            print("3. Gestionar Autores")
+            print("4. Gestionar Editoriales")
+            print("5. Visualizar todas las Bodegas")
+            print("6. Generar Informe de Inventario")
+            print("7. Generar Informe de Historial de Movimientos")
+            print("8. Cerrar Sesión")
             opcion = input("\nSeleccione una opción: ")
             if opcion == "1":
                 system('cls')
-                gestionar_bodegas('123')
+                gestionar_bodegas('11111111-1')
             elif opcion == "2":
                 system('cls')
                 crear_producto()
             elif opcion == "3":
                 system('cls')
-                mover_productos()
+                gestionar_autores()
             elif opcion == "4":
                 system('cls')
-                gestionar_autores()
-            elif opcion == "5":
-                system('cls')
                 gestionar_editoriales('123')
-            elif opcion == "6":
+            elif opcion == "5":
                 system('cls')
                 bd.mostrar_bodegas()
                 input('Presione ENTER para volver atrás...')
                 system('cls')
-            elif opcion == "7":
+            elif opcion == "6":
                 system('cls')
                 generar_informe_inventario()
-            elif opcion == "8":
+            elif opcion == "7":
                 system('cls')
                 generar_informe_movimientos()
-            elif opcion == "9":
+            elif opcion == "8":
                 system('cls')
                 confirmar=input('¿Está seguro que desea cerrar la sesión? (s/n): ')
                 while confirmar not in ['s', 'n']:
