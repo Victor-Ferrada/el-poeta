@@ -126,17 +126,47 @@ class Editoriales():
                 system('cls')
                 return
             else:
-                try:
-                    self.cursor.execute("DELETE FROM EDITORIALES WHERE RUTEDIT = %s", (rutedit,))
-                    self.conexion.commit()
-                    system('cls')
-                    Editoriales().mostrar_editoriales()
-                    input("Editorial eliminada exitosamente. Presione ENTER para volver al menú de editoriales...")
-                    system('cls')
-                    return
-                except Exception as e:
-                    print(f"Error al eliminar editorial: {e}")
-                    self.conexion.rollback()
+                system('cls')
+                while True:
+                    confirmar=input(f"¿Está seguro que desea eliminar la editorial {rutedit}? (s/n): ").lower()
+                    while confirmar not in ['s', 'n']:
+                        confirmar = input("\nOpción inválida. Ingrese una opción válida (s/n): ").lower()
+                    if confirmar == 's':
+                        try:
+                            self.cursor.execute("DELETE FROM EDITORIALES WHERE RUTEDIT = %s", (rutedit,))
+                            self.conexion.commit()
+                            system('cls')
+                            Editoriales().mostrar_editoriales()
+                            input("Editorial eliminada exitosamente. Presione ENTER para volver al menú de gestión de editoriales...")
+                            system('cls')
+                            return
+                        except Exception as e:
+                            print(f"Error al eliminar editorial: {e}")
+                            self.conexion.rollback()
+                    else:
+                        system('cls')
+                        input("Operación cancelada. Presione ENTER para volver al menú de gestión de editoriales...")
+                        system('cls')
+                        return 
+
+    def cargar_editoriales(self):
+        try:
+            sql_editoriales = "SELECT rutEdit, nomEdit FROM editoriales"
+            self.cursor.execute(sql_editoriales)
+            editoriales = self.cursor.fetchall()
+            return editoriales
+        except Exception as e:
+            print(f"Error al cargar editoriales: {e}")
+            return []
+    
+    def mostrar_lista_edi(self):
+        editoriales = self.cargar_editoriales()
+        if not editoriales:
+            print("No hay editoriales disponibles en la base de datos.")
+            return
+        print("Editoriales disponibles:")
+        for i, editorial in enumerate(editoriales, start=1):
+            print(f"{i}. {editorial[1]} \t(RUT: {editorial[0]})")
 
     def cerrarBD(self):
         self.cursor.close()
