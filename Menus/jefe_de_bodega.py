@@ -47,6 +47,8 @@ def menu_jefe_bodega():
             elif opcion == "6":
                 system('cls')
                 bd.mostrar_bodegas()
+                input('Presione ENTER para volver atrás...')
+                system('cls')
             elif opcion == "7":
                 system('cls')
                 generar_informe_inventario()
@@ -55,10 +57,19 @@ def menu_jefe_bodega():
                 generar_informe_movimientos()
             elif opcion == "9":
                 system('cls')
-                for i in range(3, 0, -1):
-                    print(f"Cerrando sesión en {i} segundos...", end='\r')
-                    time.sleep(1)
-                return
+                confirmar=input('¿Está seguro que desea cerrar la sesión? (s/n): ')
+                while confirmar not in ['s', 'n']:
+                    confirmar = input("\nOpción inválida. Ingrese una opción válida (s/n): ").lower()
+                if confirmar=='s':
+                    for i in range(3, 0, -1):
+                        system('cls')
+                        print(f"Cerrando sesión en {i} segundos...", end='\r')
+                        time.sleep(1)  
+                    system('cls')
+                    return 
+                else:
+                    system('cls')
+                    continue
             else:
                 system('cls')
                 raise ValueError("Opción inválida.")

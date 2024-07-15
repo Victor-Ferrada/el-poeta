@@ -45,8 +45,8 @@ class Editoriales():
             
             editorial_nueva=[]
             editorial_nueva.append([rutedit,nombredit,str(fonoedit),str(codpostedit),represlegaldi])
-            print("\nSe creará la siguiente editorial:\n")
-            print(tabulate(editorial_nueva,headers=['Rut Edit.','Nombre','Teléfono','Cod. Postal','Representante Legal'],tablefmt='fancy_grid')) 
+            print("\nSe agregará la siguiente editorial:\n")
+            print(tabulate(editorial_nueva,headers=['RUT','Nombre','Teléfono','Cod. Postal','Representante Legal'],tablefmt='fancy_grid')) 
             confirmar=input("\n¿Continuar? (s/n): ").lower()
             while confirmar not in ['s', 'n']:
                 confirmar = input("\nOpción inválida. Ingrese una opción válida (s/n): ").lower()
@@ -57,7 +57,7 @@ class Editoriales():
                     self.conexion.commit()
                     system('cls')
                     print("\nEditorial creada exitosamente.")
-                    input("\nPresione cualquier tecla para volver al menú de editoriales...")
+                    input("\nPresione ENTER para volver al menú de editoriales...")
                     system('cls')
                     return
                 except Exception as e:
@@ -66,7 +66,7 @@ class Editoriales():
                     return
             else:
                 system('cls')
-                input("\nOperación cancelada. Presione cualquier tecla para volver atrás...\n")
+                input("\nOperación cancelada. Presione ENTER para volver atrás...")
                 system('cls')
                 return
 
@@ -78,7 +78,7 @@ class Editoriales():
             self.cursor.execute(sql)
             lista=self.cursor.fetchall()
             lista_procesada = [[(campo if campo else "S/I") for campo in fila] for fila in lista]  
-            print(tabulate(lista_procesada,headers=['Rut Edit.','Nombre','Teléfono','Cod. Postal','Representante Legal'],tablefmt='fancy_grid')) 
+            print(tabulate(lista_procesada,headers=['RUT','Nombre','Teléfono','Cod. Postal','Representante Legal'],tablefmt='fancy_grid')) 
             print("\n")
         except Exception as e:
             print(f"Error al mostrar editoriales: {e}")
@@ -113,9 +113,8 @@ class Editoriales():
             jefes=[jefe[0] for jefe in jefes]
             if usuario not in jefes:
                 system('cls')
-                print(jefes)
                 print(f'Usuario {usuario} no autorizado para eliminar editorial {rutedit}. Por favor contacte al Jefe de Bodega.\n')
-                input('Presione cualquier tecla para volver atrás...')
+                input('Presione ENTER para volver atrás...')
                 system('cls')
                 return
             self.cursor.execute("SELECT * FROM PRODUCTOS WHERE EDITORIAL = %s", (rutedit,))
@@ -123,7 +122,7 @@ class Editoriales():
             if productos:
                 system('cls')
                 print(f"\nNo se puede eliminar la editorial {rutedit} porque tiene productos asociados.\n")
-                input('Presione cualquier tecla para volver atrás...')
+                input('Presione ENTER para volver atrás...')
                 system('cls')
                 return
             else:
@@ -132,7 +131,7 @@ class Editoriales():
                     self.conexion.commit()
                     system('cls')
                     Editoriales().mostrar_editoriales()
-                    input("Editorial eliminada exitosamente. Presione cualquier tecla para volver al menú de editoriales...")
+                    input("Editorial eliminada exitosamente. Presione ENTER para volver al menú de editoriales...")
                     system('cls')
                     return
                 except Exception as e:

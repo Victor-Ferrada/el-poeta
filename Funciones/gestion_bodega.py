@@ -66,7 +66,7 @@ class Bodegas():
                     self.conexion.commit()
                     system('cls')
                     print("\nBodega creada exitosamente.")
-                    input("\nPresione cualquier tecla para volver al menú de bodegas...")
+                    input("\nPresione ENTER para volver al menú de bodegas...")
                     system('cls')
                     return
                 except Exception as e:
@@ -75,7 +75,7 @@ class Bodegas():
                     return
             else:
                 system('cls')
-                input("\nOperación cancelada. Presione cualquier tecla para volver atrás...")
+                input("\nOperación cancelada. Presione ENTER para volver atrás...")
                 system('cls')
                 return
 
@@ -121,8 +121,8 @@ class Bodegas():
             jefe = self.cursor.fetchone()[0]
             if usuario!=jefe:
                 system('cls')
-                print(f'Usuario {usuario} no autorizado para eliminar bodega {codbod}. Por favor contacte al Jefe de Bodega correspondiente ({jefe}).\n')
-                input('Presione cualquier tecla para volver atrás...')
+                print(f'Usuario {usuario} no autorizado para eliminar bodega {codbod}. \nPor favor contacte al Jefe de Bodega correspondiente ({jefe}).\n')
+                input('Presione ENTER para volver atrás...')
                 system('cls')
                 return
             self.cursor.execute("SELECT * FROM INVENTARIO WHERE BODEGA = %s", (codbod,))
@@ -130,7 +130,7 @@ class Bodegas():
             if inventario:
                 system('cls')
                 print(f"\nNo se puede eliminar la bodega {codbod} porque contiene productos actualmente.\n")
-                input('Presione cualquier tecla para volver atrás...')
+                input('Presione ENTER para volver atrás...')
                 system('cls')
                 return
             else:
@@ -139,7 +139,7 @@ class Bodegas():
                     self.conexion.commit()
                     system('cls')
                     Bodegas().mostrar_bodegas()
-                    input("Bodega eliminada exitosamente. Presione cualquier tecla para volver al menú de bodegas...")
+                    input("Bodega eliminada exitosamente. Presione ENTER para volver al menú de bodegas...")
                     system('cls')
                     return
                 except Exception as e:
