@@ -134,17 +134,28 @@ class Bodegas():
                 system('cls')
                 return
             else:
-                try:
-                    self.cursor.execute("DELETE FROM BODEGAS WHERE CODBOD = %s", (codbod,))
-                    self.conexion.commit()
-                    system('cls')
-                    Bodegas().mostrar_bodegas()
-                    input("Bodega eliminada exitosamente. Presione ENTER para volver al menú de bodegas...")
-                    system('cls')
-                    return
-                except Exception as e:
-                    print(f"Error al eliminar bodega: {e}")
-                    self.conexion.rollback()
+                system('cls')
+                while True:
+                    confirmar=input(f"¿Está seguro que desea eliminar la bodega {codbod}? (s/n): ").lower()
+                    while confirmar not in ['s', 'n']:
+                        confirmar = input("\nOpción inválida. Ingrese una opción válida (s/n): ").lower()
+                    if confirmar == 's':
+                        try:
+                            self.cursor.execute("DELETE FROM BODEGAS WHERE CODBOD = %s", (codbod,))
+                            self.conexion.commit()
+                            system('cls')
+                            Bodegas().mostrar_bodegas()
+                            input("Bodega eliminada exitosamente. Presione ENTER para volver al menú de gestión de bodegas...")
+                            system('cls')
+                            return
+                        except Exception as e:
+                            print(f"Error al eliminar bodega: {e}")
+                            self.conexion.rollback()
+                    else:
+                        system('cls')
+                        input("Operación cancelada. Presione ENTER para volver al menú de gestión de bodegas...")
+                        system('cls')
+                        return 
     
     def cerrarBD(self):
         self.cursor.close()
