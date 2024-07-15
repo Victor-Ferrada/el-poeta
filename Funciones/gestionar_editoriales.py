@@ -158,15 +158,6 @@ class Editoriales():
         except Exception as e:
             print(f"Error al cargar editoriales: {e}")
             return []
-    
-    def mostrar_lista_edi(self):
-        editoriales = self.cargar_editoriales()
-        if not editoriales:
-            print("No hay editoriales disponibles en la base de datos.")
-            return
-        print("Editoriales disponibles:")
-        for i, editorial in enumerate(editoriales, start=1):
-            print(f"{i}. {editorial[1]} \t(RUT: {editorial[0]})")
 
     def cerrarBD(self):
         self.cursor.close()
