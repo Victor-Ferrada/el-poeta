@@ -4,8 +4,8 @@ from os import system
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import mysql.connector
 from tabulate import tabulate
-from Funciones.gestionar_editoriales import Editoriales
-from Funciones.gestionar_autores import Autores
+from gestionar_editoriales import Editoriales
+from gestionar_autores import Autores
 from Funciones.otras_funciones import ConexionBD
 
 
@@ -15,7 +15,7 @@ class Productos():
         if self.conexion:
             self.cursor = self.conexion.cursor()
 
-    def agregar_producto(self,user):
+    def agregar_producto(self,usuario):
             # Mostrar opciones de tipo de producto
             tipos_producto = {
                 "Novela": "NOV",
@@ -27,7 +27,7 @@ class Productos():
             system('cls')
             Editoriales.mostrar_editoriales(self)
             while True:
-                nuevedit = input('Desea agregar una nueva editorial? (s/n): ').strip().lower()
+                nuevedit = input('¿Desea agregar una nueva editorial? (s/n): ').strip().lower()
                 
                 if nuevedit == 's':
                     system('cls')
@@ -40,17 +40,29 @@ class Productos():
                     print("Respuesta no válida. Por favor ingrese 's' para agregar una editorial o 'n' para salir.")
 
             editoriales = Editoriales.cargar_editoriales(self) 
-            while not editoriales:
-                print('No existen ni se han agregado editoriales con las que trabajar')
-                input("\nPresione ENTER para volver al menú de productos...")                
-                return
-            print("Seleccione la editorial del producto:")
-            for i, editorial in enumerate(editoriales, start=1):
-                print(f"{i}. {editorial[1]} \t(RUT: {editorial[0]})")          
-            opcion_editorial = int(input("Ingrese el número correspondiente a la editorial: "))
-            if opcion_editorial < 1 or opcion_editorial > len(editoriales):
-                print("Opción no válida.")
-            rut_editorial = editoriales[opcion_editorial - 1][0]
+            while True:
+                if not editoriales:
+                    print('No existen ni se han agregado editoriales con las que trabajar')
+                    input("\nPresione ENTER para volver al menú de productos...")
+                    return
+
+                print("Seleccione la editorial del producto:")
+                for i, editorial in enumerate(editoriales, start=1):
+                    print(f"{i}. {editorial[1]} \t(RUT: {editorial[0]})")
+
+                opcion_editorial = input("Ingrese el número correspondiente a la editorial: ")
+                if not opcion_editorial.isdigit():
+                    system('cls')
+                    print("Por favor, ingrese un número.")
+                    continue
+
+                opcion_editorial = int(opcion_editorial)
+                if opcion_editorial < 1 or opcion_editorial > len(editoriales):
+                    system('cls')
+                    print("Opción no válida. Debe ser un número entre 1 y", len(editoriales))
+                else:
+                    rut_editorial = editoriales[opcion_editorial - 1][0]
+                    break  # Salir del bucle si la opción es válida
 
             system('cls')
             Autores.mostrar_autores(self)
@@ -61,7 +73,7 @@ class Productos():
                     Autores.agregar_autor(self)  # Llama al método estático para agregar una nueva editorial
                 elif nuevaut == 'n':
                     system('cls')
-                    break  # Salir del bucle si el usuario responde 'n'
+                    break  
                 else:
                     system('cls')
                     print("Respuesta no válida. Por favor ingrese 's' para agregar un autor o 'n' para salir.")
@@ -70,19 +82,46 @@ class Productos():
                 print('No existen ni se han agregado autores con las que trabajar')
                 input("\nPresione ENTER para volver al menú de productos...")
                 return
-            autores_seleccionados = []
-            agregar_otro_autor = 's'
-            while agregar_otro_autor.lower() == 's':
-                print("Seleccione el autor del producto:")
-                for i, autor in enumerate(autores, start=1):
-                    print(f"{i}. {autor[1]} (RUN: {autor[0]})")
-                opcion_autor = int(input("Ingrese el número correspondiente al autor: "))
-                if opcion_autor < 1 or opcion_autor > len(autores):
-                    print("Opción no válida.")
+            while True:
+                autores_seleccionados = []
+                agregar_otro_autor = 's'
+                
+                while agregar_otro_autor.lower() == 's':
+                    system('cls')
+                    print("Seleccione el autor del producto:")
+                    for i, autor in enumerate(autores, start=1):
+                        print(f"{i}. {autor[1]} (RUN: {autor[0]})")
+                    
+                    opcion_autor = input("Ingrese el número correspondiente al autor: ").strip().lower()
+                    
+
+                    
+                    if not opcion_autor.isdigit():
+                        print("Por favor, ingrese un número.")
+                        continue
+                    
+                    opcion_autor = int(opcion_autor)
+                    
+                    if opcion_autor < 1 or opcion_autor > len(autores):
+                        system('cls')
+                        print("Opción no válida. Debe ser un número entre 1 y", len(autores))
+                        continue
+                    
+                    run_autor = autores[opcion_autor - 1][0]
+                    autores_seleccionados.append(run_autor)
+                    
+                    agregar_otro_autor = input("¿Desea agregar otro autor? (s/n): ").strip().lower()
+                    
+                    while agregar_otro_autor not in ['s', 'n']:
+                        system('cls')
+                        print("Respuesta no válida. Por favor ingrese 's' para agregar otro autor o 'n' para terminar.")
+                        agregar_otro_autor = input("¿Desea agregar otro autor? (s/n): ").strip().lower()
+                
+                if not autores_seleccionados:
+                    print("Debe seleccionar al menos un autor.")
                     continue
-                run_autor = autores[opcion_autor - 1][0]
-                autores_seleccionados.append(run_autor)
-                agregar_otro_autor = input("¿Desea agregar otro autor? (s/n): ")
+                
+                break
 
             system('cls')
             print("Seleccione el tipo de producto:")
@@ -98,55 +137,52 @@ class Productos():
             while titulo=='':
                 titulo = input("El título del producto no puede estar vacío. Ingrese nuevamente: ").strip().upper()            
             descripcion = input("Ingrese la descripción del producto: ").upper()
-            jefeBod = user
+            jefeBod = usuario
             tipo_producto = list(tipos_producto.keys())[opcion_tipo - 1]
             cont = 1
             while True:
                 codProd = f"{tipos_producto[tipo_producto]}{str(cont).zfill(3)}"
-                self.cursor.execute("SELECT * FROM Productos WHERE codProd = %s", (codProd,))
+                self.cursor.execute("select * from productos where codprod = %s", (codProd,))
                 resultado = self.cursor.fetchone()
                 if not resultado:
                     break
                 cont += 1
             try:
             # Insertar producto en la tabla PRODUCTOS
-                sql_insertar_producto = "INSERT INTO Productos (codProd, nomProd, tipo, descripcion, editorial, jefeBod) VALUES (%s, %s, %s, %s, %s, %s)"
+                sql_insertar_producto = "insert into productos (codprod, nomprod, tipo, descripcion, editorial, jefebod) values (%s, %s, %s, %s, %s, %s)"
                 self.cursor.execute(sql_insertar_producto, (codProd, titulo, tipo_producto, descripcion, rut_editorial, jefeBod))
 
                 # Generar código de auprod (auprod)
-                sql_last_id_auprod = "SELECT MAX(codAuProd) FROM auprod"
+                sql_last_id_auprod = "select max(codauprod) from auprod"
                 self.cursor.execute(sql_last_id_auprod)
                 last_cod_auprod = self.cursor.fetchone()[0]
 
                 if last_cod_auprod is None:
-                    last_cod_auprod = 0
-                last_cod_auprod = int(last_cod_auprod)
-                codauprod = last_cod_auprod + 1
+                    next_number = 1
+                    prefix = 'AP'
+                    next_cod_auprod = f"{prefix}{next_number:02}" 
+                else:
+                    prefix = last_cod_auprod[:-2]  
+                    number = int(last_cod_auprod[-2:])  
+                    next_number = number + 1
+                    next_cod_auprod = f"{prefix}{next_number:02}" 
+
 
                 # Insertar relación auprod (autor-producto)
                 for run_autor in autores_seleccionados:
-                    last_cod_auprod += 1
-                    sql_insertar_auprod = "INSERT INTO auprod (codAuProd, runAutor, codProd) VALUES (%s, %s, %s)"
-                    self.cursor.execute(sql_insertar_auprod, (codauprod, run_autor, codProd))
+                    sql_insertar_auprod = "insert into auprod (codauprod, runautor, codprod) values (%s, %s, %s)"
+                    self.cursor.execute(sql_insertar_auprod, (next_cod_auprod, run_autor, codProd))
+                    next_number += 1  
+                    next_cod_auprod = f"{prefix}{next_number:02}"  
                 self.conexion.commit()
                 print("\nProducto agregado exitosamente.\n")
+                input("\nPresione ENTER para volver al menú de productos...")                
             except ValueError:
                 print("Ingrese un número válido para seleccionar la editorial, el autor o el tipo de producto.")
             except Exception as e:
                 print(f"Error al agregar producto: {e}")
                 self.conexion.rollback()
 
-    def mostrar_productos1(self):
-        sql='select * from productos'
-        try:
-            self.cursor.execute(sql)
-            lista=self.cursor.fetchall()  
-            print(tabulate(lista,headers=['Nombre','Tipo','Descripcion','Rut Editorial','Rut Jefebodega'],tablefmt='github')) 
-            print(tabulate(lista,headers=['Nombre','Tipo','Descripcion','Rut Editorial','Rut Jefebodega'],tablefmt='fancy_grid')) 
-            print("\n")
-        except Exception as e:
-            print(f"Error al mostrar productos: {e}")
-            self.conexion.rollback()
 
     def mostrar_productos(self):
         print('-'*10+'Productos'+'-'*10+'\n')
@@ -164,23 +200,23 @@ class Productos():
     def eliminar_producto(self):
         Productos().mostrar_productos()
         codProd = input("Ingrese el codigo del producto a eliminar: ").upper()
-        self.cursor.execute("SELECT * FROM INVENTARIO WHERE CODPROD = %s", (codProd,))
+        self.cursor.execute("select * from inventario where codprod = %s", (codProd,))
         inventario = self.cursor.fetchone()
-        self.cursor.execute("SELECT * FROM PRODUCTOS WHERE CODPROD = %s", (codProd,))
+        self.cursor.execute("select * from productos where codprod = %s", (codProd,))
         productos = self.cursor.fetchone()
         while not productos:
             codProd = input(f"El producto {codProd} no existe. Ingrese codigo nuevamente (o 's' para finalizar): ").upper()
             if codProd=='S':
                 print("\nOperación cancelada.\n")
                 return
-            self.cursor.execute("SELECT * FROM PRODUCTOS WHERE RUNAUTOR = %s", (codProd,))
+            self.cursor.execute("select * from productos where runautor = %s", (codProd,))
             productos = self.cursor.fetchone()
         if inventario:
             print("\nNo se puede eliminar un producto que se encuentra en bodega.\n")
         else:
             try:
-                self.cursor.execute("DELETE FROM AUPROD WHERE CODPROD = %s", (codProd,))               
-                self.cursor.execute("DELETE FROM PRODUCTOS WHERE CODPROD = %s", (codProd,))
+                self.cursor.execute("delete from auprod where codprod = %s", (codProd,))               
+                self.cursor.execute("delete from productos where codprod = %s", (codProd,))
                 self.conexion.commit()
                 print("\n")
                 Productos().mostrar_productos()
@@ -191,7 +227,7 @@ class Productos():
 
     def cargar_productos(self):
         try:
-            sql_productos = "SELECT codprod, nomprod FROM productos"
+            sql_productos = "select codprod, nomprod from productos"
             self.cursor.execute(sql_productos)
             productos = self.cursor.fetchall()
             return productos
@@ -199,7 +235,7 @@ class Productos():
             print(f"Error al cargar productos: {e}")
             return []    
 
-    def menu(self,user):
+    def menu(self):
         while True:
             print("----- MENÚ DE PRODUCTOS -----")
             print("1. Agregar Producto")
@@ -211,11 +247,11 @@ class Productos():
             opcion = input("Ingrese una opción: ")
 
             if opcion == '1':
-                self.agregar_producto(user)
+                self.agregar_producto()
             elif opcion == '2':
                 self.mostrar_productos()
             elif opcion == '3':
-                self.eliminar_producto(user)
+                self.eliminar_producto()
             elif opcion == '4':
                 Inventario.añadir_productos()
 
@@ -257,7 +293,9 @@ class Inventario():
 
         filtro_bodegas=usuario
 
-        self.cursor.execute("SELECT * FROM BODEGAS WHERE RESPONSABLE= %s", (filtro_bodegas,))
+        
+
+        self.cursor.execute("select * from bodegas where responsable= %s", (filtro_bodegas,))
        
        
         bodegas = self.cursor.fetchall()        
@@ -267,6 +305,7 @@ class Inventario():
             nodata=print('No existen ni se han agregado bodegas con las que trabajar')
             input("\nPresione ENTER para volver al menú de productos...")                
             return
+
 
         print("Seleccione la bodega del producto:")
         for i, bodega in enumerate(bodegas, start=1):
@@ -293,7 +332,7 @@ class Inventario():
             last_cod_inv = int(last_cod_inv)
             codinv = last_cod_inv + 1            
             
-            sql_insertar_producto = "INSERT INTO Inventario (codIng, codProd, bodega, stock) VALUES (%s, %s, %s, %s)"
+            sql_insertar_producto = "insert into inventario (coding, codprod, bodega, stock) values (%s, %s, %s, %s)"
             self.cursor.execute(sql_insertar_producto, (codinv, cod_prod, cod_bodega, stock))
                     
             self.conexion.commit()
@@ -309,3 +348,4 @@ class Inventario():
 productos=Productos()
 inventario=Inventario()
 
+productos.menu()
