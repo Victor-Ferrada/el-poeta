@@ -56,7 +56,7 @@ class Editoriales():
                                         ,(rutedit, nombredit, fonoedit, codpostedit, represlegaldi))
                     self.conexion.commit()
                     system('cls')
-                    print("\nEditorial creada exitosamente.")
+                    print("\nEditorial agregada exitosamente.")
                     input("\nPresione ENTER para volver al menú de editoriales...")
                     system('cls')
                     return
@@ -137,7 +137,7 @@ class Editoriales():
                             self.conexion.commit()
                             system('cls')
                             Editoriales().mostrar_editoriales()
-                            input("Editorial eliminada exitosamente. Presione ENTER para volver al menú de gestión de editoriales...")
+                            input("Editorial eliminada exitosamente. Presione ENTER para volver al menú de editoriales...")
                             system('cls')
                             return
                         except Exception as e:
@@ -145,7 +145,7 @@ class Editoriales():
                             self.conexion.rollback()
                     else:
                         system('cls')
-                        input("Operación cancelada. Presione ENTER para volver al menú de gestión de editoriales...")
+                        input("Operación cancelada. Presione ENTER para volver al menú de editoriales...")
                         system('cls')
                         return 
 

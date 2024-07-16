@@ -11,7 +11,7 @@ class Autores():
          self.conexion = mysql.connector.connect(
              host='localhost',
              user='root',
-             password='12345678',
+             password='inacap2023',
              database='elpoeta')
          self.cursor = self.conexion.cursor()
     
@@ -27,9 +27,6 @@ class Autores():
             print(f"Error al cargar autores: {e}")
             return []
 
-
-
-    
 
     # Función para agregar un autor
     def agregar_autor(self):
@@ -77,7 +74,7 @@ class Autores():
                                         ,(runaut, nombraut, appataut, apmataut, fonoau, codpostaut))
                     self.conexion.commit()
                     system('cls')
-                    print("\nAutor creado exitosamente.")
+                    print("\nAutor agregado exitosamente.")
                     input("\nPresione ENTER para volver al menú de autores...")
                     system('cls')
                     return
@@ -105,9 +102,9 @@ class Autores():
             print(f"Error al mostrar autores: {e}")
             self.conexion.rollback()
 
-    # Función para eliminar una editorial
-    def eliminar_editorial(self,usuario):
-        print('-'*10+'Eliminar Editoriales'+'-'*10+'\n')
+    # Función para eliminar un autor
+    def eliminar_autor(self,usuario):
+        print('-'*10+'Eliminar Autores'+'-'*10+'\n')
         Autores().mostrar_autores()
         while True:
             runaut = input("Ingrese el RUN del autor a eliminar (o 's' para salir): ").upper()
@@ -147,20 +144,31 @@ class Autores():
                 system('cls')
                 return
             else:
-                try:
-                    self.cursor.execute("DELETE FROM AUTORES WHERE RUNAUTOR = %s", (runaut,))
-                    self.conexion.commit()
-                    system('cls')
-                    Autores().mostrar_autores()
-                    input("Autor eliminado exitosamente. Presione ENTER para volver al menú de autores...")
-                    system('cls')
-                    return
-                except Exception as e:
-                    print(f"Error al eliminar autor: {e}")
-                    self.conexion.rollback()
+                system('cls')
+                while True:
+                    confirmar=input(f"¿Está seguro que desea eliminar el autor {runaut}? (s/n): ").lower()
+                    while confirmar not in ['s', 'n']:
+                        confirmar = input("\nOpción inválida. Ingrese una opción válida (s/n): ").lower()
+                    if confirmar == 's':
+                        try:
+                            self.cursor.execute("DELETE FROM AUTORES WHERE RUNAUTOR = %s", (runaut,))
+                            self.conexion.commit()
+                            system('cls')
+                            Autores().mostrar_autores()
+                            input("Autor eliminado exitosamente. Presione ENTER para volver al menú de autores...")
+                            system('cls')
+                            return
+                        except Exception as e:
+                            print(f"Error al eliminar autor: {e}")
+                            self.conexion.rollback()
+                    else:
+                        system('cls')
+                        input("Operación cancelada. Presione ENTER para volver al menú de autores...")
+                        system('cls')
+                        return 
 
     def cerrarBD(self):
         self.cursor.close()
         self.conexion.close()
 
-editoriales=Autores()
+au=Autores()

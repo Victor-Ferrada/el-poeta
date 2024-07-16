@@ -31,4 +31,3 @@ def menu_bodeguero():
             print(f"Error inesperado: {e}")
             return
         
-menu_bodeguero()

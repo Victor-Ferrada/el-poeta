@@ -6,12 +6,12 @@ import time
 from Menus.menu_bodegas import gestionar_bodegas
 from Funciones.gestion_bodega import Bodegas
 bd=Bodegas()
-from Funciones.crear_producto import crear_producto 
-from Funciones.mover_productos import mover_productos
-from Menus.gestion_autores import gestionar_autores
+from Funciones.crear_producto import Productos
+p=Productos()
+from Menus.menu_autores import gestionar_autores
 from Menus.menu_editoriales import gestionar_editoriales
-from Funciones.generar_informe_de_inventario import generar_informe_inventario
-from Funciones.generar_informe_de_historial_de_movimientos import generar_informe_movimientos
+#from Funciones.generar_informe_de_inventario import generar_informe_inventario
+#from Funciones.generar_informe_de_historial_de_movimientos import generar_informe_movimientos
 
 
 # Menú del jefe de bodega
@@ -33,7 +33,7 @@ def menu_jefe_bodega():
                 gestionar_bodegas('11111111-1')
             elif opcion == "2":
                 system('cls')
-                crear_producto()
+                p.agregar_producto()
             elif opcion == "3":
                 system('cls')
                 gestionar_autores()
@@ -47,10 +47,10 @@ def menu_jefe_bodega():
                 system('cls')
             elif opcion == "6":
                 system('cls')
-                generar_informe_inventario()
+                #generar_informe_inventario()
             elif opcion == "7":
                 system('cls')
-                generar_informe_movimientos()
+                #generar_informe_movimientos()
             elif opcion == "8":
                 system('cls')
                 confirmar=input('¿Está seguro que desea cerrar la sesión? (s/n): ')

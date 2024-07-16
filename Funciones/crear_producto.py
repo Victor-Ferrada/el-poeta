@@ -10,12 +10,12 @@ from gestionar_autores import Autores
 
 class Productos():
     def __init__(self):
-         self.conexion = mysql.connector.connect(
-             host='localhost',
-             user='root',
-             password='12345678',
-             database='elpoeta')
-         self.cursor = self.conexion.cursor()
+        self.conexion = mysql.connector.connect(
+            host='localhost',
+            user='root',
+            password='inacap2023',
+            database='elpoeta')
+        self.cursor = self.conexion.cursor()
 
             
     def agregar_producto(self):
@@ -29,7 +29,6 @@ class Productos():
                 "Otros": "OTR"
             }
             
-
             sql_autores = "SELECT runautor, nombresau, appatau FROM autores"
 
             Editoriales.mostrar_editoriales(self)
@@ -132,8 +131,6 @@ class Productos():
                 print(f"Error al agregar producto: {e}")
                 self.conexion.rollback()
 
-
-
     def mostrar_productos(self):
         sql='select * from productos'
         try:
@@ -145,8 +142,6 @@ class Productos():
         except Exception as e:
             print(f"Error al mostrar productos: {e}")
             self.conexion.rollback()
-
-
 
     def eliminar_producto(self):
         Productos().mostrar_productos()
@@ -176,7 +171,6 @@ class Productos():
                 print(f"Error al eliminar autor: {e}")
                 self.conexion.rollback()
 
-
     def menu(self):
         while True:
             print("----- MENÚ DE AUTORES -----")
@@ -200,9 +194,6 @@ class Productos():
             else:
                 print("Opción no válida. Intente nuevamente.")
 
-
-
 productos=Productos()
 
 
-productos.menu()
