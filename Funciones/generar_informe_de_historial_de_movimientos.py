@@ -3,7 +3,7 @@ import os
 from tabulate import tabulate
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from Conexion_DB.conexion import conectar_db
-from Funciones.gestion_bodega import Bodegas
+from Funciones.gestionar_bodegas import Bodegas
 bd=Bodegas()
 
 # Función para generar informe de historial de movimientos

@@ -18,7 +18,6 @@ class Productos():
              database='elpoeta')
          self.cursor = self.conexion.cursor()
 
-
     def agregar_producto(self):
         
             # Mostrar opciones de tipo de producto

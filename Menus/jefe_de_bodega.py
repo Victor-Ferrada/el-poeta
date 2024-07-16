@@ -4,9 +4,9 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from os import system
 import time
 from Menus.menu_bodegas import gestionar_bodegas
-from Funciones.gestion_bodega import Bodegas
+from Funciones.gestionar_bodegas import Bodegas
 bd=Bodegas()
-from Funciones.crear_producto import Productos
+from Funciones.gestionar_productos import Productos
 p=Productos()
 from Menus.menu_autores import gestionar_autores
 from Menus.menu_editoriales import gestionar_editoriales

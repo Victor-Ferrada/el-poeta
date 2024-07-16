@@ -3,7 +3,7 @@ import os
 from os import system
 import time
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from Funciones.mover_productos import mover_productos
+from Funciones.movimientos import mover_productos
 
 # Menú del bodeguero
 def menu_bodeguero():
