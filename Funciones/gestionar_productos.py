@@ -4,10 +4,8 @@ from os import system
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import mysql.connector
 from tabulate import tabulate
-
 from gestionar_editoriales import Editoriales
 from gestionar_autores import Autores
-
 
 class Productos():
     def __init__(self):
@@ -19,7 +17,6 @@ class Productos():
          self.cursor = self.conexion.cursor()
 
     def agregar_producto(self):
-        
             # Mostrar opciones de tipo de producto
             tipos_producto = {
                 "Novela": "NOV",
@@ -29,9 +26,7 @@ class Productos():
                 "Otros": "OTR"
             }
             system('cls')
-
             Editoriales.mostrar_editoriales(self)
-
             while True:
                 nuevedit = input('Desea agregar una nueva editorial? (s/n): ').strip().lower()
                 
@@ -46,33 +41,22 @@ class Productos():
                     print("Respuesta no válida. Por favor ingrese 's' para agregar una editorial o 'n' para salir.")
 
             editoriales = Editoriales.cargar_editoriales(self) 
-
             while not editoriales:
-                nodata=print('No existen ni se han agregado editoriales con las que trabajar')
+                print('No existen ni se han agregado editoriales con las que trabajar')
                 input("\nPresione ENTER para volver al menú de productos...")                
                 return
-
-
-
             print("Seleccione la editorial del producto:")
             for i, editorial in enumerate(editoriales, start=1):
                 print(f"{i}. {editorial[1]} \t(RUT: {editorial[0]})")          
-
             opcion_editorial = int(input("Ingrese el número correspondiente a la editorial: "))
             if opcion_editorial < 1 or opcion_editorial > len(editoriales):
                 print("Opción no válida.")
-
             rut_editorial = editoriales[opcion_editorial - 1][0]
 
             system('cls')
-
             Autores.mostrar_autores(self)
-
-            
-
             while True:
                 nuevaut = input('¿Desea agregar un nuevo autor? (s/n): ').strip().lower()
-                
                 if nuevaut == 's':
                     system('cls')
                     Autores.agregar_autor(self)  # Llama al método estático para agregar una nueva editorial
@@ -82,53 +66,40 @@ class Productos():
                 else:
                     system('cls')
                     print("Respuesta no válida. Por favor ingrese 's' para agregar un autor o 'n' para salir.")
-
-            
             autores = Autores.cargar_autores(self)
-            
             while not autores:
-                nodata=print('No existen ni se han agregado autores con las que trabajar')
+                print('No existen ni se han agregado autores con las que trabajar')
                 input("\nPresione ENTER para volver al menú de productos...")
                 return
-
-
             autores_seleccionados = []
             agregar_otro_autor = 's'
             while agregar_otro_autor.lower() == 's':
                 print("Seleccione el autor del producto:")
                 for i, autor in enumerate(autores, start=1):
                     print(f"{i}. {autor[1]} (RUN: {autor[0]})")
-
                 opcion_autor = int(input("Ingrese el número correspondiente al autor: "))
                 if opcion_autor < 1 or opcion_autor > len(autores):
                     print("Opción no válida.")
                     continue
-
                 run_autor = autores[opcion_autor - 1][0]
                 autores_seleccionados.append(run_autor)
-
                 agregar_otro_autor = input("¿Desea agregar otro autor? (s/n): ")
 
             system('cls')
-
             print("Seleccione el tipo de producto:")
             for i, tipo in enumerate(tipos_producto.keys(), start=1):
                 print(f"{i}. {tipo}")
-
             opcion_tipo = int(input("Ingrese el número correspondiente al tipo de producto: "))
             if opcion_tipo < 1 or opcion_tipo > len(tipos_producto):
                 print("Opción no válida.")
                 return
             
             system('cls')
-            
             titulo = input("Ingrese el título del producto: ").strip().upper()
             while titulo=='':
                 titulo = input("El título del producto no puede estar vacío. Ingrese nuevamente: ").strip().upper()            
             descripcion = input("Ingrese la descripción del producto: ").upper()
-            
             jefeBod = input("Ingrese el RUN del jefe de bodega: ").strip().upper()
-
             tipo_producto = list(tipos_producto.keys())[opcion_tipo - 1]
             cont = 1
             while True:
@@ -138,8 +109,6 @@ class Productos():
                 if not resultado:
                     break
                 cont += 1
-
-            
             try:
             # Insertar producto en la tabla PRODUCTOS
                 sql_insertar_producto = "INSERT INTO Productos (codProd, nomProd, tipo, descripcion, editorial, jefeBod) VALUES (%s, %s, %s, %s, %s, %s)"
@@ -160,8 +129,6 @@ class Productos():
                     last_cod_auprod += 1
                     sql_insertar_auprod = "INSERT INTO auprod (codAuProd, runAutor, codProd) VALUES (%s, %s, %s)"
                     self.cursor.execute(sql_insertar_auprod, (codauprod, run_autor, codProd))
-
-                    
                 self.conexion.commit()
                 print("\nProducto agregado exitosamente.\n")
             except ValueError:
@@ -169,8 +136,6 @@ class Productos():
             except Exception as e:
                 print(f"Error al agregar producto: {e}")
                 self.conexion.rollback()
-
-
 
     def mostrar_productos1(self):
         sql='select * from productos'
@@ -183,6 +148,7 @@ class Productos():
         except Exception as e:
             print(f"Error al mostrar productos: {e}")
             self.conexion.rollback()
+
     def mostrar_productos(self):
         print('-'*10+'Productos'+'-'*10+'\n')
         sql='select * from productos'
@@ -195,7 +161,6 @@ class Productos():
         except Exception as e:
             print(f"Error al mostrar editoriales: {e}")
             self.conexion.rollback()
-
 
     def eliminar_producto(self):
         Productos().mostrar_productos()
@@ -225,7 +190,6 @@ class Productos():
                 print(f"Error al eliminar autor: {e}")
                 self.conexion.rollback()
 
-
     def cargar_productos(self):
         try:
             sql_productos = "SELECT codprod, nomprod FROM productos"
@@ -235,7 +199,6 @@ class Productos():
         except Exception as e:
             print(f"Error al cargar productos: {e}")
             return []    
-
 
     def menu(self):
         while True:
@@ -260,9 +223,4 @@ class Productos():
             else:
                 print("Opción no válida. Intente nuevamente.")
 
-
-
 productos=Productos()
-
-
-productos.menu()

@@ -157,6 +157,16 @@ class Bodegas():
                         system('cls')
                         return 
     
+    def cargar_bodegas(self):
+        try:
+            sql_bodegas = "SELECT codbod, sucursal FROM bodegas"
+            self.cursor.execute(sql_bodegas)
+            bodegas = self.cursor.fetchall()
+            return bodegas
+        except Exception as e:
+            print(f"Error al cargar bodegas: {e}")
+            return []
+
     def cerrarBD(self):
         self.cursor.close()
         self.conexion.close()
