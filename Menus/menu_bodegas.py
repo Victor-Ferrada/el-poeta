@@ -9,6 +9,7 @@ bodegas=Bodegas()
 
 # Función para gestionar bodegas 
 def gestionar_bodegas(usuario):
+    locales=None
     while True:
         try:
             print('-'*10+'Gestión de Bodegas'+'-'*10+'\n')

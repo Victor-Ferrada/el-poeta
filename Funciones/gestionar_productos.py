@@ -311,4 +311,3 @@ class Inventario():
 productos=Productos()
 inventario=Inventario()
 
-productos.agregar_producto('123')

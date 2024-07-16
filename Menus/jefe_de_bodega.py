@@ -34,7 +34,7 @@ def menu_jefe_bodega(user):
                 locales=gestionar_bodegas(user)
             elif opcion == "2":
                 system('cls')
-                p.agregar_producto()
+                p.agregar_producto(user)
             elif opcion == "3":
                 system('cls')
                 gestionar_autores(user)
@@ -75,5 +75,3 @@ def menu_jefe_bodega(user):
         except Exception as e:
             print(f"Error inesperado: {e}")
             return
-
-menu_jefe_bodega('123')
