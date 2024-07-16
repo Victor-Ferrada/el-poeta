@@ -6,7 +6,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from Funciones.cls import cls
 from Funciones.terminos_condiciones import mostrar_terminos_y_condiciones
 from Funciones.iniciar_sesion import Usuarios
-from Menus.bodeguero import Bodeguero as bod
+from Menus.bodeguero import Bodegueros as bod
 from Menus.jefe_de_bodega import JefeBodega as jefe
 from Funciones.otras_funciones import ConexionBD
 

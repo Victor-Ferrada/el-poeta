@@ -1,15 +1,14 @@
 import sys
 import os
-from os import system
 import time
+from os import system
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from Funciones.otras_funciones import ConexionBD
-bd=ConexionBD()
 from Funciones.movimientos import Movimientos
 mov=Movimientos()
 
 
-class Bodeguero():
+class Bodegueros():
     def __init__(self):
         self.conexion = ConexionBD.conectar_db()
         if self.conexion:
@@ -27,7 +26,7 @@ class Bodeguero():
                     mov.mover_producto(user,locales)
                 elif opcion == "2":
                     system('cls')
-                    confirmar=input('¿Está seguro que desea cerrar la sesión? (s/n): ')
+                    confirmar=input('¿Está seguro que desea cerrar la sesión? (s/n): ').lower()
                     while confirmar not in ['s', 'n']:
                         confirmar = input("\nOpción inválida. Ingrese una opción válida (s/n): ").lower()
                     if confirmar=='s':
