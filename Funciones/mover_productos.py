@@ -22,7 +22,7 @@ class Inventario():
         self.cursor = self.conexion.cursor()
     
 
-# Función para mover productos 
+
     def añadir_productos(self):
 
 
@@ -156,12 +156,6 @@ class Inventario():
         usuario= input('rut bodeguero:')#ajustar con usuario logeado
 
 
-
-
-
-
-
-
         try:
             sql_last_id_mov = "SELECT MAX(codMov) FROM movimientos"
             self.cursor.execute(sql_last_id_mov)
@@ -196,3 +190,36 @@ class Inventario():
         except Exception as e:
             print(f"Error al agregar producto: {e}")
             self.conexion.rollback()
+
+
+
+    def menu(self):
+        while True:
+            print("----- MENÚ DE INVENTARIO -----")
+            print("1. Añadir producto a inventario")
+            print("2. Mover producto entre inventarios")
+            print("3. Salir")
+            opcion = input("Ingrese una opción: ")
+
+            if opcion == '1':
+                self.añadir_productos()
+            elif opcion == '2':
+                self.mover_producto()
+            elif opcion == '3':
+                print("Saliendo del programa...")
+                break
+            else:
+                print("Opción no válida. Intente nuevamente.")
+
+            
+
+
+
+
+inventario=Inventario()
+
+
+inventario.menu()
+
+
+
