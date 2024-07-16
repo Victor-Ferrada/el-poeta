@@ -91,8 +91,8 @@ class Autores():
         print('-'*10+'Eliminar Autores'+'-'*10+'\n')
         Autores().mostrar_autores() 
         while True:
-            runaut = input("Ingrese el RUN del autor a eliminar (o 's' para salir): ").lower()
-            if runaut=='s':
+            runaut = input("Ingrese el RUN del autor a eliminar (o 's' para salir): ").upper()
+            if runaut=='S':
                 system('cls')
                 print("\nVolviendo al menú de autores...\n")
                 return
