@@ -13,15 +13,23 @@ def menu_bodeguero():
             print("1. Mover Productos")
             print("2. Cerrar Sesión")
             opcion = input("\nSeleccione una opción: ")
-
             if opcion == "1":
                 mover_productos()
             elif opcion == "2":
                 system('cls')
-                for i in range(3, 0, -1):
-                    print(f"Cerrando sesión en {i} segundos...", end='\r')
-                    time.sleep(1)
-                return
+                confirmar=input('¿Está seguro que desea cerrar la sesión? (s/n): ')
+                while confirmar not in ['s', 'n']:
+                    confirmar = input("\nOpción inválida. Ingrese una opción válida (s/n): ").lower()
+                if confirmar=='s':
+                    for i in range(3, 0, -1):
+                        system('cls')
+                        print(f"Cerrando sesión en {i} segundos...", end='\r')
+                        time.sleep(1)  
+                    system('cls')
+                    return 
+                else:
+                    system('cls')
+                    continue
             else:
                 system('cls')
                 raise ValueError("Opción inválida.")
@@ -30,4 +38,3 @@ def menu_bodeguero():
         except Exception as e:
             print(f"Error inesperado: {e}")
             return
-        
