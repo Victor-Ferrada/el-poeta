@@ -156,7 +156,6 @@ class Bodegas():
     def cargar_bodegas(self,locales):
         try:
             sql_bodegas = f"select codbod, sucursal from bodegas where codbod like '{locales}%'"
-            print(locales)
             self.cursor.execute(sql_bodegas)
             bodegas = self.cursor.fetchall()
             return bodegas

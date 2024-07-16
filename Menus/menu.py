@@ -6,7 +6,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from Funciones.cls import cls
 from Funciones.terminos_condiciones import mostrar_terminos_y_condiciones
 from Funciones.iniciar_sesion import Usuarios
-from Menus.bodeguero import menu_bodeguero
+from Menus.bodeguero import Bodeguero as bod
 from Menus.jefe_de_bodega import JefeBodega as jefe
 from Funciones.otras_funciones import ConexionBD
 
@@ -40,7 +40,7 @@ def main():
                                 return
                             else:
                                 print("Redirigiendo al menú del Bodeguero...")
-                                menu_bodeguero(us.usuario_actual,locales)  # Pasar el usuario actual al menú del bodeguero
+                                bod.menu_bodeguero(us.usuario_actual,locales)  # Pasar el usuario actual al menú del bodeguero
                     else:
                         sys.exit()
             elif opcion == "2":
