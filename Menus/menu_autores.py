@@ -17,7 +17,6 @@ def gestionar_autores():
             print("3. Eliminar Autor")
             print("4. Volver")
             opcion = input("\nSeleccione una opción: ")
-
             if opcion == "1":
                 system('cls')
                 au.agregar_autor()
@@ -41,4 +40,3 @@ def gestionar_autores():
         except Exception as e:
             print(f"Error inesperado: {e}")
             return
-

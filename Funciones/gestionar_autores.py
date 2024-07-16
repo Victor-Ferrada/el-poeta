@@ -50,6 +50,7 @@ class Autores():
                     print(f'\nEl autor RUN {runaut} ya se encuentra registrado en el sistema. \n\nIngrese un nuevo autor o vuelva atrás.')
                     opcion=input('\n¿Ingresar nuevo autor? (s/n): ')
                     if opcion=='s':
+                        system('cls')
                         continue
                     elif opcion=='n':
                         system('cls')
