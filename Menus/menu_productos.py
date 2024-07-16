@@ -10,15 +10,15 @@ inv=Inventario()
 prod=Productos()
 
 # Función para gestionar productos 
-def menu_productos(usuario):
-
+def menu_productos(usuario,locales):
+    locales=None
     while True:
         try:
             print('-'*10+'Gestión de Productos'+'-'*10+'\n')
             print("1. Agregar Producto")
             print("2. Mostrar Productos")
-            print("3. Eliminar Producto")
-            print("4. Añadir a Bodega")
+            print("3. Añadir a Bodega")
+            print("4. Eliminar Producto")
             print("5. Volver")
             opcion = input("\nSeleccione una opción: ")
 
@@ -30,10 +30,10 @@ def menu_productos(usuario):
                 prod.mostrar_productos()
             elif opcion == '3':
                 system('cls')
-                prod.eliminar_producto(usuario)
+                inv.añadir_productos(usuario,locales)
             elif opcion == '4':
                 system('cls')
-                inv.añadir_productos(usuario)
+                prod.eliminar_producto(usuario)
             elif opcion == '5':
                 system('cls')
                 print("Volviendo al menú principal...")
