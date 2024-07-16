@@ -1,5 +1,6 @@
 import sys
 import os
+from os import system
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import mysql.connector
 from tabulate import tabulate
@@ -10,14 +11,14 @@ from gestionar_autores import Autores
 
 class Productos():
     def __init__(self):
-        self.conexion = mysql.connector.connect(
-            host='localhost',
-            user='root',
-            password='inacap2023',
-            database='elpoeta')
-        self.cursor = self.conexion.cursor()
+         self.conexion = mysql.connector.connect(
+             host='localhost',
+             user='root',
+             password='12345678',
+             database='elpoeta')
+         self.cursor = self.conexion.cursor()
 
-            
+
     def agregar_producto(self):
         
             # Mostrar opciones de tipo de producto
@@ -28,17 +29,31 @@ class Productos():
                 "Ensayo": "ENS",
                 "Otros": "OTR"
             }
-            
-            sql_autores = "SELECT runautor, nombresau, appatau FROM autores"
+            system('cls')
 
             Editoriales.mostrar_editoriales(self)
 
-            nuevedit = input('Desea agregar una nueva editorial? s/n:')
-            if nuevedit.lower() == 's':
-                Editoriales.agregar_editorial(self)
+            while True:
+                nuevedit = input('Desea agregar una nueva editorial? (s/n): ').strip().lower()
+                
+                if nuevedit == 's':
+                    system('cls')
+                    Editoriales.agregar_editorial(self)  # Llama al método estático para agregar una nueva editorial
+                elif nuevedit == 'n':
+                    system('cls')
+                    break  # Salir del bucle si el usuario responde 'n'
+                else:
+                    system('cls')
+                    print("Respuesta no válida. Por favor ingrese 's' para agregar una editorial o 'n' para salir.")
+
+            editoriales = Editoriales.cargar_editoriales(self) 
+
+            while not editoriales:
+                nodata=print('No existen ni se han agregado editoriales con las que trabajar')
+                input("\nPresione ENTER para volver al menú de productos...")                
+                return
 
 
-            editoriales = Editoriales.cargar_editoriales(self)   
 
             print("Seleccione la editorial del producto:")
             for i, editorial in enumerate(editoriales, start=1):
@@ -50,14 +65,33 @@ class Productos():
 
             rut_editorial = editoriales[opcion_editorial - 1][0]
 
+            system('cls')
+
             Autores.mostrar_autores(self)
 
-            nuevaut = input('Desea agregar un nuevo autor? s/n:')
-            if nuevaut.lower() == 's':
-                Autores.agregar_autor(self)
+            
+
+            while True:
+                nuevaut = input('¿Desea agregar un nuevo autor? (s/n): ').strip().lower()
+                
+                if nuevaut == 's':
+                    system('cls')
+                    Autores.agregar_autor(self)  # Llama al método estático para agregar una nueva editorial
+                elif nuevaut == 'n':
+                    system('cls')
+                    break  # Salir del bucle si el usuario responde 'n'
+                else:
+                    system('cls')
+                    print("Respuesta no válida. Por favor ingrese 's' para agregar un autor o 'n' para salir.")
+
             
             autores = Autores.cargar_autores(self)
             
+            while not autores:
+                nodata=print('No existen ni se han agregado autores con las que trabajar')
+                input("\nPresione ENTER para volver al menú de productos...")
+                return
+
 
             autores_seleccionados = []
             agregar_otro_autor = 's'
@@ -76,6 +110,8 @@ class Productos():
 
                 agregar_otro_autor = input("¿Desea agregar otro autor? (s/n): ")
 
+            system('cls')
+
             print("Seleccione el tipo de producto:")
             for i, tipo in enumerate(tipos_producto.keys(), start=1):
                 print(f"{i}. {tipo}")
@@ -85,9 +121,13 @@ class Productos():
                 print("Opción no válida.")
                 return
             
-
-            titulo = input("Ingrese el título del producto: ").upper()
+            system('cls')
+            
+            titulo = input("Ingrese el título del producto: ").strip().upper()
+            while titulo=='':
+                titulo = input("El título del producto no puede estar vacío. Ingrese nuevamente: ").strip().upper()            
             descripcion = input("Ingrese la descripción del producto: ").upper()
+            
             jefeBod = input("Ingrese el RUN del jefe de bodega: ").strip().upper()
 
             tipo_producto = list(tipos_producto.keys())[opcion_tipo - 1]
@@ -120,7 +160,7 @@ class Productos():
                 for run_autor in autores_seleccionados:
                     last_cod_auprod += 1
                     sql_insertar_auprod = "INSERT INTO auprod (codAuProd, runAutor, codProd) VALUES (%s, %s, %s)"
-                    self.cursor.execute(sql_insertar_auprod, (last_cod_auprod, run_autor, codProd))
+                    self.cursor.execute(sql_insertar_auprod, (codauprod, run_autor, codProd))
 
                     
                 self.conexion.commit()
@@ -131,7 +171,9 @@ class Productos():
                 print(f"Error al agregar producto: {e}")
                 self.conexion.rollback()
 
-    def mostrar_productos(self):
+
+
+    def mostrar_productos1(self):
         sql='select * from productos'
         try:
             self.cursor.execute(sql)
@@ -142,6 +184,19 @@ class Productos():
         except Exception as e:
             print(f"Error al mostrar productos: {e}")
             self.conexion.rollback()
+    def mostrar_productos(self):
+        print('-'*10+'Productos'+'-'*10+'\n')
+        sql='select * from productos'
+        try:
+            self.cursor.execute(sql)
+            lista=self.cursor.fetchall()
+            lista_procesada = [[(campo if campo else "S/I") for campo in fila] for fila in lista]  
+            print(tabulate(lista_procesada,headers=['Nombre','Tipo','Descripcion','Rut Editorial','Rut Jefebodega'],tablefmt='fancy_grid')) 
+            print("\n")
+        except Exception as e:
+            print(f"Error al mostrar editoriales: {e}")
+            self.conexion.rollback()
+
 
     def eliminar_producto(self):
         Productos().mostrar_productos()
@@ -171,9 +226,21 @@ class Productos():
                 print(f"Error al eliminar autor: {e}")
                 self.conexion.rollback()
 
+
+    def cargar_productos(self):
+        try:
+            sql_productos = "SELECT codprod, nomprod FROM productos"
+            self.cursor.execute(sql_productos)
+            productos = self.cursor.fetchall()
+            return productos
+        except Exception as e:
+            print(f"Error al cargar productos: {e}")
+            return []    
+
+
     def menu(self):
         while True:
-            print("----- MENÚ DE AUTORES -----")
+            print("----- MENÚ DE PRODUCTOS -----")
             print("1. Agregar Producto")
             print("2. Mostrar Productos")
             print("3. Eliminar Producto")
@@ -194,6 +261,9 @@ class Productos():
             else:
                 print("Opción no válida. Intente nuevamente.")
 
+
+
 productos=Productos()
 
 
+productos.menu()
