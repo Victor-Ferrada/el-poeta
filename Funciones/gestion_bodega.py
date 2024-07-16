@@ -161,4 +161,3 @@ class Bodegas():
         self.cursor.close()
         self.conexion.close()
 
-bodegas=Bodegas()

@@ -21,7 +21,7 @@ class Usuarios():
         try:
             while True:
                 system('cls')
-                print('-'*10+'Inicio de Sesión'+'-'*10+'\n')
+                print('-'*10+'Inicio de Sesión'+'-'*10+'\t\t(s para volver atrás)\n')
                 user = input('Ingrese su RUN: ')
                 # Verificar si el usuario existe en JEFEBODEGA
                 self.cursor.execute("SELECT * FROM JEFEBODEGA WHERE RUNJEF = %s", (user,))
@@ -29,10 +29,14 @@ class Usuarios():
                 self.cursor.execute("SELECT * FROM BODEGUEROS WHERE RUNBOD = %s", (user,))
                 bodeguero = self.cursor.fetchone()
                 if not jefe and not bodeguero:
-                    system('cls')
-                    print(f'Usuario {user} no encontrado en el sistema.')
-                    input('\nPresione ENTER para volver atrás...')
-                    continue
+                    if user=='s':
+                        system('cls')
+                        return
+                    else:
+                        system('cls')
+                        print(f'Usuario {user} no encontrado en el sistema.')
+                        input('\nPresione ENTER para volver atrás...')
+                        continue
 
                 if jefe:
                     print('\n'+'-'*5+'Bienvenido Jefe de Bodega '+user+'-'*5+'\n')
@@ -82,9 +86,8 @@ class Usuarios():
         except Exception as e:
             print(f"Error al autenticar usuario: {e}")
             return None
-        finally:
-            self.cursor.close()
-            self.conexion.close()
-            
-us=Usuarios()
-us.autenticar_usuario()
+    
+    def cerrarBD(self):
+        self.cursor.close()
+        self.conexion.close()
+

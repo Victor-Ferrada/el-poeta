@@ -15,7 +15,7 @@ from Menus.menu_editoriales import gestionar_editoriales
 
 
 # Menú del jefe de bodega
-def menu_jefe_bodega():
+def menu_jefe_bodega(user):
     while True:
         try:
             print("\n--- Menú Jefe de Bodega ---\n")
@@ -30,7 +30,7 @@ def menu_jefe_bodega():
             opcion = input("\nSeleccione una opción: ")
             if opcion == "1":
                 system('cls')
-                gestionar_bodegas('11111111-1')
+                gestionar_bodegas(user)
             elif opcion == "2":
                 system('cls')
                 p.agregar_producto()
@@ -39,7 +39,7 @@ def menu_jefe_bodega():
                 gestionar_autores()
             elif opcion == "4":
                 system('cls')
-                gestionar_editoriales('123')
+                gestionar_editoriales(user)
             elif opcion == "5":
                 system('cls')
                 bd.mostrar_bodegas()
@@ -74,5 +74,3 @@ def menu_jefe_bodega():
         except Exception as e:
             print(f"Error inesperado: {e}")
             return
-        
-menu_jefe_bodega()
