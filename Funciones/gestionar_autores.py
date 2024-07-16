@@ -10,16 +10,6 @@ class Autores():
         self.conexion = ConexionBD.conectar_db()
         if self.conexion:
             self.cursor = self.conexion.cursor()
-    
-    def cargar_autores(self):
-        try:
-            sql_autores = "select runautor, nombresau, appatau from autores"
-            self.cursor.execute(sql_autores)
-            autores = self.cursor.fetchall()
-            return autores
-        except Exception as e:
-            print(f"Error al cargar autores: {e}")
-            return []
         
     # Función para agregar un autor
     def agregar_autor(self):
@@ -101,8 +91,8 @@ class Autores():
         print('-'*10+'Eliminar Autores'+'-'*10+'\n')
         Autores().mostrar_autores() 
         while True:
-            runaut = input("Ingrese el RUN del autor a eliminar (o 's' para salir): ").upper()
-            if runaut=='S':
+            runaut = input("Ingrese el RUN del autor a eliminar (o 's' para salir): ").lower()
+            if runaut=='s':
                 system('cls')
                 print("\nVolviendo al menú de autores...\n")
                 return
@@ -160,5 +150,15 @@ class Autores():
                         input("Operación cancelada. Presione ENTER para volver al menú de autores...")
                         system('cls')
                         return 
-
+    
+    def cargar_autores(self):
+        try:
+            sql_autores = "select runautor, nombresau, appatau from autores"
+            self.cursor.execute(sql_autores)
+            autores = self.cursor.fetchall()
+            return autores
+        except Exception as e:
+            print(f"Error al cargar autores: {e}")
+            return []
+        
 au=Autores()

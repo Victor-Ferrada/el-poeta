@@ -3,11 +3,10 @@ import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from os import system
 import time
-from Menus.menu_bodegas import gestionar_bodegas
+from Menus.menu_bodegas import menu_bodegas
 from Funciones.gestionar_bodegas import Bodegas
 bd=Bodegas()
-from Funciones.gestionar_productos import Productos
-p=Productos()
+from Menus.menu_productos import menu_productos
 from Menus.menu_autores import gestionar_autores
 from Menus.menu_editoriales import gestionar_editoriales
 #from Funciones.generar_informe_de_inventario import generar_informe_inventario
@@ -21,7 +20,7 @@ def menu_jefe_bodega(user):
         try:
             print("\n--- Menú Jefe de Bodega ---\n")
             print("1. Gestionar Bodegas")
-            print("2. Crear Productos")
+            print("2. Gestionar Productos")
             print("3. Gestionar Autores")
             print("4. Gestionar Editoriales")
             print("5. Visualizar todas las Bodegas")
@@ -31,10 +30,10 @@ def menu_jefe_bodega(user):
             opcion = input("\nSeleccione una opción: ")
             if opcion == "1":
                 system('cls')
-                locales=gestionar_bodegas(user)
+                locales=menu_bodegas(user)
             elif opcion == "2":
                 system('cls')
-                p.agregar_producto(user)
+                menu_productos(user)
             elif opcion == "3":
                 system('cls')
                 gestionar_autores(user)

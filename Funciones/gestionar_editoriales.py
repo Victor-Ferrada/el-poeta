@@ -21,7 +21,7 @@ class Editoriales():
             rutedit = input("Ingrese el RUT de la editorial: ").strip().upper()
             while rutedit=='':
                 rutedit = input("El RUT de la editorial no puede estar vacío. Ingrese nuevamente: ").strip().upper()
-            self.cursor.execute("SELECT * FROM EDITORIALES WHERE RUTEDIT = %s", (rutedit,))
+            self.cursor.execute("select * from editoriales where rutedit = %s", (rutedit,))
             editorial = self.cursor.fetchone()
             if editorial:
                     print(f'\nLa editorial RUT {rutedit} ya se encuentra registrada en el sistema. \n\nIngrese una nueva editorial o vuelva atrás.')
@@ -48,7 +48,7 @@ class Editoriales():
                 confirmar = input("\nOpción inválida. Ingrese una opción válida (s/n): ").lower()
             if confirmar=='s':
                 try:
-                    self.cursor.execute("INSERT INTO EDITORIALES (RUTEDIT, NOMEDIT, FONOEDI, CODPOSTEDI, REPRELEGEDI) VALUES (%s, %s, %s, %s, %s)"
+                    self.cursor.execute("insert into editoriales (rutedit, nomedit, fonoedi, codpostedi, reprelegedi) values (%s, %s, %s, %s, %s)"
                                         ,(rutedit, nombredit, fonoedit, codpostedit, represlegaldi))
                     self.conexion.commit()
                     system('cls')
@@ -96,7 +96,7 @@ class Editoriales():
                     Editoriales().mostrar_editoriales()
                     print("Entrada vacía. Reintente.\n")
                     continue
-            self.cursor.execute("SELECT * FROM EDITORIALES WHERE rutedit = %s", (rutedit,))
+            self.cursor.execute("select * from editoriales where rutedit = %s", (rutedit,))
             editorial = self.cursor.fetchone()
             if not editorial:
                 system('cls')
@@ -104,7 +104,7 @@ class Editoriales():
                 Editoriales().mostrar_editoriales()
                 print(f"Editorial {rutedit} no existe. Reintente.\n")
                 continue
-            self.cursor.execute("SELECT RUNJEF FROM JEFEBODEGA")
+            self.cursor.execute("select runjef from jefebodega")
             jefes=self.cursor.fetchall()
             jefes=[jefe[0] for jefe in jefes]
             if usuario not in jefes:
@@ -113,7 +113,7 @@ class Editoriales():
                 input('Presione ENTER para volver atrás...')
                 system('cls')
                 return
-            self.cursor.execute("SELECT * FROM PRODUCTOS WHERE EDITORIAL = %s", (rutedit,))
+            self.cursor.execute("select * from productos where editorial = %s", (rutedit,))
             productos = self.cursor.fetchone()
             if productos:
                 system('cls')
@@ -129,7 +129,7 @@ class Editoriales():
                         confirmar = input("\nOpción inválida. Ingrese una opción válida (s/n): ").lower()
                     if confirmar == 's':
                         try:
-                            self.cursor.execute("DELETE FROM EDITORIALES WHERE RUTEDIT = %s", (rutedit,))
+                            self.cursor.execute("delete from editoriales where rutedit = %s", (rutedit,))
                             self.conexion.commit()
                             system('cls')
                             Editoriales().mostrar_editoriales()
@@ -147,7 +147,7 @@ class Editoriales():
 
     def cargar_editoriales(self):
         try:
-            sql_editoriales = "SELECT rutEdit, nomEdit FROM editoriales"
+            sql_editoriales = "select rutedit, nomedit from editoriales"
             self.cursor.execute(sql_editoriales)
             editoriales = self.cursor.fetchall()
             return editoriales
