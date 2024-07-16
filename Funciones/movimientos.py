@@ -5,10 +5,10 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from tabulate import tabulate
 
 
-from gestionar_productos import Productos as p
-from gestionar_bodegas import Bodegas
+from Funciones.gestionar_productos import Productos as p
+from Funciones.gestionar_bodegas import Bodegas
 from datetime import datetime
-from otras_funciones import ConexionBD
+from Funciones.otras_funciones import ConexionBD
 
 class Movimientos():
 
@@ -26,11 +26,10 @@ class Movimientos():
             input("\nPresione ENTER para volver al menú de productos...")                
             return
 
-
-
         print("Seleccione la bodega de origen:")
-        for i, bodegao in enumerate(origen, start=1):
-            print(f"{i}. {bodegao[1]} \t(COD: {bodegao[0]})")          
+        bodegas_origen = [[i, bodega[1], bodega[0]] for i, bodega in enumerate(origen, start=1)]
+        print(tabulate(bodegas_origen, headers=['Nº', 'Nombre', 'Código'], tablefmt='fancy_grid'))
+     
 
         bodega_origen = int(input("Ingrese el número correspondiente a la bodega: "))
         if bodega_origen < 1 or bodega_origen > len(origen):
@@ -56,20 +55,30 @@ class Movimientos():
 
         print("Seleccione los productos a mover (ingrese 0 para terminar):")
         productos_a_mover = []
-        while True:
-            print("\nProductos disponibles:")
-            for i, producto in enumerate(productos_filtrados, start=1):
-                stock_producto = producto[2] if producto[2] is not None else 0
-                print(f"{i}. {producto[1]} \t(COD: {producto[0]}) \tStock: {stock_producto}")
+        productos_seleccionados = [] 
+        mover_otro='s'
+        while mover_otro=='s':
 
-            producto_mover = int(input("Ingrese el número correspondiente al producto (0 para terminar): "))
-            if producto_mover == 0:
-                break
-            elif producto_mover < 1 or producto_mover > len(productos_filtrados):
+
+            for i, producto in enumerate(productos_filtrados, start=1):
+                stock_producto = producto[2] if producto[2] is not None else 0            
+                print("Productos disponibles en bodega:")
+                productosi = [[i, producto[1], producto[0],stock_producto] for i, producto in enumerate(productos_filtrados, start=1)]
+                print(tabulate(productosi, headers=['Nº', 'Nombre', 'Código','Stock'], tablefmt='fancy_grid'))            
+
+
+
+            producto_mover = int(input("Ingrese el número correspondiente al producto: "))
+
+            if producto_mover < 1 or producto_mover > len(productos_filtrados):
                 print("Opción no válida.")
                 continue
 
             cod_prod = productos_filtrados[producto_mover - 1][0]
+
+            if cod_prod in productos_seleccionados:
+                print("Error: Este producto ya ha sido seleccionado.")
+                continue        
             stock_disponible = productos_filtrados[producto_mover - 1][2] if productos_filtrados[producto_mover - 1][2] is not None else 0
 
             stock = int(input("Ingrese el stock del producto: "))
@@ -80,6 +89,13 @@ class Movimientos():
                 continue            
 
             productos_a_mover.append((cod_prod, stock))
+            productos_seleccionados.append(cod_prod)
+            mover_otro = input("¿Desea mover otro producto? (s/n): ").strip().lower()
+                    
+            while mover_otro not in ['s', 'n']:
+                system('cls')
+                print("Respuesta no válida. Por favor ingrese 's' para mover otro producto o 'n' para terminar.")
+                mover_otro = input("¿Desea mover otro producto? (s/n): ").strip().lower()            
 
         if not productos_a_mover:
             print("No se seleccionaron productos para mover.")
@@ -88,8 +104,10 @@ class Movimientos():
         destino = Bodegas.cargar_bodegas(self,'') 
 
         print("Seleccione la bodega de destino:")
-        for i, bodegad in enumerate(destino, start=1):
-            print(f"{i}. {bodegad[1]} \t(COD: {bodegad[0]})")          
+        bodegas_destino = [[i, bodega[1], bodega[0]] for i, bodega in enumerate(origen, start=1)]
+        print(tabulate(bodegas_destino, headers=['Nº', 'Nombre', 'Código'], tablefmt='fancy_grid'))
+
+    
 
         bodega_destino = int(input("Ingrese el número correspondiente a la bodega: "))
         if bodega_destino < 1 or bodega_destino > len(destino):
@@ -203,5 +221,4 @@ class Movimientos():
 
 mov=Movimientos()
 mov.menu()
-
 
