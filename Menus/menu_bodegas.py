@@ -19,14 +19,14 @@ def gestionar_bodegas(usuario):
 
             if opcion == "1":
                 system('cls')
-                bodegas.crear_bodega(usuario)
+                locales=bodegas.crear_bodega(usuario)
             elif opcion == "2":
                 system('cls')
                 bodegas.eliminar_bodega(usuario)
             elif opcion == "3":
                 system('cls')
                 print("Volviendo al menú principal...")
-                return
+                return locales
             else:
                 system('cls')
                 raise ValueError("Opción inválida.")

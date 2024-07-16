@@ -11,6 +11,7 @@ from Menus.jefe_de_bodega import menu_jefe_bodega
 
 def main():
     us=Usuarios()
+    locales=None
     while True:
         try:
             print('-'*10+'Bienvenido al Sistema de Gestión de Inventario El gran Poeta'+'-'*10+'\n')
@@ -26,12 +27,18 @@ def main():
                         if perfil == 'jefe':
                             # Redirigir al menú del Jefe de Bodega
                             print("Redirigiendo al menú del Jefe de Bodega...")
-                            menu_jefe_bodega(us.usuario_actual)  # Pasar el usuario actual al menú del jefe de bodega
+                            locales=menu_jefe_bodega(us.usuario_actual)  # Pasar el usuario actual al menú del jefe de bodega
                             
                         elif perfil == 'bodeguero':
                             # Redirigir al menú del Bodeguero
-                            print("Redirigiendo al menú del Bodeguero...")
-                            menu_bodeguero()  # Pasar el usuario actual al menú del bodeguero
+                            if locales==None:
+                                locales=''
+                                input('No hay bodegas locales creadas. \nPresione ENTER para volver al menú anterior...')
+                                system('cls')
+                                return
+                            else:
+                                print("Redirigiendo al menú del Bodeguero...")
+                                menu_bodeguero(us.usuario_actual,locales)  # Pasar el usuario actual al menú del bodeguero
                     else:
                         sys.exit()
             elif opcion == "2":

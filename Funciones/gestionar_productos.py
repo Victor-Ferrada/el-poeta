@@ -4,9 +4,9 @@ from os import system
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import mysql.connector
 from tabulate import tabulate
-from gestionar_editoriales import Editoriales
-from gestionar_autores import Autores
-from gestionar_bodegas import Bodegas
+from Funciones.gestionar_editoriales import Editoriales
+from Funciones.gestionar_autores import Autores
+
 
 class Productos():
     def __init__(self):
@@ -17,7 +17,7 @@ class Productos():
              database='elpoeta')
          self.cursor = self.conexion.cursor()
 
-    def agregar_producto(self):
+    def agregar_producto(self,user):
             # Mostrar opciones de tipo de producto
             tipos_producto = {
                 "Novela": "NOV",
@@ -100,7 +100,7 @@ class Productos():
             while titulo=='':
                 titulo = input("El título del producto no puede estar vacío. Ingrese nuevamente: ").strip().upper()            
             descripcion = input("Ingrese la descripción del producto: ").upper()
-            jefeBod = input("Ingrese el RUN del jefe de bodega: ").strip().upper()
+            jefeBod = user
             tipo_producto = list(tipos_producto.keys())[opcion_tipo - 1]
             cont = 1
             while True:
@@ -201,7 +201,7 @@ class Productos():
             print(f"Error al cargar productos: {e}")
             return []    
 
-    def menu(self):
+    def menu(self,user):
         while True:
             print("----- MENÚ DE PRODUCTOS -----")
             print("1. Agregar Producto")
@@ -213,11 +213,11 @@ class Productos():
             opcion = input("Ingrese una opción: ")
 
             if opcion == '1':
-                self.agregar_producto()
+                self.agregar_producto(user)
             elif opcion == '2':
                 self.mostrar_productos()
             elif opcion == '3':
-                self.eliminar_producto()
+                self.eliminar_producto(user)
             elif opcion == '4':
                 Inventario.añadir_productos()
 
@@ -270,8 +270,6 @@ class Inventario():
             input("\nPresione ENTER para volver al menú de productos...")                
             return
 
-
-
         print("Seleccione la bodega del producto:")
         for i, bodega in enumerate(bodegas, start=1):
             print(f"{i}. {bodega[1]} \t(COD: {bodegas[0]})")          
@@ -312,3 +310,5 @@ class Inventario():
 
 productos=Productos()
 inventario=Inventario()
+
+productos.agregar_producto('123')

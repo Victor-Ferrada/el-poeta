@@ -23,13 +23,13 @@ def iniciar_sesion():
             print("¡Bienvenido Jefe de Bodega!")
             input("Precione cualquier tecla para continuar...")
             cls()
-            menu_jefe_bodega(perfil)
+            locales=menu_jefe_bodega(perfil)
             break
         elif perfil == 'bodeguero':
             print("¡Bienvenido Bodeguero!")
             input("Precione cualquier tecla para continuar...")
             cls()
-            menu_bodeguero(perfil)
+            menu_bodeguero(perfil,locales)
             break
         else:
             print("Credenciales incorrectas. Intente nuevamente.")

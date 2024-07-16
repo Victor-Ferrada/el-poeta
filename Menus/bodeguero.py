@@ -3,10 +3,11 @@ import os
 from os import system
 import time
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from Funciones.movimientos import mover_productos
+from Funciones.movimientos import Movimientos
+mov=Movimientos()
 
 # Menú del bodeguero
-def menu_bodeguero():
+def menu_bodeguero(user,locales):
     while True:
         try:
             print("\n--- Menú Bodeguero ---\n")
@@ -14,7 +15,7 @@ def menu_bodeguero():
             print("2. Cerrar Sesión")
             opcion = input("\nSeleccione una opción: ")
             if opcion == "1":
-                mover_productos()
+                mov.mover_producto(user,locales)
             elif opcion == "2":
                 system('cls')
                 confirmar=input('¿Está seguro que desea cerrar la sesión? (s/n): ')

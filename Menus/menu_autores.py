@@ -8,7 +8,7 @@ from Funciones.gestionar_autores import Autores
 au=Autores()
 
 # Función para gestionar autores 
-def gestionar_autores():
+def gestionar_autores(user):
     while True:
         try:
             print('-'*10+'Gestión de Autores'+'-'*10+'\n')
@@ -27,7 +27,7 @@ def gestionar_autores():
                 system('cls')
             elif opcion == "3":
                 system('cls')
-                au.eliminar_autor('123')
+                au.eliminar_autor(user)
             elif opcion == "4":
                 system('cls')
                 print("Volviendo al menú principal...")

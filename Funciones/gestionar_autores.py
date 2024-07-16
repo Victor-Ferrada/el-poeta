@@ -4,7 +4,7 @@ from os import system
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import mysql.connector
 from tabulate import tabulate
-from otras_funciones import validar_entero
+from Funciones.otras_funciones import validar_entero
 
 class Autores():
     def __init__(self):
@@ -15,8 +15,6 @@ class Autores():
              database='elpoeta')
          self.cursor = self.conexion.cursor()
     
-
-
     def cargar_autores(self):
         try:
             sql_autores = "SELECT runautor, nombresau, appatau FROM autores"

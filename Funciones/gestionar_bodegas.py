@@ -5,17 +5,17 @@ import mysql.connector
 from tabulate import tabulate
 import re
 from os import system
-from otras_funciones import validar_entero
+from Funciones.otras_funciones import validar_entero
 
 class Bodegas():
     def __init__(self):
-         self.conexion = mysql.connector.connect(
-             host='localhost',
-             user='root',
-             password='inacap2023',
-             database='elpoeta')
-         self.cursor = self.conexion.cursor()
-
+        self.conexion = mysql.connector.connect(
+            host='localhost',
+            user='root',
+            password='inacap2023',
+            database='elpoeta')
+        self.cursor = self.conexion.cursor()
+        self.locales=None
     # Función para crear una bodega 
     def crear_bodega(self,usuario):
         while True:
@@ -44,7 +44,7 @@ class Bodegas():
             consonantes = re.findall(r'[^NAEIOU\s]', sucursal)
             i_consonantes = ''.join(consonantes[:3]).upper()
             cont=1
-            
+            self.locales=i_consonantes
             while True:
                 cod_bod=f"{i_consonantes}{0}{cont}"
                 self.cursor.execute("select * from bodegas where codbod=%s",(cod_bod,))
@@ -68,7 +68,7 @@ class Bodegas():
                     print("\nBodega creada exitosamente.")
                     input("\nPresione ENTER para volver al menú de bodegas...")
                     system('cls')
-                    return
+                    return i_consonantes
                 except Exception as e:
                     print(f"Error al crear bodega: {e}\n")
                     self.conexion.rollback()
@@ -157,9 +157,10 @@ class Bodegas():
                         system('cls')
                         return 
     
-    def cargar_bodegas(self):
+    def cargar_bodegas(self,locales):
         try:
-            sql_bodegas = "SELECT codbod, sucursal FROM bodegas"
+            sql_bodegas = f"SELECT codbod, sucursal FROM bodegas where codbod like '{locales}%'"
+            print(locales)
             self.cursor.execute(sql_bodegas)
             bodegas = self.cursor.fetchall()
             return bodegas
@@ -170,4 +171,6 @@ class Bodegas():
     def cerrarBD(self):
         self.cursor.close()
         self.conexion.close()
+
+
 
