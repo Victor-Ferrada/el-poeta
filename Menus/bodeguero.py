@@ -15,7 +15,7 @@ class Bodegueros():
             self.cursor = self.conexion.cursor()
 
     # Menú del bodeguero
-    def menu_bodeguero(user,locales):
+    def menu_bodeguero(self,user,locales):
         while True:
             try:
                 print("\n--- Menú Bodeguero ---\n")

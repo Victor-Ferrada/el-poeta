@@ -7,6 +7,7 @@ from Funciones.otras_funciones import ConexionBD
 bd=ConexionBD()
 from Menus.menu_bodegas import menu_bodegas
 from Funciones.gestionar_bodegas import Bodegas
+from Funciones.informe_movimientos import generar_informe_movimientos
 bod=Bodegas()
 from Menus.menu_productos import menu_productos
 from Menus.menu_autores import gestionar_autores
@@ -19,9 +20,9 @@ class JefeBodega():
         self.conexion = ConexionBD.conectar_db()
         if self.conexion:
             self.cursor = self.conexion.cursor()
-
+    
     # Menú del jefe de bodega
-    def menu_jefe_bodega(user):
+    def menu_jefe_bodega(self,user):
         locales=None
         while True:
             try:
@@ -57,7 +58,7 @@ class JefeBodega():
                     #generar_informe_inventario()
                 elif opcion == "7":
                     system('cls')
-                    #generar_informe_movimientos()
+                    generar_informe_movimientos()
                 elif opcion == "8":
                     system('cls')
                     confirmar=input('¿Está seguro que desea cerrar la sesión? (s/n): ')
@@ -81,3 +82,5 @@ class JefeBodega():
             except Exception as e:
                 print(f"Error inesperado: {e}")
                 return
+
+j=JefeBodega()

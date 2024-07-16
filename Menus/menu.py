@@ -6,13 +6,15 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from Funciones.cls import cls
 from Funciones.terminos_condiciones import mostrar_terminos_y_condiciones
 from Funciones.iniciar_sesion import Usuarios
-from Menus.bodeguero import Bodegueros as bod
-from Menus.jefe_de_bodega import JefeBodega as jefe
+from Menus.bodeguero import Bodegueros
+from Menus.jefe_de_bodega import JefeBodega
 from Funciones.otras_funciones import ConexionBD
 
 def main():
     db=ConexionBD()
     us=Usuarios()
+    jefe=JefeBodega()
+    bod=Bodegueros()
     locales=None
     while True:
         try:
@@ -23,13 +25,14 @@ def main():
             if opcion == "1":
                 system('cls')
                 perfil = us.autenticar_usuario()
+                user=us.usuario_actual
                 if perfil:
                     aceptado=mostrar_terminos_y_condiciones()
                     if aceptado:
                         if perfil == 'jefe':
                             # Redirigir al menú del Jefe de Bodega
                             print("Redirigiendo al menú del Jefe de Bodega...")
-                            locales=jefe.menu_jefe_bodega(us.usuario_actual)  # Pasar el usuario actual al menú del jefe de bodega
+                            locales = jefe.menu_jefe_bodega(user)  # Pasar el usuario actual al menú del jefe de bodega
                             
                         elif perfil == 'bodeguero':
                             # Redirigir al menú del Bodeguero
@@ -40,7 +43,7 @@ def main():
                                 return
                             else:
                                 print("Redirigiendo al menú del Bodeguero...")
-                                bod.menu_bodeguero(us.usuario_actual,locales)  # Pasar el usuario actual al menú del bodeguero
+                                bod.menu_bodeguero(user,locales)  # Pasar el usuario actual al menú del bodeguero
                     else:
                         sys.exit()
             elif opcion == "2":
