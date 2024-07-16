@@ -47,31 +47,42 @@ class MostrarInventario():
                 system('cls')
 
         # Ejecutar las consultas y generar el informe solo si la bodega existe
-        self.cursor.execute("SELECT SUM(stock) AS inventario_total FROM Movimientos WHERE bodega = %s", (bodega_seleccionada,))
+        self.cursor.execute("SELECT SUM(stock) AS inventario_total FROM Inventario WHERE bodega = %s", (bodega_seleccionada,))
         total_productos = self.cursor.fetchone()[0]
 
-        self.cursor.execute("SELECT COUNT(*) FROM Productos WHERE tipo = 'Libro' AND jefeBod = (SELECT responsable FROM Bodegas WHERE codBod = %s)",
-                            (bodega_seleccionada,))
-        libros = self.cursor.fetchone()[0]
+        # Consulta para obtener el stock de libros en la bodega seleccionada
+        self.cursor.execute("""
+            SELECT SUM(stock) AS stock_libros
+            FROM Inventario i
+            JOIN Productos p ON i.codProd = p.codProd
+            WHERE p.tipo = 'Libro' AND i.bodega = %s
+        """, (bodega_seleccionada,))
+        stock_libros = self.cursor.fetchone()[0]
 
-        self.cursor.execute("SELECT COUNT(*) FROM Productos WHERE tipo = 'Revista' AND jefeBod = (SELECT responsable FROM Bodegas WHERE codBod = %s)",
-                            (bodega_seleccionada,))
-        revistas = self.cursor.fetchone()[0]
+        # Consulta para obtener el stock de revistas en la bodega seleccionada
+        self.cursor.execute("""
+            SELECT SUM(stock) AS stock_revistas
+            FROM Inventario i
+            JOIN Productos p ON i.codProd = p.codProd
+            WHERE p.tipo = 'Revista' AND i.bodega = %s
+        """, (bodega_seleccionada,))
+        stock_revistas = self.cursor.fetchone()[0]
 
-        self.cursor.execute("SELECT COUNT(*) FROM Productos WHERE tipo = 'Enciclopedia' AND jefeBod = (SELECT responsable FROM Bodegas WHERE codBod = %s)",
-                            (bodega_seleccionada,))
-        enciclopedias = self.cursor.fetchone()[0]
-
-        self.cursor.execute("SELECT nomEdit FROM Editoriales WHERE rutEdit IN (SELECT editorial FROM Productos WHERE jefeBod = (SELECT responsable FROM Bodegas WHERE codBod = %s))",
-                            (bodega_seleccionada,))
-        editoriales = self.cursor.fetchall()
+        # Consulta para obtener el stock de enciclopedias en la bodega seleccionada
+        self.cursor.execute("""
+            SELECT SUM(stock) AS stock_enciclopedias
+            FROM Inventario i
+            JOIN Productos p ON i.codProd = p.codProd
+            WHERE p.tipo = 'Enciclopedia' AND i.bodega = %s
+        """, (bodega_seleccionada,))
+        stock_enciclopedias = self.cursor.fetchone()[0]
 
         # Preparar datos para tabulate
         data = [
             ["Total de productos", total_productos],
-            ["Libros", libros],
-            ["Revistas", revistas],
-            ["Enciclopedias", enciclopedias]
+            ["Libros", stock_libros],
+            ["Revistas", stock_revistas],
+            ["Enciclopedias", stock_enciclopedias]
         ]
 
         # Formato fancy_grid para tabulate
@@ -79,10 +90,7 @@ class MostrarInventario():
 
         # Mostrar tabla
         print(f"Informe de Inventario - Bodega {bodega_seleccionada}")
-        print(table)
-        print("\nEditoriales:")
-        for editorial in editoriales:
-            print(f"- {editorial[0]}")
+        print(table) 
 
         # Opción para más información detallada
         while True:
@@ -100,6 +108,7 @@ class MostrarInventario():
                     JOIN Editoriales e ON p.editorial = e.rutEdit
                     JOIN Inventario i ON p.codProd = i.codProd
                     WHERE i.bodega = %s
+                    AND p.tipo IN ('Libro', 'Revista', 'Enciclopedia')
                 """, (bodega_seleccionada,))
                 productos = self.cursor.fetchall()
 
@@ -118,3 +127,7 @@ class MostrarInventario():
     def cerrarBD(self):
         self.cursor.close()
         self.conexion.close()
+
+if __name__ == "__main__":
+    inventario = MostrarInventario()
+    inventario.generar_informe_inventario()
