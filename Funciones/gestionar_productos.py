@@ -4,8 +4,8 @@ from os import system
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import mysql.connector
 from tabulate import tabulate
-from gestionar_editoriales import Editoriales
-from gestionar_autores import Autores
+from Funciones.gestionar_editoriales import Editoriales
+from Funciones.gestionar_autores import Autores
 from Funciones.otras_funciones import ConexionBD
 
 
@@ -235,32 +235,6 @@ class Productos():
             print(f"Error al cargar productos: {e}")
             return []    
 
-    def menu(self):
-        while True:
-            print("----- MENÚ DE PRODUCTOS -----")
-            print("1. Agregar Producto")
-            print("2. Mostrar Productos")
-            print("3. Eliminar Producto")
-            print("4. Añadir a Inventario")
-
-            print("5. Salir")
-            opcion = input("Ingrese una opción: ")
-
-            if opcion == '1':
-                self.agregar_producto()
-            elif opcion == '2':
-                self.mostrar_productos()
-            elif opcion == '3':
-                self.eliminar_producto()
-            elif opcion == '4':
-                Inventario.añadir_productos()
-
-            elif opcion == '5':
-                print("Saliendo del programa...")
-                break
-            else:
-                print("Opción no válida. Intente nuevamente.")
-
 
 class Inventario():
 
@@ -347,5 +321,3 @@ class Inventario():
 
 productos=Productos()
 inventario=Inventario()
-
-productos.menu()

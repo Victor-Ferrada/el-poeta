@@ -7,7 +7,7 @@ from Funciones.cls import cls
 from Funciones.terminos_condiciones import mostrar_terminos_y_condiciones
 from Funciones.iniciar_sesion import Usuarios
 from Menus.bodeguero import menu_bodeguero
-from Menus.jefe_de_bodega import menu_jefe_bodega
+from Menus.jefe_de_bodega import JefeBodega as jefe
 from Funciones.otras_funciones import ConexionBD
 
 def main():
@@ -29,7 +29,7 @@ def main():
                         if perfil == 'jefe':
                             # Redirigir al menú del Jefe de Bodega
                             print("Redirigiendo al menú del Jefe de Bodega...")
-                            locales=menu_jefe_bodega(us.usuario_actual)  # Pasar el usuario actual al menú del jefe de bodega
+                            locales=jefe.menu_jefe_bodega(us.usuario_actual)  # Pasar el usuario actual al menú del jefe de bodega
                             
                         elif perfil == 'bodeguero':
                             # Redirigir al menú del Bodeguero

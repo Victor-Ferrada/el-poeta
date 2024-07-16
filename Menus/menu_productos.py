@@ -10,8 +10,7 @@ inv=Inventario()
 prod=Productos()
 
 # Función para gestionar productos 
-def menu_productos(usuario,locales):
-    locales=None
+def menu_productos(usuario):
     while True:
         try:
             print('-'*10+'Gestión de Productos'+'-'*10+'\n')
@@ -30,7 +29,7 @@ def menu_productos(usuario,locales):
                 prod.mostrar_productos()
             elif opcion == '3':
                 system('cls')
-                inv.añadir_productos(usuario,locales)
+                inv.añadir_productos(usuario)
             elif opcion == '4':
                 system('cls')
                 prod.eliminar_producto(usuario)

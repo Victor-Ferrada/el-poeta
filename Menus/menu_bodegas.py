@@ -10,8 +10,7 @@ bod=Bodegas()
 inv=Inventario()
 
 # Función para gestionar bodegas 
-def menu_bodegas(usuario,locales):
-    locales=None
+def menu_bodegas(usuario):
     while True:
         try:
             print('-'*10+'Gestión de Bodegas'+'-'*10+'\n')
@@ -27,7 +26,7 @@ def menu_bodegas(usuario,locales):
                 locales=bod.crear_bodega(usuario)
             elif opcion == "2":
                 system('cls')
-                inv.añadir_productos(usuario,locales)
+                inv.añadir_productos(usuario)
             elif opcion == "3":
                 system('cls')
                 bod.mostrar_bodegas()

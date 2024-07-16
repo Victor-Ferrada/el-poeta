@@ -11,6 +11,7 @@ class Bodegas():
         self.conexion = ConexionBD.conectar_db()
         if self.conexion:
             self.cursor = self.conexion.cursor()
+            
     # Función para crear una bodega 
     def crear_bodega(self,usuario):
         while True:
@@ -154,7 +155,7 @@ class Bodegas():
     
     def cargar_bodegas(self,locales):
         try:
-            sql_bodegas = f"SELECT codbod, sucursal FROM bodegas where codbod like '{locales}%'"
+            sql_bodegas = f"select codbod, sucursal from bodegas where codbod like '{locales}%'"
             print(locales)
             self.cursor.execute(sql_bodegas)
             bodegas = self.cursor.fetchall()
