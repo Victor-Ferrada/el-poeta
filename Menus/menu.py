@@ -8,8 +8,10 @@ from Funciones.terminos_condiciones import mostrar_terminos_y_condiciones
 from Funciones.iniciar_sesion import Usuarios
 from Menus.bodeguero import menu_bodeguero
 from Menus.jefe_de_bodega import menu_jefe_bodega
+from Funciones.otras_funciones import ConexionBD
 
 def main():
+    db=ConexionBD()
     us=Usuarios()
     locales=None
     while True:
@@ -51,7 +53,7 @@ def main():
                         system('cls')
                         print(f"Saliendo del sistema en {i} segundos...", end='\r')
                         time.sleep(1)
-                    us.cerrarBD()
+                    db.cerrar_db()
                     sys.exit()
                 else:
                     system('cls')

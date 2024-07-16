@@ -2,30 +2,25 @@ import sys
 import os
 from os import system
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-import mysql.connector
 from tabulate import tabulate
-from Funciones.otras_funciones import validar_entero
+from Funciones.otras_funciones import validar_entero,ConexionBD
 
 class Autores():
     def __init__(self):
-         self.conexion = mysql.connector.connect(
-             host='localhost',
-             user='root',
-             password='inacap2023',
-             database='elpoeta')
-         self.cursor = self.conexion.cursor()
+        self.conexion = ConexionBD.conectar_db()
+        if self.conexion:
+            self.cursor = self.conexion.cursor()
     
     def cargar_autores(self):
         try:
-            sql_autores = "SELECT runautor, nombresau, appatau FROM autores"
+            sql_autores = "select runautor, nombresau, appatau from autores"
             self.cursor.execute(sql_autores)
             autores = self.cursor.fetchall()
             return autores
         except Exception as e:
             print(f"Error al cargar autores: {e}")
             return []
-
-
+        
     # Función para agregar un autor
     def agregar_autor(self):
         while True:
@@ -42,7 +37,7 @@ class Autores():
             runaut = input("Ingrese el RUN del autor: ").strip().upper()
             while runaut=='':
                 runaut = input("El RUN del autor no puede estar vacío. Ingrese nuevamente: ").strip().upper()
-            self.cursor.execute("SELECT * FROM AUTORES WHERE RUNAUTOR = %s", (runaut,))
+            self.cursor.execute("select * from autores where runautor = %s", (runaut,))
             autor = self.cursor.fetchone()
             if autor:
                     print(f'\nEl autor RUN {runaut} ya se encuentra registrado en el sistema. \n\nIngrese un nuevo autor o vuelva atrás.')
@@ -69,7 +64,7 @@ class Autores():
                 confirmar = input("\nOpción inválida. Ingrese una opción válida (s/n): ").lower()
             if confirmar=='s':
                 try:
-                    self.cursor.execute("INSERT INTO AUTORES (RUNAUTOR, NOMBRESAU, APPATAU, APMATAU, FONOAU, CODPOSTAU) VALUES (%s, %s, %s, %s, %s, %s)"
+                    self.cursor.execute("insert into autores (runautor, nombresau, appatau, apmatau, fonoau, codpostau) values (%s, %s, %s, %s, %s, %s)"
                                         ,(runaut, nombraut, appataut, apmataut, fonoau, codpostaut))
                     self.conexion.commit()
                     system('cls')
@@ -104,7 +99,7 @@ class Autores():
     # Función para eliminar un autor
     def eliminar_autor(self,usuario):
         print('-'*10+'Eliminar Autores'+'-'*10+'\n')
-        Autores().mostrar_autores()
+        Autores().mostrar_autores() 
         while True:
             runaut = input("Ingrese el RUN del autor a eliminar (o 's' para salir): ").upper()
             if runaut=='S':
@@ -117,7 +112,7 @@ class Autores():
                     Autores().mostrar_autores()
                     print("Entrada vacía. Reintente.\n")
                     continue
-            self.cursor.execute("SELECT * FROM AUTORES WHERE RUNAUTOR = %s", (runaut,))
+            self.cursor.execute("select * from autores where runautor = %s", (runaut,))
             autor = self.cursor.fetchone()
             if not autor:
                 system('cls')
@@ -125,7 +120,7 @@ class Autores():
                 Autores().mostrar_autores()
                 print(f"Autor {runaut} no existe. Reintente.\n")
                 continue
-            self.cursor.execute("SELECT RUNJEF FROM JEFEBODEGA")
+            self.cursor.execute("select runjef from jefebodega")
             jefes=self.cursor.fetchall()
             jefes=[jefe[0] for jefe in jefes]
             if usuario not in jefes:
@@ -134,7 +129,7 @@ class Autores():
                 input('Presione ENTER para volver atrás...')
                 system('cls')
                 return
-            self.cursor.execute("SELECT * FROM AUPROD WHERE RUNAUTOR = %s", (runaut,))
+            self.cursor.execute("select * from auprod where runautor = %s", (runaut,))
             productos = self.cursor.fetchone()
             if productos:
                 system('cls')
@@ -150,7 +145,7 @@ class Autores():
                         confirmar = input("\nOpción inválida. Ingrese una opción válida (s/n): ").lower()
                     if confirmar == 's':
                         try:
-                            self.cursor.execute("DELETE FROM AUTORES WHERE RUNAUTOR = %s", (runaut,))
+                            self.cursor.execute("delete from autores where runautor = %s", (runaut,))
                             self.conexion.commit()
                             system('cls')
                             Autores().mostrar_autores()
@@ -165,9 +160,5 @@ class Autores():
                         input("Operación cancelada. Presione ENTER para volver al menú de autores...")
                         system('cls')
                         return 
-
-    def cerrarBD(self):
-        self.cursor.close()
-        self.conexion.close()
 
 au=Autores()

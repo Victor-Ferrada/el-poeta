@@ -1,21 +1,16 @@
 import sys
 import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-import mysql.connector
 from tabulate import tabulate
 import re
 from os import system
-from Funciones.otras_funciones import validar_entero
+from Funciones.otras_funciones import validar_entero,ConexionBD
 
 class Bodegas():
     def __init__(self):
-        self.conexion = mysql.connector.connect(
-            host='localhost',
-            user='root',
-            password='inacap2023',
-            database='elpoeta')
-        self.cursor = self.conexion.cursor()
-        self.locales=None
+        self.conexion = ConexionBD.conectar_db()
+        if self.conexion:
+            self.cursor = self.conexion.cursor()
     # Función para crear una bodega 
     def crear_bodega(self,usuario):
         while True:
@@ -25,7 +20,7 @@ class Bodegas():
                     sucursal = input("El nombre de la sucursal no puede estar vacío. Ingrese nuevamente: ").strip().upper()
             fono_bod = validar_entero("Ingrese el teléfono de la bodega: ",'teléfono')
             responsable = usuario
-            self.cursor.execute("SELECT * FROM JEFEBODEGA WHERE RUNJEF = %s", (responsable,))
+            self.cursor.execute("select * from jefebodega where runjef = %s", (responsable,))
             jefe = self.cursor.fetchone()
             while not jefe:
                 if responsable=='':
@@ -36,7 +31,7 @@ class Bodegas():
                     return
                 else:
                     responsable = input(f"Usuario {responsable} no existe. Ingrese un usuario válido (o 's' para finalizar): ").upper()
-                self.cursor.execute("SELECT * FROM JEFEBODEGA WHERE RUNJEF = %s", (responsable,))
+                self.cursor.execute("select * from jefebodega where runjef = %s", (responsable,))
                 jefe = self.cursor.fetchone()
             cod_post_bod = validar_entero("Ingrese el código postal de la bodega: ",'código postal')
             
@@ -61,7 +56,7 @@ class Bodegas():
                 confirmar = input("\nOpción inválida. Ingrese una opción válida (s/n): ").lower()
             if confirmar=='s':
                 try:
-                    self.cursor.execute("INSERT INTO BODEGAS (CODBOD, SUCURSAL, FONOBOD, RESPONSABLE, CODPOSTBOD) VALUES (%s, %s, %s, %s, %s)",
+                    self.cursor.execute("insert into bodegas (codbod, sucursal, fonobod, responsable, codpostbod) values (%s, %s, %s, %s, %s)",
                                     (cod_bod, sucursal, fono_bod, responsable, cod_post_bod))
                     self.conexion.commit()
                     system('cls')
@@ -109,7 +104,7 @@ class Bodegas():
                     Bodegas().mostrar_bodegas()
                     print("Entrada vacía. Reintente.\n")
                     continue
-            self.cursor.execute("SELECT * FROM BODEGAS WHERE CODBOD = %s", (codbod,))
+            self.cursor.execute("select * from bodegas where codbod = %s", (codbod,))
             bodega = self.cursor.fetchone()
             if not bodega:
                 system('cls')
@@ -117,7 +112,7 @@ class Bodegas():
                 Bodegas().mostrar_bodegas()
                 print(f"Bodega {codbod} no existe. Reintente.\n")
                 continue
-            self.cursor.execute("SELECT RESPONSABLE FROM BODEGAS WHERE CODBOD = %s", (codbod,))
+            self.cursor.execute("select responsable from bodegas where codbod = %s", (codbod,))
             jefe = self.cursor.fetchone()[0]
             if usuario!=jefe:
                 system('cls')
@@ -125,7 +120,7 @@ class Bodegas():
                 input('Presione ENTER para volver atrás...')
                 system('cls')
                 return
-            self.cursor.execute("SELECT * FROM INVENTARIO WHERE BODEGA = %s", (codbod,))
+            self.cursor.execute("select * from inventario where bodega = %s", (codbod,))
             inventario = self.cursor.fetchone()
             if inventario:
                 system('cls')
@@ -141,7 +136,7 @@ class Bodegas():
                         confirmar = input("\nOpción inválida. Ingrese una opción válida (s/n): ").lower()
                     if confirmar == 's':
                         try:
-                            self.cursor.execute("DELETE FROM BODEGAS WHERE CODBOD = %s", (codbod,))
+                            self.cursor.execute("delete from bodegas where codbod = %s", (codbod,))
                             self.conexion.commit()
                             system('cls')
                             Bodegas().mostrar_bodegas()
@@ -167,10 +162,4 @@ class Bodegas():
         except Exception as e:
             print(f"Error al cargar bodegas: {e}")
             return []
-
-    def cerrarBD(self):
-        self.cursor.close()
-        self.conexion.close()
-
-
 

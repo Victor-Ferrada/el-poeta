@@ -2,18 +2,14 @@ import sys
 import os
 from os import system
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-import mysql.connector
 from tabulate import tabulate
-from Funciones.otras_funciones import validar_entero
+from Funciones.otras_funciones import validar_entero,ConexionBD
 
 class Editoriales():
     def __init__(self):
-         self.conexion = mysql.connector.connect(
-             host='localhost',
-             user='root',
-             password='inacap2023',
-             database='elpoeta')
-         self.cursor = self.conexion.cursor()
+        self.conexion = ConexionBD.conectar_db()
+        if self.conexion:
+            self.cursor = self.conexion.cursor()
 
     # Función para agregar una editorial
     def agregar_editorial(self):
@@ -159,8 +155,5 @@ class Editoriales():
             print(f"Error al cargar editoriales: {e}")
             return []
 
-    def cerrarBD(self):
-        self.cursor.close()
-        self.conexion.close()
 
 editoriales=Editoriales()

@@ -3,18 +3,14 @@ import os
 import time
 from os import system
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-import mysql.connector
 import pwinput
-
+from Funciones.otras_funciones import ConexionBD
 
 class Usuarios():
     def __init__(self):
-        self.conexion = mysql.connector.connect(
-            host='localhost',
-            user='root',
-            password='inacap2023',
-            database='elpoeta')
-        self.cursor=self.conexion.cursor()
+        self.conexion = ConexionBD.conectar_db()
+        if self.conexion:
+            self.cursor = self.conexion.cursor()
         self.usuario_actual=None
 
     def autenticar_usuario(self):

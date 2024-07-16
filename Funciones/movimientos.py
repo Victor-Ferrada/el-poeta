@@ -9,16 +9,14 @@ from tabulate import tabulate
 from Funciones.gestionar_productos import Productos as p
 from Funciones.gestionar_bodegas import Bodegas
 from datetime import datetime
+from Funciones.otras_funciones import ConexionBD
 
 class Movimientos():
 
     def __init__(self):
-        self.conexion = mysql.connector.connect(
-            host='localhost',
-            user='root',
-            password='inacap2023',
-            database='elpoeta')
-        self.cursor = self.conexion.cursor()
+        self.conexion = ConexionBD.conectar_db()
+        if self.conexion:
+            self.cursor = self.conexion.cursor()
     
     def mover_producto(self,user,locales):
 

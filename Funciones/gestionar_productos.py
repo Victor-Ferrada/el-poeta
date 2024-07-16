@@ -6,16 +6,14 @@ import mysql.connector
 from tabulate import tabulate
 from Funciones.gestionar_editoriales import Editoriales
 from Funciones.gestionar_autores import Autores
+from Funciones.otras_funciones import ConexionBD
 
 
 class Productos():
     def __init__(self):
-         self.conexion = mysql.connector.connect(
-             host='localhost',
-             user='root',
-             password='inacap2023',
-             database='elpoeta')
-         self.cursor = self.conexion.cursor()
+        self.conexion = ConexionBD.conectar_db()
+        if self.conexion:
+            self.cursor = self.conexion.cursor()
 
     def agregar_producto(self,user):
             # Mostrar opciones de tipo de producto

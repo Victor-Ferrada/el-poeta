@@ -2,6 +2,7 @@ from Funciones.cls import cls
 from os import system
 import sys
 import time
+
 def mostrar_terminos_y_condiciones():
     # Impresión de los términos y condiciones
     while True:
