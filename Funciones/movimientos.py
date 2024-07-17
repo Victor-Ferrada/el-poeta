@@ -59,6 +59,7 @@ class Movimientos():
 
                 productos = p.cargar_productos(self)
                 while not productos:
+                    system('cls')
                     nodata=print('No existen ni se han agregado productos con las que trabajar.')
                     input("\nPresione ENTER para volver atrás ...")                
                     return         
