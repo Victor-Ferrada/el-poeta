@@ -11,6 +11,7 @@ inv=Inventario()
 
 # Función para gestionar bodegas 
 def menu_bodegas(usuario):
+    locales=None
     while True:
         try:
             print('-'*10+'Gestión de Bodegas'+'-'*10+'\n')
@@ -30,7 +31,6 @@ def menu_bodegas(usuario):
             elif opcion == "3":
                 system('cls')
                 inv.mostrar_inventario()
-                input('Presione ENTER para volver atrás...')
             elif opcion == "4":
                 system('cls')
                 bod.eliminar_bodega(usuario)

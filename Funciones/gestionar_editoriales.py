@@ -120,6 +120,7 @@ class Editoriales():
                     system('cls')
                     print(f"\nNo se puede eliminar la editorial {rutedit} porque tiene productos asociados.\n")
                     input('Presione ENTER para volver atrás...')
+                    system('cls')
                     print('-'*10+'Eliminar Editoriales'+'-'*10+'\n')
                     Editoriales().mostrar_editoriales()
                     continue

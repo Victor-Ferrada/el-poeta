@@ -210,7 +210,6 @@ class Productos():
         while True:
             try:
                 codProd = input("Ingrese el código del producto a eliminar (o 's' para salir): ").upper()
-
                 if codProd == 'S':
                     system('cls')
                     print("\nVolviendo al menú de editoriales...\n")

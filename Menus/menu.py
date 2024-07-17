@@ -12,8 +12,8 @@ from Funciones.otras_funciones import ConexionBD,load_locales,save_locales
 
 
 def main():
-    db=ConexionBD()
     us=Usuarios()
+    db=ConexionBD()
     jefe=JefeBodega()
     bod=Bodegueros()
     locales = load_locales()
@@ -58,7 +58,7 @@ def main():
                         print(f"Saliendo del sistema en {i} segundos...", end='\r')
                         time.sleep(1)
                     save_locales(locales) 
-                    Usuarios().cerrar_db()
+                    db.cerrar_db()
                     return locales
                 else:
                     system('cls')
@@ -72,8 +72,6 @@ def main():
             print(f"Error inesperado: {e}")
             return
 
-if __name__ == "__main__":
-    main()
 
 main()
 

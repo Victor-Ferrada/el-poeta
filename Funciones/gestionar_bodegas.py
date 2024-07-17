@@ -11,7 +11,6 @@ class Bodegas():
         self.conexion = ConexionBD.conectar_db()
         if self.conexion:
             self.cursor = self.conexion.cursor()
-            
     # Función para crear una bodega 
     def crear_bodega(self,usuario):
         while True:
@@ -60,10 +59,14 @@ class Bodegas():
                     self.cursor.execute("insert into bodegas (codbod, sucursal, fonobod, responsable, codpostbod) values (%s, %s, %s, %s, %s)",
                                     (cod_bod, sucursal, fono_bod, responsable, cod_post_bod))
                     self.conexion.commit()
+                    
                     system('cls')
                     print("\nBodega creada exitosamente.")
                     input("\nPresione ENTER para volver al menú de bodegas...")
                     system('cls')
+                    
+                    if self.locales is None:
+                        self.locales = i_consonantes
                     return i_consonantes
                 except Exception as e:
                     print(f"Error al crear bodega: {e}\n")
@@ -94,64 +97,85 @@ class Bodegas():
         print('-'*10+'Eliminar Bodegas'+'-'*10+'\n')
         Bodegas().mostrar_bodegas()
         while True:
-            codbod = input("Ingrese el código de bodega a eliminar (o 's' para salir): ").upper()
-            if codbod=='S':
-                    system('cls')
-                    print("\nVolviendo al menú de bodegas...\n")
-                    return
-            if codbod=='':
+            try:
+                codbod = input("Ingrese el código de bodega a eliminar (o 's' para salir): ").upper()
+                if codbod=='S':
+                        system('cls')
+                        print("\nVolviendo al menú de bodegas...\n")
+                        return
+                if codbod=='':
+                        system('cls')
+                        print('-'*10+'Eliminar Bodegas'+'-'*10+'\n')
+                        Bodegas().mostrar_bodegas()
+                        print("Entrada vacía. Reintente.\n")
+                        continue
+                self.cursor.execute("select * from bodegas where codbod = %s", (codbod,))
+                bodega = self.cursor.fetchone()
+                if not bodega:
                     system('cls')
                     print('-'*10+'Eliminar Bodegas'+'-'*10+'\n')
                     Bodegas().mostrar_bodegas()
-                    print("Entrada vacía. Reintente.\n")
+                    print(f"Bodega {codbod} no existe. Reintente.\n")
                     continue
-            self.cursor.execute("select * from bodegas where codbod = %s", (codbod,))
-            bodega = self.cursor.fetchone()
-            if not bodega:
+                self.cursor.execute("select responsable from bodegas where codbod = %s", (codbod,))
+                jefe = self.cursor.fetchone()[0]
+                if usuario!=jefe:
+                    system('cls')
+                    print(f'Usuario {usuario} no autorizado para eliminar bodega {codbod}. \nPor favor contacte al Jefe de Bodega correspondiente ({jefe}).\n')
+                    input('Presione ENTER para volver atrás...')
+                    system('cls')
+                    return
+                self.cursor.execute("select * from movimientos where bodega = %s", (codbod,))
+                movimientos = self.cursor.fetchone()
+                
+                if movimientos:
+                    system('cls')
+                    print(f"\nNo se puede eliminar la bodega {codbod} porque tiene movimientos registrados.\n")
+                    input('Presione ENTER para volver atrás...')
+                    system('cls')
+                    print('-'*10 + 'Eliminar Bodegas' + '-'*10 + '\n')
+                    Bodegas().mostrar_bodegas()
+                    continue
+                self.cursor.execute("select * from inventario where bodega = %s and stock>0", (codbod,))
+                inventario = self.cursor.fetchone()
+                if inventario:
+                    system('cls')
+                    print(f"\nNo se puede eliminar la bodega {codbod} porque contiene productos actualmente.\n")
+                    input('Presione ENTER para volver atrás...')
+                    system('cls')
+                    print('-'*10+'Eliminar Bodegas'+'-'*10+'\n')
+                    Bodegas().mostrar_bodegas()
+                    continue
                 system('cls')
-                print('-'*10+'Eliminar Bodegas'+'-'*10+'\n')
-                Bodegas().mostrar_bodegas()
-                print(f"Bodega {codbod} no existe. Reintente.\n")
-                continue
-            self.cursor.execute("select responsable from bodegas where codbod = %s", (codbod,))
-            jefe = self.cursor.fetchone()[0]
-            if usuario!=jefe:
-                system('cls')
-                print(f'Usuario {usuario} no autorizado para eliminar bodega {codbod}. \nPor favor contacte al Jefe de Bodega correspondiente ({jefe}).\n')
-                input('Presione ENTER para volver atrás...')
-                system('cls')
-                return
-            self.cursor.execute("select * from inventario where bodega = %s", (codbod,))
-            inventario = self.cursor.fetchone()
-            if inventario:
-                system('cls')
-                print(f"\nNo se puede eliminar la bodega {codbod} porque contiene productos actualmente.\n")
-                input('Presione ENTER para volver atrás...')
-                system('cls')
-                return
-            else:
-                system('cls')
-                while True:
-                    confirmar=input(f"¿Está seguro que desea eliminar la bodega {codbod}? (s/n): ").lower()
-                    while confirmar not in ['s', 'n']:
-                        confirmar = input("\nOpción inválida. Ingrese una opción válida (s/n): ").lower()
-                    if confirmar == 's':
-                        try:
-                            self.cursor.execute("delete from bodegas where codbod = %s", (codbod,))
+                self.cursor.execute("select * from inventario where bodega = %s and stock=0", (codbod,))
+                inventario2 = self.cursor.fetchone()
+                confirmar=input(f"¿Está seguro que desea eliminar la bodega {codbod}? (s/n): ").lower()
+                
+                while confirmar not in ['s', 'n']:
+                    confirmar = input("\nOpción inválida. Ingrese una opción válida (s/n): ").lower()
+                if confirmar == 's':
+                    try:
+                        if inventario2:
+                            self.cursor.execute("delete from inventario where bodega=%s",(codbod,))
                             self.conexion.commit()
-                            system('cls')
-                            Bodegas().mostrar_bodegas()
-                            input("Bodega eliminada exitosamente. Presione ENTER para volver al menú de gestión de bodegas...")
-                            system('cls')
-                            return
-                        except Exception as e:
-                            print(f"Error al eliminar bodega: {e}")
-                            self.conexion.rollback()
-                    else:
+                        self.cursor.execute("delete from bodegas where codbod = %s", (codbod,))
+                        self.conexion.commit()
                         system('cls')
-                        input("Operación cancelada. Presione ENTER para volver al menú de gestión de bodegas...")
+                        Bodegas().mostrar_bodegas()
+                        input("Bodega eliminada exitosamente. Presione ENTER para volver al menú de gestión de bodegas...")
                         system('cls')
-                        return 
+                        return
+                    except Exception as e:
+                        print(f"Error al eliminar bodega: {e}")
+                        self.conexion.rollback()
+                else:
+                    system('cls')
+                    input("Operación cancelada. Presione ENTER para volver al menú de gestión de bodegas...")
+                    system('cls')
+                    return 
+            except Exception as e:
+                print(f"Error inesperado: {e}")
+                self.conexion.rollback()
     
     def cargar_bodegas(self,locales):
         try:

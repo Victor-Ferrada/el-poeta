@@ -28,7 +28,7 @@ class Usuarios():
                 self.cursor.execute("SELECT * FROM BODEGUEROS WHERE RUNBOD = %s", (user,))
                 bodeguero = self.cursor.fetchone()
                 if not jefe and not bodeguero:
-                    if user=='s':
+                    if user=='S':
                         system('cls')
                         return
                     else:
@@ -86,7 +86,3 @@ class Usuarios():
             print(f"Error al autenticar usuario: {e}")
             return None
     
-    def cerrarBD(self):
-        self.cursor.close()
-        self.conexion.close()
-

@@ -23,6 +23,7 @@ class JefeBodega():
     
     # Menú del jefe de bodega
     def menu_jefe_bodega(self,user):
+        locales=None
         while True:
             try:
                 print("\n--- Menú Jefe de Bodega ---\n")
