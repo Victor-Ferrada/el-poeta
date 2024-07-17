@@ -44,7 +44,9 @@ class Movimientos():
                     bodega_origen = int(bodega_origen)
 
                     if bodega_origen == 0:
+                        system('cls')
                         input("\nPresione ENTER para volver atrás ...")
+                        system('cls')
                         return  
                                       
                     if bodega_origen < 1 or bodega_origen > len(origen):
@@ -60,8 +62,9 @@ class Movimientos():
                 productos = p.cargar_productos(self)
                 while not productos:
                     system('cls')
-                    nodata=print('No existen ni se han agregado productos con las que trabajar.')
-                    input("\nPresione ENTER para volver atrás ...")                
+                    print('No existen ni se han agregado productos con las que trabajar.')
+                    input("\nPresione ENTER para volver atrás ...")
+                    system('cls')                
                     return         
 
 

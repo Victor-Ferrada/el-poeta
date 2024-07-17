@@ -51,3 +51,23 @@ def load_locales():
         return locales
     return None
 LOCALES_FILE = "locales.pickle"
+
+def guardar_terminos_y_condiciones(usuario):
+    try:
+        with open(f'{usuario}_terminos.pickle', 'wb') as f:
+            pickle.dump(True, f)  # Guardar True para indicar términos aceptados
+        return True
+    except Exception as e:
+        print(f"Error al guardar términos y condiciones para {usuario}: {e}")
+        return False
+
+def verificar_terminos_y_condiciones(usuario):
+    try:
+        with open(f'{usuario}_terminos.pickle', 'rb') as f:
+            aceptado = pickle.load(f)
+            return aceptado
+    except FileNotFoundError:
+        return False
+    except Exception as e:
+        print(f"Error al verificar términos y condiciones para {usuario}: {e}")
+        return False

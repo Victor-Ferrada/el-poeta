@@ -31,12 +31,14 @@ def main():
                 perfil = us.autenticar_usuario()
                 user=us.usuario_actual
                 if perfil:
-                    aceptado=mostrar_terminos_y_condiciones()
+                    aceptado=mostrar_terminos_y_condiciones(user)
                     if aceptado:
                         if perfil == 'jefe':
                             # Redirigir al menú del Jefe de Bodega
                             print("Redirigiendo al menú del Jefe de Bodega...")
-                            locales = jefe.menu_jefe_bodega(user)  # Pasar el usuario actual al menú del jefe de bodega
+                            nuevo_locales = jefe.menu_jefe_bodega(user)  # Obtener locales actualizados desde el menú del jefe de bodega
+                            if nuevo_locales:
+                                locales = nuevo_locales  # Actualizar locales solo si se creó una bodega exitosamente
                             
                         elif perfil == 'bodeguero':
                             # Redirigir al menú del Bodeguero

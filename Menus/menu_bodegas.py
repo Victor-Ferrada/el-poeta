@@ -24,7 +24,9 @@ def menu_bodegas(usuario):
 
             if opcion == "1":
                 system('cls')
-                locales=bod.crear_bodega(usuario)
+                nuevo_locales = bod.crear_bodega(usuario)
+                if nuevo_locales:
+                    locales = nuevo_locales
             elif opcion == "2":
                 system('cls')
                 inv.añadir_productos(usuario)

@@ -11,6 +11,7 @@ class Bodegas():
         self.conexion = ConexionBD.conectar_db()
         if self.conexion:
             self.cursor = self.conexion.cursor()
+        
     # Función para crear una bodega 
     def crear_bodega(self,usuario):
         while True:
@@ -39,7 +40,7 @@ class Bodegas():
             consonantes = re.findall(r'[^NAEIOU\s]', sucursal)
             i_consonantes = ''.join(consonantes[:3]).upper()
             cont=1
-            self.locales=i_consonantes
+            
             while True:
                 cod_bod=f"{i_consonantes}{0}{cont}"
                 self.cursor.execute("select * from bodegas where codbod=%s",(cod_bod,))
@@ -65,8 +66,6 @@ class Bodegas():
                     input("\nPresione ENTER para volver al menú de bodegas...")
                     system('cls')
                     
-                    if self.locales is None:
-                        self.locales = i_consonantes
                     return i_consonantes
                 except Exception as e:
                     print(f"Error al crear bodega: {e}\n")

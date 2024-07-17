@@ -1,10 +1,14 @@
-from Funciones.cls import cls
 from os import system
 import sys
 import time
+import pickle
+from Funciones.otras_funciones import guardar_terminos_y_condiciones,verificar_terminos_y_condiciones
 
-def mostrar_terminos_y_condiciones():
-    # Impresión de los términos y condiciones
+def mostrar_terminos_y_condiciones(usuario):
+    # Verificar si los términos ya han sido aceptados previamente
+    if verificar_terminos_y_condiciones(usuario):
+        print("Términos y condiciones de uso aceptados anteriormente.\n")
+        return True
     while True:
         print("\nTérminos y Condiciones de Uso del Sistema de Gestión de Inventario de la Librería El gran Poeta")
         print("")
@@ -41,14 +45,18 @@ def mostrar_terminos_y_condiciones():
         print("   - La librería se reserva el derecho de modificar estos términos y condiciones en cualquier momento.")
         print("   - Los usuarios serán notificados de los cambios mediante notificación directa o publicación en el sitio web de la librería.")
         print("")
-        aceptado = input("\n¿Acepta los términos y condiciones? (s/n): ").lower()
+        aceptado = input("\n¿Acepta los términos y condiciones de uso? (s/n): ").lower()
         while aceptado not in ['s', 'n']:
             aceptado = input("\nOpción inválida. Ingrese una opción válida (s/n): ").lower()
         if aceptado == "s":
-            system('cls')
-            input('Términos y condiciones de uso aceptados. Presione ENTER para continuar...')
-            system('cls')
-            return True
+            if guardar_terminos_y_condiciones(usuario):
+                system('cls')
+                input('Términos y condiciones de uso aceptados. Presione ENTER para continuar...')
+                system('cls')
+                return True
+            else:
+                print(f"Error al guardar términos y condiciones para {usuario}.")
+                return False
         elif aceptado == "n":
             system('cls')
             print("Debe aceptar los términos y condiciones de uso para utilizar el sistema.")

@@ -4,7 +4,7 @@ import pickle
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from os import system
 import time
-from Funciones.otras_funciones import ConexionBD,save_locales
+from Funciones.otras_funciones import ConexionBD,save_locales,load_locales
 bd=ConexionBD()
 from Menus.menu_bodegas import menu_bodegas
 from Funciones.gestionar_bodegas import Bodegas
@@ -23,7 +23,8 @@ class JefeBodega():
     
     # Menú del jefe de bodega
     def menu_jefe_bodega(self,user):
-        locales=None
+        locales = None
+        actualizar_locales = False
         while True:
             try:
                 print("\n--- Menú Jefe de Bodega ---\n")
@@ -36,7 +37,10 @@ class JefeBodega():
                 opcion = input("\nSeleccione una opción: ")
                 if opcion == "1":
                     system('cls')
-                    locales=menu_bodegas(user)
+                    nuevo_locales = menu_bodegas(user)
+                    if nuevo_locales:
+                        locales = nuevo_locales  # Actualizar locales solo si se crea una bodega nueva exitosamente
+                        actualizar_locales = True
                 elif opcion == "2":
                     system('cls')
                     menu_productos(user)
@@ -93,7 +97,8 @@ class JefeBodega():
                             print(f"Cerrando sesión en {i} segundos...", end='\r')
                             time.sleep(1)  
                         system('cls')
-                        save_locales(locales)  # Guardar locales antes de cerrar sesión
+                        if actualizar_locales:
+                            save_locales(locales)  # Guardar locales solo si se han realizado cambios
                         return locales
                     else:
                         system('cls')
@@ -105,6 +110,6 @@ class JefeBodega():
                 print(f"{e} Ingrese una opción de la lista:")
             except Exception as e:
                 print(f"Error inesperado: {e}")
-                return
+                return locales
         
 j=JefeBodega()
