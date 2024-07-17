@@ -1,9 +1,10 @@
 import sys
 import os
+import pickle
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from os import system
 import time
-from Funciones.otras_funciones import ConexionBD
+from Funciones.otras_funciones import ConexionBD,save_locales
 bd=ConexionBD()
 from Menus.menu_bodegas import menu_bodegas
 from Funciones.gestionar_bodegas import Bodegas
@@ -22,7 +23,6 @@ class JefeBodega():
     
     # Menú del jefe de bodega
     def menu_jefe_bodega(self,user):
-        locales=None
         while True:
             try:
                 print("\n--- Menú Jefe de Bodega ---\n")
@@ -31,9 +31,7 @@ class JefeBodega():
                 print("3. Gestionar Autores")
                 print("4. Gestionar Editoriales")
                 print("5. Visualizar todas las Bodegas")
-                print("6. Generar Informe de Inventario")
-                print("7. Generar Informe de Historial de Movimientos")
-                print("8. Cerrar Sesión")
+                print("6. Cerrar Sesión")
                 opcion = input("\nSeleccione una opción: ")
                 if opcion == "1":
                     system('cls')
@@ -50,15 +48,40 @@ class JefeBodega():
                 elif opcion == "5":
                     system('cls')
                     bod.mostrar_bodegas()
-                    input('Presione ENTER para volver atrás...')
-                    system('cls')
+                    print("1. Generar Informe de Inventario")
+                    print("2. Generar Informe de Historial de Movimientos")
+                    print("3. Volver")
+                    while True:
+                        try:
+                            opcion2 = input("\nSeleccione una opción: ")
+                            if opcion2 == "1":
+                                system('cls')
+                                generar_informe_inventario()
+                                bod.mostrar_bodegas()
+                                print("1. Generar Informe de Inventario")
+                                print("2. Generar Informe de Historial de Movimientos")
+                                print("3. Volver")
+                            elif opcion2 == "2":
+                                system('cls')
+                                generar_informe_movimientos()
+                                bod.mostrar_bodegas()
+                                print("1. Generar Informe de Inventario")
+                                print("2. Generar Informe de Historial de Movimientos")
+                                print("3. Volver")
+                            elif opcion2 == "3":
+                                system('cls')
+                                break
+                            else:
+                                system('cls')
+                                bod.mostrar_bodegas()
+                                print("Opción inválida. Ingrese una opción de la lista: \n")
+                                print("1. Generar Informe de Inventario")
+                                print("2. Generar Informe de Historial de Movimientos")
+                                print("3. Volver")
+                        except Exception as e:
+                            print(f"Error inesperado: {e}")
+                            return
                 elif opcion == "6":
-                    system('cls')
-                    generar_informe_inventario()
-                elif opcion == "7":
-                    system('cls')
-                    generar_informe_movimientos()
-                elif opcion == "8":
                     system('cls')
                     confirmar=input('¿Está seguro que desea cerrar la sesión? (s/n): ')
                     while confirmar not in ['s', 'n']:
@@ -69,6 +92,7 @@ class JefeBodega():
                             print(f"Cerrando sesión en {i} segundos...", end='\r')
                             time.sleep(1)  
                         system('cls')
+                        save_locales(locales)  # Guardar locales antes de cerrar sesión
                         return locales
                     else:
                         system('cls')
@@ -81,6 +105,5 @@ class JefeBodega():
             except Exception as e:
                 print(f"Error inesperado: {e}")
                 return
-
+        
 j=JefeBodega()
-j.menu_jefe_bodega('123')
