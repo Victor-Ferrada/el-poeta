@@ -93,7 +93,7 @@ class Productos():
                     tabla_autores=[[i, autor[1]+' '+autor[2],autor[0]] for i, autor in enumerate(autores, start=1)]
                     print(tabulate(tabla_autores, headers=['Nº', 'Nombre', 'RUN'], tablefmt='fancy_grid'))
 
-                    opcion_autor = input("Ingrese el número correspondiente al autor: ").strip().lower()
+                    opcion_autor = input("Ingrese el número correspondiente al autor(0 para cancelar): ").strip().lower()
                     
 
                     
@@ -103,6 +103,10 @@ class Productos():
                         continue
                     
                     opcion_autor = int(opcion_autor)
+                    
+                    if opcion_autor == 0:
+                        input("\nPresione ENTER para volver al menú de productos...")
+                        return                        
                     
                     if opcion_autor < 1 or opcion_autor > len(autores):
                         system('cls')
@@ -314,8 +318,9 @@ class Inventario():
         try:
             productos = Productos.cargar_productos(self)
             while not productos:
-                print('No existen ni se han agregado productos con los que trabajar')
+                print('No existen ni se han agregado productos con los que trabajar.')
                 input("\nPresione ENTER para volver al menú de productos...")
+                system('cls')
                 return
             
             system('cls')
@@ -520,4 +525,3 @@ class Inventario():
         
 productos=Productos()
 inventario=Inventario()
-
