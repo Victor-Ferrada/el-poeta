@@ -161,4 +161,3 @@ class Editoriales():
 
 
 editoriales=Editoriales()
-editoriales.eliminar_editorial('123')

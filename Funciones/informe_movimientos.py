@@ -18,17 +18,17 @@ def generar_informe_movimientos():
         bodega_seleccionada = input("Ingrese el código de la bodega para generar el informe (o 's' para salir): ").strip().upper()
         system('cls')
         if bodega_seleccionada=='S':
-                system('cls')
-                print("\nVolviendo al menú de Jefe de Bodega...")
-                return
-        if bodega_seleccionada=='':
-                system('cls')
-                print('-'*10+'Informes de Movimientos de Bodegas'+'-'*10+'\n')
-                Bodegas().mostrar_bodegas()
-                print("Entrada vacía. Reintente.\n")
-                continue
+            system('cls')
+            print("\nVolviendo al menú de Jefe de Bodega...")
+            return
+        elif bodega_seleccionada=='':
+            system('cls')
+            print('-'*10+'Informes de Movimientos de Bodegas'+'-'*10+'\n')
+            Bodegas().mostrar_bodegas()
+            print("Entrada vacía. Reintente.\n")
+            continue
         
-        cursor.execute("SELECT * FROM bodegas WHERE codbod = %s", (bodega_seleccionada,))
+        cursor.execute("select * from bodegas where codbod = %s", (bodega_seleccionada,))
         bodega_existe = cursor.fetchone()
         if not bodega_existe:
             system('cls')

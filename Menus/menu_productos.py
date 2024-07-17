@@ -47,5 +47,3 @@ def menu_productos(usuario):
         except Exception as e:
             print(f"Error inesperado: {e}")
             return
-
-menu_productos('123')

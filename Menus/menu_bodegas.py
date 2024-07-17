@@ -16,7 +16,7 @@ def menu_bodegas(usuario):
             print('-'*10+'Gestión de Bodegas'+'-'*10+'\n')
             print("1. Crear Bodega")
             print("2. Añadir Productos a la Bodega")
-            print("3. Mostrar Bodegas")
+            print("3. Mostrar Inventario de Bodega")
             print("4. Eliminar Bodega")
             print("5. Volver")
             opcion = input("\nSeleccione una opción: ")
@@ -29,7 +29,7 @@ def menu_bodegas(usuario):
                 inv.añadir_productos(usuario)
             elif opcion == "3":
                 system('cls')
-                bod.mostrar_bodegas()
+                inv.mostrar_inventario()
                 input('Presione ENTER para volver atrás...')
             elif opcion == "4":
                 system('cls')

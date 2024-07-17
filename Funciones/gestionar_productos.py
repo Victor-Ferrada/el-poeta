@@ -7,7 +7,7 @@ from tabulate import tabulate
 from Funciones.gestionar_editoriales import Editoriales
 from Funciones.gestionar_autores import Autores
 from Funciones.otras_funciones import ConexionBD,validar_entero
-
+from Funciones.gestionar_bodegas import Bodegas
 
 class Productos():
     def __init__(self):
@@ -18,10 +18,10 @@ class Productos():
     def agregar_producto(self,usuario):
             # Mostrar opciones de tipo de producto
             tipos_producto = {
-                "Novela": "NOV",
+                "Libro": "LIBR",
                 "Revista": "REV",
                 "Poemario": "POE",
-                "Ensayo": "ENS",
+                "Enciclopedia": "ENC",
                 "Otros": "OTR"
             }
             system('cls')
@@ -187,12 +187,12 @@ class Productos():
 
     def mostrar_productos(self):
         print('-'*10+'Productos'+'-'*10+'\n')
-        sql=f"""SELECT p.codProd, p.nomProd, p.tipo, p.descripcion, e.nomEdit, GROUP_CONCAT(a.apPatAu SEPARATOR ', ') AS apellidosAutores
-            FROM Productos p
-            JOIN Editoriales e ON p.editorial = e.rutEdit
-            JOIN AuProd ap ON p.codProd = ap.codProd
-            JOIN Autores a ON ap.runAutor = a.runAutor
-            GROUP BY p.codProd, p.nomProd, p.tipo, p.descripcion, e.nomEdit;
+        sql=f"""select p.codprod, p.nomprod, p.tipo, p.descripcion, e.nomedit, group_concat(a.appatau separator ', ') as apellidosautores
+            from productos p
+            join editoriales e on p.editorial = e.rutedit
+            join auprod ap on p.codprod = ap.codprod
+            join autores a on ap.runautor = a.runautor
+            group by p.codprod, p.nomprod, p.tipo, p.descripcion, e.nomedit;
             """
         try:
             self.cursor.execute(sql)
@@ -201,7 +201,7 @@ class Productos():
             print(tabulate(lista_procesada,headers=['Código','Nombre','Tipo','Descripcion','Editorial','Autores'],tablefmt='fancy_grid')) 
             print("\n")
         except Exception as e:
-            print(f"Error al mostrar editoriales: {e}")
+            print(f"Error al mostrar productos: {e}")
             self.conexion.rollback()
 
     def eliminar_producto(self, usuario):
@@ -299,7 +299,6 @@ class Productos():
 
 
 class Inventario():
-
     def __init__(self):
         self.conexion = ConexionBD.conectar_db()
         if self.conexion:
@@ -460,6 +459,57 @@ class Inventario():
         except Exception as e:
             print(f"Error al agregar producto: {e}")
             self.conexion.rollback()
+
+    def mostrar_inventario(self):
+        print('-'*10+'Inventario de Bodega'+'-'*10+'\n')
+        Bodegas().mostrar_bodegas()
+        while True:
+            try:
+                codbod=input("Ingrese una bodega para ver su inventario (o 's' para salir): ").upper()
+                
+                if codbod == 'S':
+                    system('cls')
+                    print("\nVolviendo al menú anterior...\n")
+                    return
+                if codbod == '':
+                    system('cls')
+                    print('-'*10+'Inventario de Bodega'+'-'*10)
+                    Bodegas().mostrar_bodegas()
+                    print("Entrada vacía. Reintente.\n")
+                    continue
+                self.cursor.execute("select * from bodegas where codbod = %s", (codbod,))
+                bodega = self.cursor.fetchone()
+                if not bodega:
+                    system('cls')
+                    print('-'*10+'Inventario de Bodega'+'-'*10)
+                    Bodegas().mostrar_bodegas()
+                    print(f"Bodega {codbod} no existe. Reintente.\n")
+                    continue
+                self.cursor.execute(f"""select p.codprod, p.nomprod, i.stock
+                    from inventario i
+                    join productos p on i.codprod = p.codprod
+                    where i.bodega = '{codbod}';""")
+                inventario = self.cursor.fetchall()
+                if not inventario:
+                    system('cls')
+                    print("No se encontraron productos en el inventario para la bodega seleccionada.")
+                    input("\nPresione ENTER para volver atrás...")
+                    system('cls')
+                    return
+
+                data_productos = [["Código del Producto", "Nombre del Producto", "Stock"]]
+                data_productos.extend(inventario)
+                table_productos = tabulate(data_productos, headers="firstrow", tablefmt="fancy_grid")
+                system('cls')
+                print('-'*10 + 'Inventario de Bodega ' +codbod+ '-'*10 + '\n')
+                print(table_productos)
+                input("\nPresione ENTER para volver atrás...")
+                system('cls')
+                return
+            except Exception as e:
+                print(f"Error al mostrar productos: {e}")
+                input("\nPresione ENTER para volver atrás...")
+                system('cls')
 
         
 productos=Productos()

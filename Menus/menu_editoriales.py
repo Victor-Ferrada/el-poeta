@@ -40,5 +40,3 @@ def gestionar_editoriales(usuario):
         except Exception as e:
             print(f"Error inesperado: {e}")
             return
-
-gestionar_editoriales('123')

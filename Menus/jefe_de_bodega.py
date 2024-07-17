@@ -8,12 +8,11 @@ bd=ConexionBD()
 from Menus.menu_bodegas import menu_bodegas
 from Funciones.gestionar_bodegas import Bodegas
 from Funciones.informe_movimientos import generar_informe_movimientos
+from Funciones.informe_inventario import generar_informe_inventario
 bod=Bodegas()
 from Menus.menu_productos import menu_productos
 from Menus.menu_autores import gestionar_autores
 from Menus.menu_editoriales import gestionar_editoriales
-#from Funciones.generar_informe_de_inventario import generar_informe_inventario
-#from Funciones.generar_informe_de_historial_de_movimientos import generar_informe_movimientos
 
 class JefeBodega():
     def __init__(self):
@@ -55,7 +54,7 @@ class JefeBodega():
                     system('cls')
                 elif opcion == "6":
                     system('cls')
-                    #generar_informe_inventario()
+                    generar_informe_inventario()
                 elif opcion == "7":
                     system('cls')
                     generar_informe_movimientos()
@@ -84,3 +83,4 @@ class JefeBodega():
                 return
 
 j=JefeBodega()
+j.menu_jefe_bodega('123')
