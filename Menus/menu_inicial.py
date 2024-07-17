@@ -18,9 +18,7 @@ def main():
     jefe=JefeBodega()
     bod=Bodegueros()
     locales = load_locales()
-    
     while True:
-        print(locales)
         try:
             print('-'*10+'Bienvenido al Sistema de Gestión de Inventario El gran Poeta'+'-'*10+'\n')
             print("1. Iniciar Sesión")
