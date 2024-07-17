@@ -18,8 +18,11 @@ class Usuarios():
             while True:
                 system('cls')
                 print('-'*10+'Inicio de Sesión'+'-'*10+'\t\t(s para volver atrás)\n')
-                user = input('Ingrese su RUN: ')
+                user = input('Ingrese su RUN: ').upper()
                 # Verificar si el usuario existe en JEFEBODEGA
+                while user=='':
+                    system('cls')
+                    user=input('Entrada vacía. Reintente.\nIngrese su RUN: ').upper()
                 self.cursor.execute("SELECT * FROM JEFEBODEGA WHERE RUNJEF = %s", (user,))
                 jefe = self.cursor.fetchone()
                 self.cursor.execute("SELECT * FROM BODEGUEROS WHERE RUNBOD = %s", (user,))

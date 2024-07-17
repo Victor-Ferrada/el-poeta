@@ -264,31 +264,3 @@ class Movimientos():
                 print(f"Error general: {e}")
                 self.conexion.rollback()
             
-        
-
-
-    def menu(self):
-        while True:
-            print("----- MENÚ DE INVENTARIO -----")
-            print("1. Añadir producto a inventario")
-            print("2. Mover producto entre inventarios")
-            print("3. Salir")
-            opcion = input("Ingrese una opción: ")
-
-            if opcion == '1':
-                self.añadir_productos()
-            elif opcion == '2':
-                self.mover_producto('12345678-9','THN')
-            elif opcion == '3':
-                print("Saliendo del programa...")
-                break
-            else:
-                print("Opción no válida. Intente nuevamente.")
-
-            
-
-
-
-
-mov=Movimientos()
-mov.menu()
