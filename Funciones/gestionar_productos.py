@@ -86,9 +86,9 @@ class Productos():
             while True:
                 autores_seleccionados = []
                 agregar_otro_autor = 's'
-                
+               
                 while agregar_otro_autor.lower() == 's':
-                    system('cls')
+
                     print("Seleccione el autor del producto:")
                     tabla_autores=[[i, autor[1]+' '+autor[2],autor[0]] for i, autor in enumerate(autores, start=1)]
                     print(tabulate(tabla_autores, headers=['Nº', 'Nombre', 'RUN'], tablefmt='fancy_grid'))
@@ -98,6 +98,7 @@ class Productos():
 
                     
                     if not opcion_autor.isdigit():
+                        system('cls')
                         print("Por favor, ingrese un número.")
                         continue
                     
@@ -109,6 +110,12 @@ class Productos():
                         continue
                     
                     run_autor = autores[opcion_autor - 1][0]
+
+                    if autores[opcion_autor - 1][0] in autores_seleccionados:
+                        system('cls')
+                        print("Error: Este producto ya ha sido seleccionado.")
+                        continue
+
                     autores_seleccionados.append(run_autor)
                     
                     agregar_otro_autor = input("¿Desea agregar otro autor? (s/n): ").strip().lower()
@@ -513,3 +520,4 @@ class Inventario():
         
 productos=Productos()
 inventario=Inventario()
+

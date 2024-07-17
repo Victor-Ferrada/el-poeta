@@ -33,13 +33,18 @@ class Movimientos():
                     bodegas_origen = [[i, bodega[1], bodega[0]] for i, bodega in enumerate(origen, start=1)]
                     print(tabulate(bodegas_origen, headers=['Nº', 'Nombre', 'Código'], tablefmt='fancy_grid'))
 
-                    bodega_origen = input("Ingrese el número correspondiente a la bodega de origen: ")
+                    bodega_origen = input("Ingrese el número correspondiente a la bodega de origen(0 para cancelar): ")
                     if not bodega_origen.isdigit():
                         system('cls')
                         print("Por favor, ingrese un número.")
                         continue
 
                     bodega_origen = int(bodega_origen)
+
+                    if bodega_origen == 0:
+                        input("\nPresione ENTER para volver al menú de productos...")
+                        return  
+                                      
                     if bodega_origen < 1 or bodega_origen > len(origen):
                         system('cls')
                         print("Opción no válida. Debe ser un número entre 1 y", len(origen))
@@ -64,6 +69,8 @@ class Movimientos():
                 if not productos_filtrados:
                     print("No hay productos disponibles en la bodega de origen.")
                     return
+                
+                system('cls')
 
                 print("Seleccione los productos a mover :")
                 while True:
@@ -72,7 +79,7 @@ class Movimientos():
                     mover_otro = 's'
                     
                     while mover_otro.lower() == 's':
-                        system('cls')
+                        
                         print("Productos disponibles en bodega:")
                         productosi = []
                         for i, producto in enumerate(productos_filtrados, start=1):
@@ -81,15 +88,19 @@ class Movimientos():
 
                         print(tabulate(productosi, headers=['Nº', 'Nombre', 'Código', 'Stock'], tablefmt='fancy_grid'))  
 
-                        producto_mover = input("Ingrese el número correspondiente al producto: ")
+                        producto_mover = input("Ingrese el número correspondiente al producto(0 para cancelar): ")
                         
                         
                         if not producto_mover.isdigit():
+                            system('cls')
                             print("Por favor, ingrese un número.")
                             continue
                         
                         producto_mover = int(producto_mover)
-                        
+
+                        if producto_mover == 0:
+                            input("\nPresione ENTER para volver al menú de productos...")
+                            return
                         if producto_mover < 1 or producto_mover > len(productos_filtrados):
                             system('cls')
                             print("Opción no válida. Debe ser un número entre 1 y", len(productos_filtrados))
@@ -98,6 +109,7 @@ class Movimientos():
                         cod_prod = productos_filtrados[producto_mover - 1][0]
 
                         if cod_prod in productos_seleccionados:
+                            system('cls')
                             print("Error: Este producto ya ha sido seleccionado.")
                             continue
 
@@ -126,9 +138,11 @@ class Movimientos():
                             system('cls')
                             print("Respuesta no válida. Por favor ingrese 's' para agregar otro autor o 'n' para terminar.")
                             mover_otro = input("¿Desea agregar otro autor? (s/n): ").strip().lower()
+
+                        system('cls')
                     
                     if not productos_seleccionados:
-                        print("Debe seleccionar al menos un autor.")
+                        print("Debe seleccionar al menos un producto.")
                         continue
                     
                     break
@@ -137,6 +151,7 @@ class Movimientos():
                 destino = Bodegas.cargar_bodegas(self, '')
 
 
+                system('cls')
 
 
                 while True:
@@ -149,13 +164,17 @@ class Movimientos():
                     bodegas_destino = [[i, bodega[1], bodega[0]] for i, bodega in enumerate(destino, start=1)]
                     print(tabulate(bodegas_destino, headers=['Nº', 'Nombre', 'Código'], tablefmt='fancy_grid'))
 
-                    bodega_destino = input("Ingrese el número correspondiente a la bodega de origen: ")
+                    bodega_destino = input("Ingrese el número correspondiente a la bodega de origen(0 para cancelar): ")
                     if not bodega_destino.isdigit():
                         system('cls')
                         print("Por favor, ingrese un número.")
                         continue
 
                     bodega_destino = int(bodega_destino)
+
+                    if producto_mover == 0:
+                        input("\nPresione ENTER para volver al menú de productos...")
+                        return                    
                     if bodega_destino < 1 or bodega_destino > len(destino):
                         system('cls')
                         print("Opción no válida. Debe ser un número entre 1 y", len(destino))
@@ -188,20 +207,27 @@ class Movimientos():
 
                 fechamov = datetime.now()
 
-                print("\nResumen de movimientos:")
+                system('cls')
+
+                tabla = []
                 for cod_prod, stock in productos_a_mover:
-                    print(f"Producto: {cod_prod}, Stock a mover: {stock}, Desde Bodega: {cod_origen}, Hacia Bodega: {cod_destino}")
+                    tabla.append([cod_prod, stock, cod_origen, cod_destino])
+
+                # Imprimir como tabla usando tabulate
+                print("\nResumen de movimientos:")
+                print(tabulate(tabla, headers=["Producto", "Stock a mover", "Desde Bodega", "Hacia Bodega"], tablefmt="fancy_grid"))
 
                 # Confirmación para continuar
                 confirmar = input("\n¿Desea proceder con los movimientos listados arriba? (s/n): ").strip().lower()
-                if confirmar != 's':
+
+                while confirmar not in ['s', 'n']:
+                    print("Respuesta no válida. Por favor ingrese 's' para confirmar o 'n' para cancelar.")
+                    confirmar = input("\n¿Desea proceder con los movimientos listados arriba? (s/n): ").strip().lower()
+
+                if confirmar == 'n':
                     print("Movimiento cancelado.")
                     input("\nPresione ENTER para volver al menú...") 
                     return
-
-
-
-
 
                 # Procesar el movimiento de productos
                 for cod_prod, stock in productos_a_mover:
@@ -264,3 +290,7 @@ class Movimientos():
                 print(f"Error general: {e}")
                 self.conexion.rollback()
             
+
+        
+
+mov=Movimientos()
