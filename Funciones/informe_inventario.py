@@ -102,8 +102,6 @@ def generar_informe_inventario():
             ["Libros", stock_libros],
             ["Revistas", stock_revistas],
             ["Enciclopedias", stock_enciclopedias],
-            ["Poemarios", stock_poemarios],
-            ["Otros", stock_otros]
         ]
 
         
