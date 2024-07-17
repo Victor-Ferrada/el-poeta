@@ -2,21 +2,28 @@ import mysql.connector
 import pickle
 import os
 from os import system
+import configparser
+
 class ConexionBD:
     conexion = None
 
     @classmethod
     def conectar_db(cls):
         if cls.conexion is None:
+            config = configparser.ConfigParser()
+            config.read('config.ini')
+            
             try:
                 cls.conexion = mysql.connector.connect(
-                    host="localhost",
-                    user="root",
-                    password="inacap2023",
-                    database="elpoeta"
+                    host=config['DATABASE']['host'],
+                    user=config['DATABASE']['user'],
+                    password=config['DATABASE']['password'],
+                    database=config['DATABASE']['database']
                 )
             except mysql.connector.Error as e:
                 print(f"Error al conectar a la base de datos: {e}")
+            except KeyError as e:
+                print(f"Error en la configuración: {e}. Asegúrate de que el archivo config.ini está correctamente configurado.")
         return cls.conexion
     
     def cerrar_db(cls):
