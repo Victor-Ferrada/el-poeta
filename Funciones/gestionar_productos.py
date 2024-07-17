@@ -18,11 +18,9 @@ class Productos():
     def agregar_producto(self,usuario):
             # Mostrar opciones de tipo de producto
             tipos_producto = {
-                "Libro": "LIBR",
+                "Libro": "LIB",
                 "Revista": "REV",
-                "Poemario": "POE",
                 "Enciclopedia": "ENC",
-                "Otros": "OTR"
             }
             system('cls')
             Editoriales.mostrar_editoriales(self)
