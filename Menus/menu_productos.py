@@ -27,6 +27,8 @@ def menu_productos(usuario):
             elif opcion == '2':
                 system('cls')
                 prod.mostrar_productos()
+                input('Presione ENTER para volver atrás...')
+                system('cls')                
             elif opcion == '3':
                 system('cls')
                 inv.añadir_productos(usuario)
@@ -45,3 +47,5 @@ def menu_productos(usuario):
         except Exception as e:
             print(f"Error inesperado: {e}")
             return
+
+menu_productos('123')

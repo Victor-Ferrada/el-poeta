@@ -53,7 +53,7 @@ class Editoriales():
                     self.conexion.commit()
                     system('cls')
                     print("\nEditorial agregada exitosamente.")
-                    input("\nPresione ENTER para volver al menú de editoriales...")
+                    input("\nPresione ENTER para volver atrás...")
                     system('cls')
                     return
                 except Exception as e:
@@ -85,65 +85,69 @@ class Editoriales():
         print('-'*10+'Eliminar Editoriales'+'-'*10+'\n')
         Editoriales().mostrar_editoriales()
         while True:
-            rutedit = input("Ingrese el RUT de la editorial a eliminar (o 's' para salir): ").upper()
-            if rutedit=='S':
-                system('cls')
-                print("\nVolviendo al menú de editoriales...\n")
-                return
-            if rutedit=='':
+            try:
+                rutedit = input("Ingrese el RUT de la editorial a eliminar (o 's' para salir): ").upper()
+                if rutedit=='S':
+                    system('cls')
+                    print("\nVolviendo al menú de editoriales...\n")
+                    return
+                if rutedit=='':
+                        system('cls')
+                        print('-'*10+'Eliminar Editoriales'+'-'*10+'\n')
+                        Editoriales().mostrar_editoriales()
+                        print("Entrada vacía. Reintente.\n")
+                        continue
+                self.cursor.execute("select * from editoriales where rutedit = %s", (rutedit,))
+                editorial = self.cursor.fetchone()
+                if not editorial:
                     system('cls')
                     print('-'*10+'Eliminar Editoriales'+'-'*10+'\n')
                     Editoriales().mostrar_editoriales()
-                    print("Entrada vacía. Reintente.\n")
+                    print(f"Editorial {rutedit} no existe. Reintente.\n")
                     continue
-            self.cursor.execute("select * from editoriales where rutedit = %s", (rutedit,))
-            editorial = self.cursor.fetchone()
-            if not editorial:
-                system('cls')
-                print('-'*10+'Eliminar Editoriales'+'-'*10+'\n')
-                Editoriales().mostrar_editoriales()
-                print(f"Editorial {rutedit} no existe. Reintente.\n")
-                continue
-            self.cursor.execute("select runjef from jefebodega")
-            jefes=self.cursor.fetchall()
-            jefes=[jefe[0] for jefe in jefes]
-            if usuario not in jefes:
-                system('cls')
-                print(f'Usuario {usuario} no autorizado para eliminar editorial {rutedit}. Por favor contacte al Jefe de Bodega.\n')
-                input('Presione ENTER para volver atrás...')
-                system('cls')
-                return
-            self.cursor.execute("select * from productos where editorial = %s", (rutedit,))
-            productos = self.cursor.fetchone()
-            if productos:
-                system('cls')
-                print(f"\nNo se puede eliminar la editorial {rutedit} porque tiene productos asociados.\n")
-                input('Presione ENTER para volver atrás...')
-                system('cls')
-                return
-            else:
-                system('cls')
-                while True:
-                    confirmar=input(f"¿Está seguro que desea eliminar la editorial {rutedit}? (s/n): ").lower()
-                    while confirmar not in ['s', 'n']:
-                        confirmar = input("\nOpción inválida. Ingrese una opción válida (s/n): ").lower()
-                    if confirmar == 's':
-                        try:
-                            self.cursor.execute("delete from editoriales where rutedit = %s", (rutedit,))
-                            self.conexion.commit()
-                            system('cls')
-                            Editoriales().mostrar_editoriales()
-                            input("Editorial eliminada exitosamente. Presione ENTER para volver al menú de editoriales...")
-                            system('cls')
-                            return
-                        except Exception as e:
-                            print(f"Error al eliminar editorial: {e}")
-                            self.conexion.rollback()
-                    else:
+                self.cursor.execute("select runjef from jefebodega")
+                jefes=self.cursor.fetchall()
+                jefes=[jefe[0] for jefe in jefes]
+                if usuario not in jefes:
+                    system('cls')
+                    print(f'Usuario {usuario} no autorizado para eliminar editorial {rutedit}. Por favor contacte al Jefe de Bodega.\n')
+                    input('Presione ENTER para volver atrás...')
+                    system('cls')
+                    return
+                self.cursor.execute("select * from productos where editorial = %s", (rutedit,))
+                productos = self.cursor.fetchone()
+                if productos:
+                    system('cls')
+                    print(f"\nNo se puede eliminar la editorial {rutedit} porque tiene productos asociados.\n")
+                    input('Presione ENTER para volver atrás...')
+                    print('-'*10+'Eliminar Editoriales'+'-'*10+'\n')
+                    Editoriales().mostrar_editoriales()
+                    continue
+                confirmar = input(f"¿Está seguro que desea eliminar la editorial {rutedit}? (s/n): ").lower()
+                        
+                while confirmar not in ['s', 'n']:
+                    confirmar = input("\nOpción inválida. Ingrese una opción válida (s/n): ").lower()
+            
+                if confirmar == 's':
+                    try:
+                        self.cursor.execute("delete from editoriales where rutedit = %s", (rutedit,))
+                        self.conexion.commit()
                         system('cls')
-                        input("Operación cancelada. Presione ENTER para volver al menú de editoriales...")
+                        Editoriales().mostrar_editoriales()
+                        input("Editorial eliminada exitosamente. Presione ENTER para volver al menú de editoriales...")
                         system('cls')
-                        return 
+                        return
+                    except Exception as e:
+                        print(f"Error al eliminar editorial: {e}")
+                        self.conexion.rollback()
+                else:
+                    system('cls')
+                    input("Operación cancelada. Presione ENTER para volver al menú de editoriales...")
+                    system('cls')
+                    return 
+            except Exception as e:
+                print(f"Error inesperado: {e}")
+                self.conexion.rollback()
 
     def cargar_editoriales(self):
         try:
@@ -157,3 +161,4 @@ class Editoriales():
 
 
 editoriales=Editoriales()
+editoriales.eliminar_editorial('123')

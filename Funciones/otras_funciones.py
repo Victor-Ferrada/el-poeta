@@ -1,5 +1,5 @@
 import mysql.connector
-
+from os import system
 class ConexionBD:
     conexion = None
 
@@ -29,7 +29,8 @@ def validar_entero(mensaje,campo):
             if valor > 0:
                 return valor
             else:
-                print(f"\nEl {campo} debe ser positivo. Intente nuevamente.")
+                system('cls')
+                print(f"\nEl {campo} debe ser positivo. Intente nuevamente.\n")
         except ValueError:
             print(f"\nEntrada inválida. El {campo} debe ser un número. Intente nuevamente.")
             pass

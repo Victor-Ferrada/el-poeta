@@ -41,3 +41,4 @@ def gestionar_editoriales(usuario):
             print(f"Error inesperado: {e}")
             return
 
+gestionar_editoriales('123')
