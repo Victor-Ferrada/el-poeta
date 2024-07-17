@@ -12,12 +12,15 @@ from Funciones.otras_funciones import ConexionBD,load_locales,save_locales
 
 
 def main():
+    
     us=Usuarios()
     db=ConexionBD()
     jefe=JefeBodega()
     bod=Bodegueros()
     locales = load_locales()
+    
     while True:
+        print(locales)
         try:
             print('-'*10+'Bienvenido al Sistema de Gestión de Inventario El gran Poeta'+'-'*10+'\n')
             print("1. Iniciar Sesión")
@@ -37,14 +40,8 @@ def main():
                             
                         elif perfil == 'bodeguero':
                             # Redirigir al menú del Bodeguero
-                            if locales==None:
-                                locales=''
-                                input('No hay bodegas locales creadas. \nPresione ENTER para volver al menú anterior...')
-                                system('cls')
-                                return
-                            else:
-                                print("Redirigiendo al menú del Bodeguero...")
-                                bod.menu_bodeguero(user,locales)  # Pasar el usuario actual al menú del bodeguero
+                            print("Redirigiendo al menú del Bodeguero...")
+                            bod.menu_bodeguero(user,locales)  # Pasar el usuario actual al menú del bodeguero
                     else:
                         sys.exit()
             elif opcion == "2":

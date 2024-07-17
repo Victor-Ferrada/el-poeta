@@ -45,5 +45,5 @@ def menu_bodegas(usuario):
             print(f"{e} Ingrese una opción de la lista:")
         except Exception as e:
             print(f"Error inesperado: {e}")
-            return
+            return locales
 

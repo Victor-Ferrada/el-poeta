@@ -28,7 +28,7 @@ class Bodegas():
                 elif responsable=='S':
                     system('cls')
                     print("\nOperación cancelada. Volviendo al menú de bodegas...\n")
-                    return
+                    return None
                 else:
                     responsable = input(f"Usuario {responsable} no existe. Ingrese un usuario válido (o 's' para finalizar): ").upper()
                 self.cursor.execute("select * from jefebodega where runjef = %s", (responsable,))
@@ -71,12 +71,12 @@ class Bodegas():
                 except Exception as e:
                     print(f"Error al crear bodega: {e}\n")
                     self.conexion.rollback()
-                    return
+                    return None
             else:
                 system('cls')
                 input("\nOperación cancelada. Presione ENTER para volver atrás...")
                 system('cls')
-                return
+                return None
 
     # Función para visualizar bodegas
     def mostrar_bodegas(self):
