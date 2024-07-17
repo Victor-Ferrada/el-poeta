@@ -43,6 +43,7 @@ class Productos():
                 if not editoriales:
                     print('No existen ni se han agregado editoriales con las que trabajar')
                     input("\nPresione ENTER para volver al menú de productos...")
+                    system('cls')
                     return
 
                 print("Seleccione la editorial del producto:")
@@ -80,11 +81,11 @@ class Productos():
             while not autores:
                 print('No existen ni se han agregado autores con las que trabajar')
                 input("\nPresione ENTER para volver al menú de productos...")
+                system('cls')
                 return
             while True:
                 autores_seleccionados = []
                 agregar_otro_autor = 's'
-               
                 while agregar_otro_autor.lower() == 's':
 
                     print("Seleccione el autor del producto:")
@@ -104,6 +105,7 @@ class Productos():
                     
                     if opcion_autor == 0:
                         input("\nPresione ENTER para volver al menú de productos...")
+                        system('cls')
                         return                        
                     
                     if opcion_autor < 1 or opcion_autor > len(autores):
@@ -115,7 +117,7 @@ class Productos():
 
                     if autores[opcion_autor - 1][0] in autores_seleccionados:
                         system('cls')
-                        print("Error: Este producto ya ha sido seleccionado.")
+                        print("Error: Este autor ya ha sido seleccionado.")
                         continue
 
                     autores_seleccionados.append(run_autor)

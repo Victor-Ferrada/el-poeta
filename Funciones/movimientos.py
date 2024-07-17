@@ -48,7 +48,7 @@ class Movimientos():
                         input("\nPresione ENTER para volver atrás ...")
                         system('cls')
                         return  
-                                      
+
                     if bodega_origen < 1 or bodega_origen > len(origen):
                         system('cls')
                         print(f"Opción no válida, debe ser un número entre 1 y {len(origen)}.")
@@ -109,6 +109,7 @@ class Movimientos():
 
                         if producto_mover == 0:
                             input("\nPresione ENTER para volver atrás ...")
+                            system('cls')
                             return
                         if producto_mover < 1 or producto_mover > len(productos_filtrados):
                             system('cls')
@@ -127,10 +128,14 @@ class Movimientos():
 
                         while True:
                             try:
-                                stock = int(input(f"Ingrese el stock del producto '{productos_filtrados[producto_mover - 1][1]}': "))
-                                if stock <= 0:
+                                stock = int(input(f"Ingrese el stock del producto (0 para cancelar) '{productos_filtrados[producto_mover - 1][1]}': "))
+                                if stock < 0:
                                     print("El stock del producto debe ser mayor que cero.")
                                     continue
+                                if stock == 0:
+                                    input("\nPresione ENTER para volver atrás ...")
+                                    system('cls')
+                                    return 
                                 if stock > stock_disponible:
                                     print(f"Error: El stock solicitado ({stock}) excede el stock disponible en la bodega de origen ({stock_disponible}).")
                                     continue
@@ -184,6 +189,7 @@ class Movimientos():
 
                     if producto_mover == 0:
                         input("\nPresione ENTER para volver atrás ...")
+                        system('cls')
                         return                    
                     if bodega_destino < 1 or bodega_destino > len(destino):
                         system('cls')
@@ -237,7 +243,8 @@ class Movimientos():
 
                 if confirmar == 'n':
                     print("Movimiento cancelado.")
-                    input("\nPresione ENTER para volver atrás...") 
+                    input("\nPresione ENTER para volver atrás...")
+                    system('cls')
                     return
 
                 # Procesar el movimiento 

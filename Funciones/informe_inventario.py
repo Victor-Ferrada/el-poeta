@@ -67,24 +67,6 @@ def generar_informe_inventario():
         stock_enciclopedias = cursor.fetchone()[0]
         if stock_enciclopedias==None:
             stock_enciclopedias=0
-        cursor.execute("""
-            select sum(stock) as stock_poemarios
-            from inventario i
-            join productos p on i.codprod = p.codprod
-            where p.tipo = 'Poemario' and i.bodega = %s
-        """, (bodega_seleccionada,))
-        stock_poemarios = cursor.fetchone()[0]
-        if stock_poemarios==None:
-            stock_poemarios=0
-        cursor.execute("""
-            select sum(stock) as stock_otros
-            from inventario i
-            join productos p on i.codprod = p.codprod
-            where p.tipo = 'Otro' and i.bodega = %s
-        """, (bodega_seleccionada,))
-        stock_otros = cursor.fetchone()[0]
-        if stock_otros==None:
-            stock_otros=0
         data = [
             ["Total de productos", total_productos],
             ["Libros", stock_libros],
