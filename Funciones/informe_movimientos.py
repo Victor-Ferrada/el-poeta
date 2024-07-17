@@ -35,8 +35,6 @@ def generar_informe_movimientos():
             bd.mostrar_bodegas()
             print(f"Bodega {bodega_seleccionada} no existe. Reintente.\n")
             continue
-
-        # Consulta para unir movimientos de despacho y recepción, incluyendo nombres de sucursales
         query = """
         SELECT 
             d.codMov,
@@ -74,4 +72,3 @@ def generar_informe_movimientos():
         print('-'*10+'Informes de Movimientos de Bodegas'+'-'*10+'\n')
         bd.mostrar_bodegas()
 
-generar_informe_movimientos()
