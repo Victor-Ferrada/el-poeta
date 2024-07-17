@@ -7,7 +7,6 @@ from os import system
 from Funciones.gestionar_bodegas import Bodegas
 bd=Bodegas()
 
-
 def generar_informe_movimientos():
     conexion = ConexionBD.conectar_db()
     if conexion:
@@ -28,7 +27,7 @@ def generar_informe_movimientos():
             print("Entrada vacía. Reintente.\n")
             continue
         
-        cursor.execute("select * from bodegas where codbod = %s", (bodega_seleccionada,))
+        cursor.execute("SELECT * FROM bodegas WHERE codbod = %s", (bodega_seleccionada,))
         bodega_existe = cursor.fetchone()
         if not bodega_existe:
             system('cls')
@@ -36,60 +35,43 @@ def generar_informe_movimientos():
             bd.mostrar_bodegas()
             print(f"Bodega {bodega_seleccionada} no existe. Reintente.\n")
             continue
-        # Consulta para movimientos de recepcion
-        query_recepcion = """
-        select 
-            codmov as 'código de movimiento',
-            codprod as 'código de producto',
-            tipomov as 'tipo de movimiento',
-            fechamov as 'fecha de movimiento',
-            stock as 'stock',
-            bodega as 'código de bodega',
-            usuario as 'usuario'
-        from 
-            movimientos
-        where 
-            tipomov = 'RECEPCION'
-            and bodega = %s
-        """
-        cursor.execute(query_recepcion, (bodega_seleccionada,))
-        movimientos_recepcion =cursor.fetchall()
-        
-        # Consulta para movimientos de despacho
-        query_despacho = """
-        select 
-            codmov as 'código de movimiento',
-            codprod as 'código de producto',
-            tipomov as 'tipo de movimiento',
-            fechamov as 'fecha de movimiento',
-            stock as 'stock',
-            bodega as 'código de bodega',
-            usuario as 'usuario'
-        from 
-            movimientos
-        where 
-            tipomov = 'DESPACHO'
-            and bodega = %s
-        """
-        cursor.execute(query_despacho, (bodega_seleccionada,))
-        movimientos_despacho = cursor.fetchall()
 
-        # Mostrar tabla de movimientos de recepcion
-        if movimientos_recepcion:
-            headers_recepcion = ["Código de Movimiento", "Código de Producto", "Tipo de Movimiento", "Fecha de Movimiento", "Stock", "Código de Bodega", "Usuario"]
-            print(f"\nInforme de Movimientos de recepcion - Bodega {bodega_seleccionada}\n")
-            print(tabulate(movimientos_recepcion, headers_recepcion, tablefmt="fancy_grid"))
-        else:
-            print(f"\nNo se encontraron movimientos de recepcion para la bodega {bodega_seleccionada}.")
+        # Consulta para unir movimientos de despacho y recepción, incluyendo nombres de sucursales
+        query = """
+        SELECT 
+            d.codMov,
+            d.codProd,
+            bo.sucursal AS sucursal_origen,
+            bd.sucursal AS sucursal_destino,
+            d.fechaMov,
+            d.usuario
+        FROM 
+            Movimientos d
+        JOIN 
+            Movimientos r ON d.fechaMov = r.fechaMov AND d.codProd = r.codProd
+        JOIN
+            Bodegas bo ON d.bodega = bo.codBod
+        JOIN
+            Bodegas bd ON r.bodega = bd.codBod
+        WHERE 
+            d.tipoMov = 'DESPACHO' AND r.tipoMov = 'RECEPCION'
+            AND (d.bodega = %s OR r.bodega = %s)
+        ORDER BY 
+            d.fechaMov
+        """
+        cursor.execute(query, (bodega_seleccionada, bodega_seleccionada))
+        movimientos = cursor.fetchall()
 
-        # Mostrar tabla de movimientos de despacho
-        if movimientos_despacho:
-            headers_despacho = ["Código de Movimiento", "Código de Producto", "Tipo de Movimiento", "Fecha de Movimiento", "Stock", "Código de Bodega", "Usuario"]
-            print(f"\nInforme de Movimientos de despacho - Bodega {bodega_seleccionada}\n")
-            print(tabulate(movimientos_despacho, headers_despacho, tablefmt="fancy_grid"))
+        if movimientos:
+            headers = ["Código de Movimiento", "Código de Producto", "Sucursal de Origen", "Sucursal de Destino", "Fecha de Movimiento", "Usuario"]
+            print(f"\nInforme de Movimientos - Bodega {bodega_seleccionada}\n")
+            print(tabulate(movimientos, headers, tablefmt="fancy_grid"))
         else:
-            print(f"\nNo se encontraron movimientos de despacho para la bodega {bodega_seleccionada}.\n")
+            print(f"\nNo se encontraron movimientos para la bodega {bodega_seleccionada}.")
+
         input("\nPresione ENTER para volver atrás...")
+        system('cls')
         print('-'*10+'Informes de Movimientos de Bodegas'+'-'*10+'\n')
         bd.mostrar_bodegas()
-            
+
+generar_informe_movimientos()
