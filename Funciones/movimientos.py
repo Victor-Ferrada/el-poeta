@@ -211,11 +211,11 @@ class Movimientos():
 
                 tabla = []
                 for cod_prod, stock in productos_a_mover:
-                    tabla.append([cod_prod, stock, cod_origen, cod_destino])
+                    tabla.append([cod_prod, stock, cod_origen, cod_destino,usuario])
 
                 # Imprimir como tabla usando tabulate
                 print("\nResumen de movimientos:")
-                print(tabulate(tabla, headers=["Producto", "Stock a mover", "Desde Bodega", "Hacia Bodega"], tablefmt="fancy_grid"))
+                print(tabulate(tabla, headers=["Producto", "Stock a mover", "Desde Bodega", "Hacia Bodega","Responsable"], tablefmt="fancy_grid"))
 
                 # Confirmación para continuar
                 confirmar = input("\n¿Desea proceder con los movimientos listados arriba? (s/n): ").strip().lower()
