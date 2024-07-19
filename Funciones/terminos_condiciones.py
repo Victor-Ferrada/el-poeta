@@ -1,7 +1,6 @@
 from os import system
 import sys
 import time
-import pickle
 from Funciones.otras_funciones import guardar_terminos_y_condiciones,verificar_terminos_y_condiciones
 
 def mostrar_terminos_y_condiciones(usuario):

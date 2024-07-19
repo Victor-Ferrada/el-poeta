@@ -1,16 +1,14 @@
 import sys
 import os
-import pickle
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from os import system
 import time
-from Funciones.otras_funciones import ConexionBD,save_locales,load_locales
+from os import system
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from Funciones.otras_funciones import ConexionBD,save_locales
 bd=ConexionBD()
 from Menus.menu_bodegas import menu_bodegas
-from Funciones.gestionar_bodegas import Bodegas
+from Funciones.gestionar_bodegas import Bodegas as bod
 from Funciones.informe_movimientos import generar_informe_movimientos
 from Funciones.informe_inventario import generar_informe_inventario
-bod=Bodegas()
 from Menus.menu_productos import menu_productos
 from Menus.menu_autores import gestionar_autores
 from Menus.menu_editoriales import gestionar_editoriales

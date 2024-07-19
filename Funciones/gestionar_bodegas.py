@@ -21,19 +21,6 @@ class Bodegas():
                     sucursal = input("El nombre de la sucursal no puede estar vacío. Ingrese nuevamente: ").strip().upper()
             fono_bod = validar_entero("Ingrese el teléfono de la bodega: ",'teléfono')
             responsable = usuario
-            self.cursor.execute("select * from jefebodega where runjef = %s", (responsable,))
-            jefe = self.cursor.fetchone()
-            while not jefe:
-                if responsable=='':
-                    responsable=input("Entrada vacía. Ingrese un usuario válido (o 's' para finalizar): ").upper()
-                elif responsable=='S':
-                    system('cls')
-                    print("\nOperación cancelada. Volviendo al menú de bodegas...\n")
-                    return None
-                else:
-                    responsable = input(f"Usuario {responsable} no existe. Ingrese un usuario válido (o 's' para finalizar): ").upper()
-                self.cursor.execute("select * from jefebodega where runjef = %s", (responsable,))
-                jefe = self.cursor.fetchone()
             cod_post_bod = validar_entero("Ingrese el código postal de la bodega: ",'código postal')
             
             #aca para hacer el codigo de la bodega 
