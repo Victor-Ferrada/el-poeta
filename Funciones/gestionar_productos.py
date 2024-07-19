@@ -439,7 +439,7 @@ class Inventario():
                 if resultado:
                     # El producto ya está en el inventario, actualizar el stock
                     nuevo_stock = resultado[0] + stock
-                    self.cursor.execute("update inventario set stock = %s where codprod = %s and bodega = %s", (nuevo_stock, cod_prod, cod_bodega))
+                    self.cursor.execute("update inventario set stock = + %s where codprod = %s and bodega = %s", (nuevo_stock, cod_prod, cod_bodega))
                 else:
                     # El producto no está en el inventario, insertar una nueva entrada
                     sql_last_id_inv = "select max(coding) from inventario"
