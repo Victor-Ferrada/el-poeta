@@ -3,7 +3,6 @@ import os
 import time
 from os import system
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from Funciones.cls import cls
 from Funciones.terminos_condiciones import mostrar_terminos_y_condiciones
 from Funciones.iniciar_sesion import Usuarios
 from Menus.bodeguero import Bodegueros
@@ -68,7 +67,6 @@ def main():
         except Exception as e:
             print(f"Error inesperado: {e}")
             return
-
 
 main()
 

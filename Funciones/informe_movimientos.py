@@ -61,7 +61,7 @@ def generar_informe_movimientos():
                 else:
                     system('cls')
                     print("\nNo se encontraron movimientos en la base de datos.")
-                input('Presione ENTER para volver atras...')
+                input('Presione ENTER para volver atrás...')
                 print('-'*10+'Informes de Movimientos de Bodegas'+'-'*10+'\n')
                 bd.mostrar_bodegas()
                 continue
@@ -77,8 +77,8 @@ def generar_informe_movimientos():
             select 
                 d.codmov,
                 d.codprod,
-                bo.sucursal as sucursal_origen,
-                bd.sucursal as sucursal_destino,
+                concat(bo.sucursal, ' (', bo.codbod, ')') as sucursal_origen,
+                concat(bd.sucursal, ' (', bd.codbod, ')') as sucursal_destino,
                 d.fechamov,
                 d.usuario
             from 

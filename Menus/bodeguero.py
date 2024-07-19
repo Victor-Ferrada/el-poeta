@@ -23,6 +23,7 @@ class Bodegueros():
                 print("2. Cerrar Sesión")
                 opcion = input("\nSeleccione una opción: ")
                 if opcion == "1":
+                    system('cls')
                     mov.mover_producto(user,locales)
                 elif opcion == "2":
                     system('cls')

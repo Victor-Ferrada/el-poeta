@@ -165,11 +165,10 @@ class Movimientos():
                 destino = Bodegas.cargar_bodegas(self, '')
 
 
-                system('cls')
-
 
                 while True:
                     if not destino:
+                        system('cls')
                         print('No existen ni se han agregado bodegas con las que trabajar.')
                         input("\nPresione ENTER para volver atrás ...")
                         system('cls')
@@ -299,7 +298,8 @@ class Movimientos():
                         print(f"Error: {e}")
                         self.conexion.rollback()
                         return
-                input("\nPresione ENTER para volver atrás...")  
+                input("\nPresione ENTER para volver atrás...") 
+                system('cls') 
 
             except (ValueError, IndexError) as e:
                 print(f"Error: {e}")

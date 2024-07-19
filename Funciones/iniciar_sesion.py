@@ -1,9 +1,9 @@
 import sys
 import os
 import time
+import pwinput
 from os import system
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-import pwinput
 from Funciones.otras_funciones import ConexionBD
 
 class Usuarios():

@@ -3,7 +3,6 @@ from os import system
 import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))                   #Esta ruta apunta al directorio padre del directorio donde se encuentra el script (Menus).
 sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'Funciones'))   #Esta ruta específica está dirigida al directorio Funciones, un nivel por encima del directorio donde se ejecuta el script (Menus).
-
 from Funciones.gestionar_bodegas import Bodegas
 from Funciones.gestionar_productos import Inventario
 bod=Bodegas()
@@ -21,7 +20,6 @@ def menu_bodegas(usuario):
             print("4. Eliminar Bodega")
             print("5. Volver")
             opcion = input("\nSeleccione una opción: ")
-
             if opcion == "1":
                 system('cls')
                 nuevo_locales = bod.crear_bodega(usuario)
