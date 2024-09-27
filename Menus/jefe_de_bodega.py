@@ -6,7 +6,8 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from Funciones.otras_funciones import ConexionBD,save_locales
 bd=ConexionBD()
 from Menus.menu_bodegas import menu_bodegas
-from Funciones.gestionar_bodegas import Bodegas as bod
+from Funciones.gestionar_bodegas import Bodegas
+bod=Bodegas()
 from Funciones.informe_movimientos import generar_informe_movimientos
 from Funciones.informe_inventario import generar_informe_inventario
 from Menus.menu_productos import menu_productos
